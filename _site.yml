@@ -7,6 +7,8 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
+    - text: "Chapter 1"
+      href: graphs1.html
   right:
     - icon: fa-file-pdf
       href: https://arxiv.org/abs/0000.00000
