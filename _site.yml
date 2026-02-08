@@ -11,7 +11,7 @@ navbar:
     - icon: fa-file-pdf
       href: https://arxiv.org/abs/0000.00000
     - icon: fa-github
-      href: https://github.com/leninrafaelrierasegura/NAFDEMG
+      href: https://github.com/leninrafaelrierasegura/PhD_thesis
 output:
   html_document:
     highlight: textmate
