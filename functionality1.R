@@ -50,10 +50,32 @@ slackr_setup(token = token) # token comes from keys.R
 
 
 ## -----------------------------------------------------------------------------
+gets.graph.interval <- function(n){
+  edge <- rbind(c(0,0),c(1,0))
+  edges = list(edge)
+  graph <- metric_graph$new(edges = edges)
+  graph$build_mesh(n = n)
+  return(graph)
+}
+
+
+## -----------------------------------------------------------------------------
+gets.graph.circle <- function(n){
+  r = 1/(pi)
+  theta <- seq(from=-pi,to=pi,length.out = 100)
+  edge <- cbind(1+r+r*cos(theta),r*sin(theta))
+  edges = list(edge)
+  graph <- metric_graph$new(edges = edges)
+  graph$build_mesh(n = n)
+  return(graph)
+}
+
+
+## -----------------------------------------------------------------------------
 # Function to build a tadpole graph and create a mesh
 gets.graph.tadpole <- function(h){
   edge1 <- rbind(c(0,0),c(1,0))
-  theta <- seq(from=-pi,to=pi,length.out = 10000)
+  theta <- seq(from=-pi,to=pi,length.out = 100)
   edge2 <- cbind(1+1/pi+cos(theta)/pi,sin(theta)/pi)
   edges <- list(edge1, edge2)
   graph <- metric_graph$new(edges = edges, verbose = 0)

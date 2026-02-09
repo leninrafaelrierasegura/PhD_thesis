@@ -57,7 +57,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = TRUE,       
+  eval = FALSE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -101,31 +101,7 @@ capture.output(
 source(here::here("functionality1.R"))
 ```
 
-# Basis functions on a metric graph
 
-Let each edge $e\in\Ecal$ be subdivided into $n_{e}\geq 2$ regular segments of length $h_{e}$, and be delimited by the nodes $0 = x_0^{e},x_1^{e},\dots,x_{n_{e}-1}^{e}, x_{n_{e}}^{e} = \ell_{e}$. For each $j = 1,\dots,n_{e}-1$, we consider the following standard hat basis functions 
-\begin{equation*}
-    \varphi_j^{e}(x)=\begin{cases}
-        1-\dfrac{|x_j^{e}-x|}{h_{e}},&\text{ if }x_{j-1}^{e}\leq x\leq x_{j+1}^{e},\\
-        0,&\text{ otherwise}.
-    \end{cases}
-\end{equation*}
-For each $e\in\Ecal$, the set of hat functions $\llav{\varphi_1^{e},\dots,\varphi_{n_{e}-1}^{e}}$ is a basis for the space
-\begin{equation*}
-    V_{h_{e}} = \llav{w\in H_0^1(e)\;\Big|\;\forall j = 0,1,\dots,n_{e}-1:w|_{[x_j^{e}, x_{j+1}^{e}]}\in\mathbb{P}^1},
-\end{equation*}
-where $\mathbb{P}^1$ is the space of linear functions on $[0,\ell_{e}]$. For each vertex $v\in\Vcal$, we define
-\begin{equation*}
-    \Ncal_v = \llav{\bigcup_{e\in\llav{e\in\Ecal_v: v = x_0^e}}[v,x_1^e]}\bigcup\llav{\bigcup_{e\in\llav{e\in\Ecal_v: v = x^e_{n_e}}}[x^e_{n_e-1},v]},
-\end{equation*}
-which is a star-shaped set with center at $v$ and rays made of the segments contiguous to $v$. On $\mathcal{N}_v$, we define the hat functions as
-\begin{equation*}
-    \phi_v(x)=\begin{cases}
-        1-\dfrac{|x_v^{e}-x|}{h_{e}},&\text{ if }x\in\mathcal{N}_v\cap e \text{ and }e\in\Ecal_v,\\
-        0,&\text{ otherwise},
-    \end{cases}
-\end{equation*}
-where $x_v^e$ is either $x_0^e$ or $x_{n_e}^e$ depending on the edge direction and its parameterization. See @arioli2018finite for more. Figure 3 below provides an illustration of the system of basis functions $\{\varphi_j^e, \phi_v\}$ together with the set $\Ncal_v$.
 
 <div style="color: blue;">
 ********
@@ -134,19 +110,17 @@ where $x_v^e$ is either $x_0^e$ or $x_{n_e}^e$ depending on the edge direction a
 ********
 </div>
 
+# Part 1
+
+## Interval graph
+
+Below we plot the interval graph $\Gamma_I = (\mathcal{V}, \mathcal{E})$ with $\mathcal{V} = \{v_1, v_2\}$ and $\mathcal{E} = \{e_1\}$, where $e_1$ is the edge connecting $v_1$ and $v_2$. 
+
 ```{r}
-gets_graph_interval <- function(n){
-  edge <- rbind(c(0,0),c(1,0))
-  edges = list(edge)
-  graph <- metric_graph$new(edges = edges)
-  graph$build_mesh(n = n)
-  return(graph)
-}
+n <- 3#333
+graph <- gets.graph.interval(n = n)
 
-n = 3#333
-graph = gets_graph_interval(n = n)
-
-notes1 <- list(annotations = list(
+notes_int <- list(annotations = list(
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v_1"),
@@ -166,37 +140,34 @@ notes1 <- list(annotations = list(
                font = list(color = "black", size = 14),
                arrowcolor = "white", arrowsize = 1, arrowwidth = 1, arrowhead = 1)))
 
-layout1 <- list(camera = list(eye = list(x = 2.3, 
+layout_int <- list(camera = list(eye = list(x = 2.3, 
                                        y = 2.3, 
                                        z = 2.3),
                             center = list(x = 0, 
                                           y = 0, 
                                           z = 0)))
 
-p11 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), type = "plotly", line_width = 3, edge_width = 3, line_color = "black")|>
+p11 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
+                           type = "plotly", 
+                           line_width = 3, 
+                           edge_width = 3, 
+                           line_color = "black")|>
   config(mathjax = 'cdn') |>
-  layout(scene =  c(notes1, layout1),
+  layout(scene =  c(notes_int, layout_int),
          showlegend = FALSE,
          font = list(family = "Palatino"))
+save(p11, file = here::here("data_files/interval_graph.Rdata"))
 ```
 
+## Circle graph
+
+Below we plot the circle graph $\Gamma_C = (\mathcal{V}, \mathcal{E})$ with $\mathcal{V} = \{v_1\}$ and $\mathcal{E} = \{e_1\}$, where $e_1$ is the edge connecting $v_1$ to itself.
 
 ```{r}
-gets_graph_circle <- function(n){
-  r = 1/(pi)
-  theta <- seq(from=-pi,to=pi,length.out = 100)
-  edge <- cbind(1+r+r*cos(theta),r*sin(theta))
-  edges = list(edge)
-  graph <- metric_graph$new(edges = edges)
-  graph$build_mesh(n = n)
-  return(graph)
-}
-n = 6#666
-# Get the graph and build the mesh
-graph = gets_graph_circle(n = n)
+n <- 6#666
+graph <- gets.graph.circle(n = n)
 
-
-notes1 <- list(annotations = list(
+notes_cir <- list(annotations = list(
              list(
                x = 0, y = 1, z = 0,
                text = TeX("v_1"),
@@ -211,30 +182,27 @@ notes1 <- list(annotations = list(
                arrowcolor = "white", arrowsize = 1, arrowwidth = 1, arrowhead = 1)))
   
   
-p22 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), type = "plotly", line_width = 3, edge_width = 3, line_color = "black") %>% 
+p22 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
+                           type = "plotly", 
+                           line_width = 3, 
+                           edge_width = 3, 
+                           line_color = "black") %>% 
   config(mathjax = 'cdn') %>% 
-  layout(scene =  c(notes1, layout1),
+  layout(scene =  c(notes_cir, layout_int),
          showlegend = FALSE,
          font = list(family = "Palatino"))
+save(p22, file = here::here("data_files/circle_graph.Rdata"))
 ```
 
+## Tadpole graph
+
+Below we plot the tadpole graph $\Gamma_T = (\mathcal{V}, \mathcal{E})$ with $\mathcal{V} = \{v_1, v_2\}$ and $\mathcal{E} = \{e_1, e_2\}$, where $e_1$ is the edge connecting $v_1$ and $v_2$, and $e_2$ is the edge connecting $v_2$ to itself.
 
 ```{r}
-gets_graph_tadpole <- function(h){
-  edge1 <- rbind(c(0,0),c(1,0))
-  theta <- seq(from=-pi,to=pi,length.out = 100)
-  edge2 <- cbind(1+1/pi+cos(theta)/pi,sin(theta)/pi)
-  edges = list(edge1, edge2)
-  graph <- metric_graph$new(edges = edges)
-  graph$build_mesh(h = h)
-  return(graph)
-}
-h = 0.3#0.003
 
-# Get the graph and build the mesh
-graph = gets_graph_tadpole(h = h)
+graph <- gets.graph.tadpole(h = 1/4)
 
-notes1 <- list(annotations = list(
+notes_tad_1 <- list(annotations = list(
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v_1"),
@@ -260,25 +228,27 @@ notes1 <- list(annotations = list(
                font = list(color = "black", size = 14),
                arrowcolor = "white", arrowsize = 1, arrowwidth = 1, arrowhead = 1)))
 
-p33 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), type = "plotly", line_width = 3, edge_width = 3, line_color = "black") %>% 
-  config(mathjax = 'cdn') %>% 
-  layout(scene =  c(notes1, layout1),
+p33 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
+                           type = "plotly", 
+                           line_width = 3, 
+                           edge_width = 3, 
+                           line_color = "black") |>
+  config(mathjax = 'cdn') |>
+  layout(scene =  c(notes_tad_1, layout_int),
          showlegend = FALSE,
          font = list(family = "Palatino"))
+save(p33, file = here::here("data_files/tadpole_graph.Rdata"))
 ```
 
+# Part 2
 
-# Second part
+## Functions on a graph and geodesic distance illustration
 
-
-
+Below we plot the function $f = \gamma\big|_\Gamma$ where $\gamma(x,y) = e^{-x^2-y^2}$, together with a path on the graph that illustrates the geodesic distance between points $s_1$ and $s_2$. 
 
 ```{r}
-graph <- gets.graph.tadpole(h = 1/4)
 graph_to_get_loc <- gets.graph.tadpole(h = 1/40)
 loc <- graph_to_get_loc$get_mesh_locations()
-
-
 
 A <- as.matrix(graph$fem_basis(loc))
 A <- apply(A, 2, function(x) plotting.order(x, graph_to_get_loc))
@@ -286,13 +256,13 @@ A <- rbind(A, rep(NA, ncol(A))) # Add a row of NAs for the plotting
 
 x_g <- graph_to_get_loc$mesh$V[, 1]
 y_g <- graph_to_get_loc$mesh$V[, 2]
-
-
 f_g <- exp(-x_g^2 - y_g^2)
-f <- c(plotting.order(f_g, graph_to_get_loc), NA)
+
 
 x <- c(plotting.order(x_g, graph_to_get_loc), NA)
 y <- c(plotting.order(y_g, graph_to_get_loc), NA)
+f <- c(plotting.order(f_g, graph_to_get_loc), NA)
+
 
 x_range <- range(x, na.rm = TRUE)
 y_range <- range(y, na.rm = TRUE)
@@ -343,13 +313,16 @@ notes1 <- list(annotations = list(
                      textangle = 0, ax = -40, ay = 0,
                      font = list(color = "blue", size = 14),
                      arrowcolor = "white", arrowsize = 1, arrowwidth = 1,arrowhead = 1)))
-     
+    
+# to plot the path 
+theta <- seq(from = pi/2, to = pi, length.out = 100)
+df1 <- data.frame(x = c(0.25,1), 
+                  y = c(0,0), 
+                  z = c(0,0))
+df2 <- data.frame(x = 1+1/pi+cos(theta)/pi, 
+                  y = sin(theta)/pi, 
+                  z = rep(0, length(theta)))
 
-df1 <- data.frame(x = c(0.25,1), y = c(0,0), z = c(0,0))
-theta <- seq(from=pi/2,to=pi,length.out = 10000)
-
-df2 <- data.frame(x = 1+1/pi+cos(theta)/pi, y = sin(theta)/pi, z = rep(0, length(theta)))
-# Start plot
 p1 <- plot_ly() |> 
   config(mathjax = 'cdn') |>
   add_trace(x = x, 
@@ -394,14 +367,18 @@ p1 <- plot_ly() |>
   layout(scene = c(tadpole.layout(x_range, y_range, z_range),notes1),
          showlegend = FALSE,
          font = list(family = "Palatino"))
+save(p1, file = here::here("data_files/tadpole_graph_function.Rdata"))
 ```
 
+## Mesh
 
+Below we plot the mesh of the tadpole graph.
 
 ```{r}
-df3 <- data.frame(x = graph$mesh$V[, 1], y = graph$mesh$V[, 2], z = rep(0, length(graph$mesh$V[, 1])))
 
-
+df3 <- data.frame(x = graph$mesh$V[, 1], 
+                  y = graph$mesh$V[, 2], 
+                  z = rep(0, length(graph$mesh$V[, 1])))
 df4 <- df3[6:nrow(df3), ]
 
 
@@ -493,7 +470,35 @@ p2 <- plot_ly() |>
   layout(scene = c(tadpole.layout(x_range, y_range, z_range), notes2),
          showlegend = FALSE,
          font = list(family = "Palatino"))
+save(p2, file = here::here("data_files/tadpole_graph_mesh.Rdata"))
 ```
+
+
+## Basis functions on a metric graph
+
+Let each edge $e\in\Ecal$ be subdivided into $n_{e}\geq 2$ regular segments of length $h_{e}$, and be delimited by the nodes $0 = x_0^{e},x_1^{e},\dots,x_{n_{e}-1}^{e}, x_{n_{e}}^{e} = \ell_{e}$. For each $j = 1,\dots,n_{e}-1$, we consider the following standard hat basis functions 
+\begin{equation*}
+    \varphi_j^{e}(x)=\begin{cases}
+        1-\dfrac{|x_j^{e}-x|}{h_{e}},&\text{ if }x_{j-1}^{e}\leq x\leq x_{j+1}^{e},\\
+        0,&\text{ otherwise}.
+    \end{cases}
+\end{equation*}
+For each $e\in\Ecal$, the set of hat functions $\llav{\varphi_1^{e},\dots,\varphi_{n_{e}-1}^{e}}$ is a basis for the space
+\begin{equation*}
+    V_{h_{e}} = \llav{w\in H_0^1(e)\;\Big|\;\forall j = 0,1,\dots,n_{e}-1:w|_{[x_j^{e}, x_{j+1}^{e}]}\in\mathbb{P}^1},
+\end{equation*}
+where $\mathbb{P}^1$ is the space of linear functions on $[0,\ell_{e}]$. For each vertex $v\in\Vcal$, we define
+\begin{equation*}
+    \Ncal_v = \llav{\bigcup_{e\in\llav{e\in\Ecal_v: v = x_0^e}}[v,x_1^e]}\bigcup\llav{\bigcup_{e\in\llav{e\in\Ecal_v: v = x^e_{n_e}}}[x^e_{n_e-1},v]},
+\end{equation*}
+which is a star-shaped set with center at $v$ and rays made of the segments contiguous to $v$. On $\mathcal{N}_v$, we define the hat functions as
+\begin{equation*}
+    \phi_v(x)=\begin{cases}
+        1-\dfrac{|x_v^{e}-x|}{h_{e}},&\text{ if }x\in\mathcal{N}_v\cap e \text{ and }e\in\Ecal_v,\\
+        0,&\text{ otherwise},
+    \end{cases}
+\end{equation*}
+where $x_v^e$ is either $x_0^e$ or $x_{n_e}^e$ depending on the edge direction and its parameterization. See @arioli2018finite for more. Figure 3 below provides an illustration of the system of basis functions $\{\varphi_j^e, \phi_v\}$ together with the set $\Ncal_v$.
 
 
 ```{r}
@@ -595,17 +600,19 @@ p3 <- plot_ly() |>
   layout(scene = c(tadpole.layout(x_range, y_range, z_range), notes3),
          showlegend = FALSE,
          font = list(family = "Palatino"))
+save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
 ```
 
 
-# Just the graphs
+# Plots part 1
 
 :::: {style="display: grid; grid-template-columns: 400px 400px 400px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, fig.height = 6, out.width = "100%", fig.cap = captioner("Exact and approximated covariance function on the interval graph.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
+load(here::here("data_files/interval_graph.Rdata"))
 p11
 ```
 
@@ -614,7 +621,8 @@ p11
 
 ::: {}
 
-```{r, fig.height = 6, out.width = "100%", fig.cap = captioner("Exact and approximated covariance function on the circle graph.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Circle graph $\\Gamma_C = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
+load(here::here("data_files/circle_graph.Rdata"))
 p22
 ```
 
@@ -626,7 +634,8 @@ p22
 ::: {}
 
 
-```{r, fig.height = 6, out.width = "100%", fig.cap = captioner("Exact and approximated covariance function on the tadpole graph.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Tadpole graph $\\Gamma_T = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1,e_2\\}$.")}
+load(here::here("data_files/tadpole_graph.Rdata"))
 p33
 ```
 
@@ -637,14 +646,15 @@ p33
 ::::
 
 
-# More than just the graphs
+# Plots part 2
 
 :::: {style="display: grid; grid-template-columns: 400px 400px 400px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, fig.height = 6, out.width = "100%", fig.cap = captioner("Exact and approximated covariance function on the interval graph.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("A function $f=\\gamma\\big|_\\Gamma$ on the tadpole graph, where $\\gamma(x,y) = e^{-x^2-y^2}$, together with a path that illustrates the geodesic distance between points $s_1$ and $s_2$.")}
+load(here::here("data_files/tadpole_graph_function.Rdata"))
 p1
 ```
 
@@ -653,7 +663,8 @@ p1
 
 ::: {}
 
-```{r, fig.height = 6, out.width = "100%", fig.cap = captioner("Exact and approximated covariance function on the circle graph.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Mesh nodes on the tadpole graph.")}
+load(here::here("data_files/tadpole_graph_mesh.Rdata"))
 p2
 ```
 
@@ -665,7 +676,8 @@ p2
 ::: {}
 
 
-```{r, fig.height = 6, out.width = "100%", fig.cap = captioner("Exact and approximated covariance function on the tadpole graph.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Basis functions on the tadpole graph.")}
+load(here::here("data_files/tadpole_graph_basis_functions.Rdata"))
 p3
 ```
 
@@ -678,6 +690,6 @@ p3
 
 # References
 
-```{r}
+```{r, eval =TRUE}
 grateful::cite_packages(output = "paragraph", out.dir = ".")
 ```
