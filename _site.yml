@@ -8,7 +8,29 @@ navbar:
     - text: "About"
       href: about.html
     - text: "Chapter 1"
-      href: graphs1.html
+      menu:
+        - text: "Section 1.1"
+          href: graphs1.html
+        - text: "Section 1.2"
+          href: index.html
+        - text: "Section 1.3"
+          href: index.html
+    - text: "Chapter 2"
+      menu:
+        - text: "Section 2.1"
+          href: index.html
+        - text: "Section 2.2"
+          href: index.html
+        - text: "Section 2.3"
+          href: index.html
+    - text: "Chapter 3"
+      menu:
+        - text: "Section 3.1"
+          href: index.html
+        - text: "Section 3.2"
+          href: index.html
+        - text: "Section 3.3"
+          href: index.html
   right:
     - icon: fa-file-pdf
       href: https://arxiv.org/abs/0000.00000
