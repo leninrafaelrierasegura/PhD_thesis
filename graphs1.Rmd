@@ -604,6 +604,11 @@ save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
 ```
 
 
+```{r, eval =TRUE, fig.height = 8, out.width = "100%", fig.cap = captioner("Basis functions on the tadpole graph.")}
+load(here::here("data_files/tadpole_graph_basis_functions.Rdata"))
+p3
+```
+
 # Plots part 1
 
 :::: {style="display: grid; grid-template-columns: 400px 400px 400px; grid-column-gap: 0px;"}
