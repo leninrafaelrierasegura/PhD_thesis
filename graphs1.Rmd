@@ -595,7 +595,7 @@ p3 <- plot_ly() |>
                   replace(rep(NA, nrow(A)), c(31:51, 111:121), 0)), 
             type = "scatter3d", 
             mode = "lines",
-            line = list(color = "green", width = 5), 
+            line = list(color = "green", width = 4), 
             showlegend = FALSE) |>
   layout(scene = c(tadpole.layout(x_range, y_range, z_range), notes3),
          showlegend = FALSE,
