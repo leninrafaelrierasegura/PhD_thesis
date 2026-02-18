@@ -314,7 +314,7 @@ graph$plot_function(X = f*0, vertex_size = 0, line_color = "black", edge_width =
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "blue", width = 3),
+            line = list(color = "rgb(0,0,200)", width = 3),
             showlegend = FALSE) |>
   add_trace(x = rep(DF_NO_NA$y, each = 3), 
             y = rep(DF_NO_NA$x, each = 3), 
