@@ -125,33 +125,36 @@ graph_disc$build_mesh(h = 0.02, continuous = FALSE)
 
 # Example of a function $f\in C(\Gamma)\cap \mathcal{K}(\Gamma)\setminus C^1(\Gamma)$
 
-Let us consider the $3$-star graph with common edge length $L$ and the following functions defined on each edge:
+Let us consider the $3$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v_0, v_1, v_2, v_3\}$ and $\mathcal{E} = \{e_1, e_2, e_3\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v_0$ to the outer vertex $v_i$ for $i=1,2,3$ in such a way that $v_0 = \underline{e_1} = \underline{e_2} = \underline{e_3}$. On $\Gamma$ we define the function $f = \{f_e\}_{e\in\mathcal{E}}$ as follows:
 
 $$
-f_1(s) = a + b_1 s - \frac{b_1 s^3}{3L^2}, \quad f_2(s) = a + b_2 s - \frac{b_2 s^3}{3L^2}, \quad f_3(s) = a + b_3 s - \frac{b_3 s^3}{3L^2}
-$$
-where $a$ is the value of the function at the central vertex and $b_1, b_2, b_3$ are constants such that $b_1 + b_2 + b_3 = 0$. Clearly $f = (f_e)_{e=1}^3$ is a continuous function defined on the graph as 
-
-$$
-f_1(0)= a, \quad f_2(0) = a, \quad f_3(0) = a.
+f_{e_1}(s) = a + b_1 s - \frac{b_1 s^3}{3\ell^2}, \quad f_{e_2}(s) = a + b_2 s - \frac{b_2 s^3}{3\ell^2}, \quad f_{e_3}(s) = a + b_3 s - \frac{b_3 s^3}{3\ell^2}
 $$
 
-Now the derivative of $f$ on each edge is given by
+where $a$ (to be chosen) is the value of $f$ at the central vertex and $b_1, b_2, b_3$ are constants (to be chosen) such that $b_1 + b_2 + b_3 = 0$. Clearly, $f$ is a continuous function since 
 
 $$
-f_1'(s) = b_1 - \frac{b_1 s^2}{L^2}, \quad f_2'(s) = b_2 - \frac{b_2 s^2}{L^2}, \quad f_3'(s) = b_3 - \frac{b_3 s^2}{L^2}.
+f_{e_1}(0) = f_{e_2}(0) = f_{e_3}(0) = a.
 $$
-and clearly $f' = (f_e')_{e=1}^3$ is discontinuous at the central vertex. The Kirchhoff vertex condition at the central vertex is satisfied since
+
+The derivative $f' = \{f'_e\}_{e\in\mathcal{E}}$ of $f$ on each edge is given by
 
 $$
-f_1'(0) + f_2'(0) + f_3'(0) = b_1 + b_2 + b_3 = 0.
+f_{e_1}'(s) = b_1 - \frac{b_1 s^2}{\ell^2}, \quad f_{e_2}'(s) = b_2 - \frac{b_2 s^2}{\ell^2}, \quad f_{e_3}'(s) = b_3 - \frac{b_3 s^2}{\ell^2}.
+$$
+Since $f_{e_1}'(0) = b_1$, $f_{e_2}'(0) = b_2$ and $f_{e_3}'(0) = b_3$, we can choose $b_1, b_2, b_3$ such that $f'$ is discontinuous at the central vertex and satisfies the Kirchhoff vertex conditions simultaneously. The Kirchhoff vertex conditions at the central vertex are satisfied since
+
+$$
+f_{e_1}'(0) + f_{e_2}'(0) + f_{e_3}'(0) = b_1 + b_2 + b_3 = 0.
 $$
 
 and at the outer vertices we have
 
 $$
-f_1'(L) = 0, \quad f_2'(L) = 0, \quad f_3'(L) = 0.
+f_{e_1}'(\ell) =  f_{e_2}'(\ell) = f_{e_3}'(\ell) = 0.
 $$
+
+For instance, we can choose $b_1 = 1$, $b_2 = 1$ and $b_3 = -2$, as shown in the following plots of $f$ and $f'$. This choice ensures $f$ to be continuous and satisfy the Kirchhoff vertex conditions while $f'$ is discontinuous at the central vertex.
 
 
 
@@ -218,7 +221,7 @@ apply_edge_functions_fast <- function(graph, f_list) {
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $f = (f_e)_{e=1}^3$ given by $f_e(s) = a + b_e s - \\dfrac{b_e s^3}{3L^2}$ for $e=1,2,3$.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
 graph$plot_function(X = apply_edge_functions_fast(graph, f_list), vertex_size = 0, edge_width = 2, line_width = 3, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f"), 
@@ -240,7 +243,7 @@ graph$plot_function(X = apply_edge_functions_fast(graph, f_list), vertex_size = 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $f' = (f_e')_{e=1}^3$ given by $f_e'(s) = b_e - \\dfrac{b_e s^2}{L^2}$ for $e=1,2,3$.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
 graph_disc$plot_function(X = apply_edge_functions_fast(graph_disc, df_list), vertex_size = 0, edge_width = 2, line_width = 3, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f'"), 
@@ -265,34 +268,24 @@ graph_disc$plot_function(X = apply_edge_functions_fast(graph_disc, df_list), ver
 
 # Example of a function $g\in C^1(\Gamma)\cap \mathcal{K}(\Gamma)$
 
-Let us consider the function $g = (g_e)_{e=1}^3$ defined on the $3$-star graph with common edge length $L$ as follows:
+Let us consider the function $g = \{g_e\}_{e\in\mathcal{E}}$ defined on the $3$-star graph with common edge length $\ell$ as follows:
+$$
+g_{e_1}(s) = \cos\left(\frac{\pi s}{\ell}\right), \quad g_{e_2}(s) = \cos\left(\frac{\pi s}{\ell}\right), \quad g_{e_3}(s) = \cos\left(\frac{\pi s}{\ell}\right).
+$$
+Clearly, $g$ is a continuous function defined on the graph since
+$$
+g_{e_1}(0) =  g_{e_2}(0) =  g_{e_3}(0) = 1.
+$$
+The derivative $g' = \{g'_e\}_{e\in\mathcal{E}}$  of $g$ on each edge is given by
+$$
+g_{e_1}'(s) = -\frac{\pi}{\ell}\sin\left(\frac{\pi s}{\ell}\right), \quad g_{e_2}'(s) = -\frac{\pi}{\ell}\sin\left(\frac{\pi s}{\ell}\right), \quad g_{e_3}'(s) = -\frac{\pi}{\ell}\sin\left(\frac{\pi s}{\ell}\right).
+$$
+Since $g_{e_1}'(0) = g_{e_2}'(0) = g_{e_3}'(0) = 0$, $g$ satisfies the Kirchhoff vertex conditions
+$$
+g_{e_1}'(0) + g_{e_2}'(0) + g_{e_3}'(0) = 0\text{ and }g_{e_1}'(\ell) =  g_{e_2}'(\ell) =  g_{e_3}'(\ell) = 0,
+$$
+Moreover, $g'$ is a continuous function.
 
-$$
-g_1(s) = \cos\left(\frac{\pi s}{L}\right), \quad g_2(s) = \cos\left(\frac{\pi s}{L}\right), \quad g_3(s) = \cos\left(\frac{\pi s}{L}\right).
-$$
-
-Clearly $g$ is a continuous function defined on the graph as
-
-$$
-g_1(0) = 1, \quad g_2(0) = 1, \quad g_3(0) = 1.
-$$
-
-The derivative of $g$ on each edge is given by
-
-$$
-g_1'(s) = -\frac{\pi}{L}\sin\left(\frac{\pi s}{L}\right), \quad g_2'(s) = -\frac{\pi}{L}\sin\left(\frac{\pi s}{L}\right), \quad g_3'(s) = -\frac{\pi}{L}\sin\left(\frac{\pi s}{L}\right).
-$$
-and clearly $g' = (g_e')_{e=1}^3$ is continuous at the central vertex. The Kirchhoff vertex condition at the central vertex is satisfied since
-
-$$
-g_1'(0) + g_2'(0) + g_3'(0) = 0.
-$$
-
-and at the outer vertices we have
-
-$$
-g_1'(L) = 0, \quad g_2'(L) = 0, \quad g_3'(L) = 0.
-$$
 
 ```{r}
 g1 <- function(s) cos(pi*s/L)
@@ -303,8 +296,13 @@ dg1 <- function(s) -pi/L*sin(pi*s/L)
 dg2 <- function(s) -pi/L*sin(pi*s/L)
 dg3 <- function(s) -pi/L*sin(pi*s/L)
 
+ddg1 <- function(s) -pi^2/L^2*cos(pi*s/L)
+ddg2 <- function(s) -pi^2/L^2*cos(pi*s/L)
+ddg3 <- function(s) -pi^2/L^2*cos(pi*s/L)
+
 g_list <- list(g1, g2, g3)
 dg_list <- list(dg1, dg2, dg3)
+ddg_list <- list(ddg1, ddg2, ddg3)
 ```
 
 
@@ -313,7 +311,7 @@ dg_list <- list(dg1, dg2, dg3)
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $g = (g_e)_{e=1}^3$ given by $g_e(s) = \\cos(\\dfrac{\\pi s}{L})$ for $e=1,2,3$.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
 graph$plot_function(X = apply_edge_functions_fast(graph, g_list), vertex_size = 0, edge_width = 2, line_width = 3, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("g"), 
@@ -335,10 +333,32 @@ graph$plot_function(X = apply_edge_functions_fast(graph, g_list), vertex_size = 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $g' = (g_e')_{e=1}^3$ given by $g_e'(s) = -\\dfrac{\\pi}{L}\\sin(\\dfrac{\\pi s}{L})$ for $e=1,2,3$.")}
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
 graph$plot_function(X = apply_edge_functions_fast(graph, dg_list), vertex_size = 0, edge_width = 2, line_width = 3, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("g'"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = 4, 
+                                       y = -1, 
+                                       z = 4),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}''(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = apply_edge_functions_fast(graph, ddg_list), vertex_size = 0, edge_width = 2, line_width = 3, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("g''"), 
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
