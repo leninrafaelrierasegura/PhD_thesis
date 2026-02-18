@@ -118,10 +118,45 @@ graph_disc <- graph$clone()
 
 
 ```{r}
-graph$build_mesh(h = 0.02)
-graph_disc$build_mesh(h = 0.02, continuous = FALSE)
+h = 0.02
+graph$build_mesh(h = h)
+graph_disc$build_mesh(h = h, continuous = FALSE)
 ```
 
+
+
+
+```{r}
+apply_edge_functions_fast <- function(graph, f_list) {
+  
+  if (length(f_list) != graph$nE) {
+    stop(sprintf(
+      "Number of functions (%d) must equal number of edges (%d).",
+      length(f_list), graph$nE
+    ))
+  }
+  VtE <- graph$mesh$VtE
+  edge_lengths <- graph$edge_lengths
+  
+  edge   <- VtE[,1]
+  s_norm <- VtE[,2]
+  s_true <- s_norm * edge_lengths[edge]
+  
+  # s_true <- ifelse(graph$edge_orientation[edge] == -1,
+  #                edge_lengths[edge] * (1 - s_norm),
+  #                edge_lengths[edge] * s_norm)
+
+  
+  # out <- numeric(length(edge))
+  # for (e in seq_len(graph$nE)) {
+  #   idx <- which(edge == e)
+  #   out[idx] <- f_list[[e]](s_true[idx])
+  # }
+  # return(out)
+  out <- sapply(seq_len(nrow(VtE)), function(i) f_list[[edge[i]]](s_true[i]))
+  return(out)
+}
+```
 
 # Example of a function $f\in C(\Gamma)\cap \mathcal{K}(\Gamma)\setminus C^1(\Gamma)$
 
@@ -173,87 +208,175 @@ df1 <- function(s) b[1] - b[1]*s^2/L^2
 df2 <- function(s) b[2] - b[2]*s^2/L^2
 df3 <- function(s) b[3] - b[3]*s^2/L^2
 
+ddf1 <- function(s) -2*b[1]*s/L^2
+ddf2 <- function(s) -2*b[2]*s/L^2
+ddf3 <- function(s) -2*b[3]*s/L^2
+
+dddf1 <- function(s) -2*b[1]/L^2
+dddf2 <- function(s) -2*b[2]/L^2
+dddf3 <- function(s) -2*b[3]/L^2
+
 f_list <- list(f1, f2, f3)
-
 df_list <- list(df1, df2, df3)
+ddf_list <- list(ddf1, ddf2, ddf3)
+dddf_list <- list(dddf1, dddf2, dddf3)
 
-
+f <- apply_edge_functions_fast(graph, f_list)
+df <- apply_edge_functions_fast(graph_disc, df_list)
+ddf <- apply_edge_functions_fast(graph, ddf_list)
+dddf <- apply_edge_functions_fast(graph_disc, dddf_list)
 ```
 
 
 ```{r}
-apply_edge_functions_fast <- function(graph, f_list) {
-  
-  if (length(f_list) != graph$nE) {
-    stop(sprintf(
-      "Number of functions (%d) must equal number of edges (%d).",
-      length(f_list), graph$nE
-    ))
-  }
-  VtE <- graph$mesh$VtE
-  edge_lengths <- graph$edge_lengths
-  
-  edge   <- VtE[,1]
-  s_norm <- VtE[,2]
-  s_true <- s_norm * edge_lengths[edge]
-  
-  # s_true <- ifelse(graph$edge_orientation[edge] == -1,
-  #                edge_lengths[edge] * (1 - s_norm),
-  #                edge_lengths[edge] * s_norm)
+l_mesh <- seq(0, my_length, by = h)
+dfl1 <- df1(l_mesh)
+dfl2 <- df2(l_mesh)
+dfl3 <- df3(l_mesh)
 
-  
-  # out <- numeric(length(edge))
-  # for (e in seq_len(graph$nE)) {
-  #   idx <- which(edge == e)
-  #   out[idx] <- f_list[[e]](s_true[idx])
-  # }
-  # return(out)
-  out <- sapply(seq_len(nrow(VtE)), function(i) f_list[[edge[i]]](s_true[i]))
-  return(out)
-}
+l_mesh_norm <- l_mesh/my_length
+PtE1 <- cbind(rep(1, length(l_mesh)), l_mesh_norm)
+PtE2 <- cbind(rep(2, length(l_mesh)), l_mesh_norm)
+PtE3 <- cbind(rep(3, length(l_mesh)), l_mesh_norm)
+XY1 <- graph$coordinates(PtE1)
+XY2 <- graph$coordinates(PtE2)
+XY3 <- graph$coordinates(PtE3)
+DF1 <- data.frame(x = XY1[,1], y = XY1[,2], z = dfl1)
+DF2 <- data.frame(x = XY2[,1], y = XY2[,2], z = dfl2)
+DF3 <- data.frame(x = XY3[,1], y = XY3[,2], z = dfl3)
+
+DF <- rbind(DF1, rep(NA, 3), DF2, rep(NA, 3), DF3)
+DF_NO_NA <- rbind(DF1, DF2, DF3)
 ```
 
-
-
-
-:::: {style="display: grid; grid-template-columns: 400px 400px 400px; grid-column-gap: 0px;"}
-
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
-graph$plot_function(X = apply_edge_functions_fast(graph, f_list), vertex_size = 0, edge_width = 2, line_width = 3, type = "plotly") |> 
-  config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f"), 
-                 scene = list(
-                   aspectratio = list(x = 2, 
-                                 y = 2, 
-                                 z = 2),
-                   camera = list(eye = list(x = 4, 
-                                       y = -1, 
-                                       z = 4),
-                            center = list(x = 0, 
-                                          y = 0, 
-                                          z = 0))
-                 ))
+```{r}
+x_eye <- 5#8
+y_eye <- -1#-2
+z_eye <- 2#3
 ```
 
-:::
-
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
-graph_disc$plot_function(X = apply_edge_functions_fast(graph_disc, df_list), vertex_size = 0, edge_width = 2, line_width = 3, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
+graph_disc$plot_function(X = df, vertex_size = 0, edge_width = 3, line_width = 3, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f'"), 
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
-                   camera = list(eye = list(x = 4, 
-                                       y = -1, 
-                                       z = 4),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+
+:::: {style="display: grid; grid-template-columns: 400px 400px 400px 400px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
+graph$plot_function(X = f, vertex_size = 0, edge_width = 3, line_width = 3, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+
+
+
+
+
+:::
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
+graph$plot_function(X = f*0, vertex_size = 0, line_color = "black", edge_width = 3, line_width = 3, type = "plotly") |>
+  add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "blue", width = 3),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF_NO_NA$y, each = 3), 
+            y = rep(DF_NO_NA$x, each = 3), 
+            z = unlist(lapply(DF_NO_NA$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f'"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}''(s) = -\\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2,3$.")}
+graph$plot_function(X = ddf, vertex_size = 0, edge_width = 3, line_width = 3, continuous = TRUE, interpolate_plot = TRUE, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'''(s) = -\\dfrac{2 b_i}{\\ell^2}$ for $i=1,2,3$.")}
+graph_disc$plot_function(X = dddf, vertex_size = 0, edge_width = 3, line_width = 3, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f'''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
                                           z = 0))
@@ -300,28 +423,38 @@ ddg1 <- function(s) -pi^2/L^2*cos(pi*s/L)
 ddg2 <- function(s) -pi^2/L^2*cos(pi*s/L)
 ddg3 <- function(s) -pi^2/L^2*cos(pi*s/L)
 
+dddg1 <- function(s) pi^3/L^3*sin(pi*s/L)
+dddg2 <- function(s) pi^3/L^3*sin(pi*s/L)
+dddg3 <- function(s) pi^3/L^3*sin(pi*s/L)
+
 g_list <- list(g1, g2, g3)
 dg_list <- list(dg1, dg2, dg3)
 ddg_list <- list(ddg1, ddg2, ddg3)
+dddg_list <- list(dddg1, dddg2, dddg3)
+
+g <- apply_edge_functions_fast(graph, g_list)
+dg <- apply_edge_functions_fast(graph, dg_list)
+ddg <- apply_edge_functions_fast(graph, ddg_list)
+dddg <- apply_edge_functions_fast(graph, dddg_list)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 400px 400px 400px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 400px 400px 400px 400px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = apply_edge_functions_fast(graph, g_list), vertex_size = 0, edge_width = 2, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = g, vertex_size = 0, edge_width = 3, line_width = 3, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("g"), 
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
-                   camera = list(eye = list(x = 4, 
-                                       y = -1, 
-                                       z = 4),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
                                           z = 0))
@@ -333,17 +466,17 @@ graph$plot_function(X = apply_edge_functions_fast(graph, g_list), vertex_size = 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = apply_edge_functions_fast(graph, dg_list), vertex_size = 0, edge_width = 2, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = dg, vertex_size = 0, edge_width = 3, line_width = 3, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("g'"), 
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
-                   camera = list(eye = list(x = 4, 
-                                       y = -1, 
-                                       z = 4),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
                                           z = 0))
@@ -355,17 +488,39 @@ graph$plot_function(X = apply_edge_functions_fast(graph, dg_list), vertex_size =
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 6, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}''(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = apply_edge_functions_fast(graph, ddg_list), vertex_size = 0, edge_width = 2, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}''(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = ddg, vertex_size = 0, edge_width = 3, line_width = 3, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("g''"), 
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
-                   camera = list(eye = list(x = 4, 
-                                       y = -1, 
-                                       z = 4),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'''(s) = \\dfrac{\\pi^3}{\\ell^3}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = dddg, vertex_size = 0, edge_width = 3, line_width = 3, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("g'''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
                                           z = 0))
