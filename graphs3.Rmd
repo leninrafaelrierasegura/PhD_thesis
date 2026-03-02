@@ -1,0 +1,1048 @@
+---
+title: "Graphs 3"
+date: "Last modified: `r format(Sys.time(), '%d-%m-%Y.')`"
+output:
+  html_document:
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    highlight: pygments
+    theme: flatly
+    code_folding: hide # class.source = "fold-hide" to hide code and add a button to show it
+    df_print: paged
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    fig_caption: true
+    code_download: true
+    css: visual.css
+always_allow_html: true
+bibliography: 
+  - references.bib
+  - grateful-refs.bib
+header-includes:
+  - \newcommand{\ar}{\mathbb{R}}
+  - \newcommand{\llav}[1]{\left\{#1\right\}}
+  - \newcommand{\pare}[1]{\left(#1\right)}
+  - \newcommand{\Ncal}{\mathcal{N}}
+  - \newcommand{\Vcal}{\mathcal{V}}
+  - \newcommand{\Ecal}{\mathcal{E}}
+  - \newcommand{\Wcal}{\mathcal{W}}
+  - \newcommand{\almosteverywhere}{\mathrm{a.e.}\;}
+---
+
+Go back to the [Contents](about.html) page.
+
+<div style="color: #2c3e50; text-align: right;">
+********  
+<strong>Press Show to reveal the code chunks.</strong>  
+
+********
+</div>
+
+
+```{r}
+# Create a clipboard button on the rendered HTML page
+source(here::here("clipboard.R")); clipboard
+# Set seed for reproducibility
+set.seed(1982) 
+# Set global options for all code chunks
+knitr::opts_chunk$set(
+  # Disable messages printed by R code chunks
+  message = FALSE,    
+  # Disable warnings printed by R code chunks
+  warning = FALSE,    
+  # Show R code within code chunks in output
+  echo = TRUE,        
+  # Include both R code and its results in output
+  include = TRUE,     
+  # Evaluate R code chunks
+  eval = TRUE,       
+  # Enable caching of R code chunks for faster rendering
+  cache = FALSE,      
+  # Align figures in the center of the output
+  fig.align = "center",
+  # Enable retina display for high-resolution figures
+  retina = 2,
+  # Show errors in the output instead of stopping rendering
+  error = TRUE,
+  # Do not collapse code and output into a single block
+  collapse = FALSE
+)
+# Start the figure counter
+fig_count <- 0
+# Define the captioner function
+captioner <- function(caption) {
+  fig_count <<- fig_count + 1
+  paste0("Figure ", fig_count, ": ", caption)
+}
+
+```
+
+```{r}
+library(MetricGraph)
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(viridis)
+library(plotly)
+library(patchwork)
+library(slackr)
+source("keys.R")
+slackr_setup(token = token) # token comes from keys.R
+```
+
+
+```{r}
+capture.output(
+  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+  file = here::here("old/purl_log.txt")
+)
+source(here::here("functionality1.R"))
+```
+
+
+```{r}
+apply_edge_functions_fast <- function(graph, f_list) {
+  
+  if (length(f_list) != graph$nE) {
+    stop(sprintf(
+      "Number of functions (%d) must equal number of edges (%d).",
+      length(f_list), graph$nE
+    ))
+  }
+  VtE <- graph$mesh$VtE
+  edge_lengths <- graph$edge_lengths
+  
+  edge   <- VtE[,1]
+  s_norm <- VtE[,2]
+  s_true <- s_norm * edge_lengths[edge]
+
+  out <- sapply(seq_len(nrow(VtE)), function(i) f_list[[edge[i]]](s_true[i]))
+  return(out)
+}
+```
+
+
+```{r}
+x_eye <- 5#8
+y_eye <- -1#-2
+z_eye <- 2#3
+```
+
+Let $\Gamma = (\mathcal{V}, \mathcal{E})$ be a metric graph with vertex set $\mathcal{V} = \{v_1, v, v_2\}$ and edge set $\mathcal{E} = \{e_1, e_2\}$. Assume that the edges $e_1$ and $e_2$ meet at the vertex $v$, so that $v$ is their common endpoint. For later reference, we recall the Kirchhoff vertex conditions
+\begin{equation}
+\label{eq:kirchhoff_cond}
+\tag{1}
+   \mathcal{K}(\Gamma) =  \left\{f\in C(\Gamma)\;\middle|\; \forall v\in \mathcal{V}:\; \sum_{e\in\mathcal{E}_v}\partial_e f(v)=0 \right\},
+\end{equation}
+where $\mathcal{E}_v$ denotes the set of edges incident to $v$, and
+\begin{equation}
+\label{eq:dir_der}
+\tag{2}
+        \partial_ef(v) = 
+        \begin{cases}
+            f'_e(0), \quad &\text{if }v=0,\\
+            -f'_e(\ell_e), \quad &\text{if }v=\ell_e.
+        \end{cases}
+\end{equation}
+
+# Compatible orientation
+
+We first assume that the edges are compatibly oriented, namely $e_1 = [0,\ell_1]$ and $e_2=[0,\ell_2]$, with the vertex $v$ corresponding to $\ell_1$ on $e_1$ and $0$ on $e_2$. With this parametrization, we can glue the two edges into a single interval $[e_1,e_2]\simeq [0,\ell_1+\ell_2]$ and view a function $f = \{f_{e_1},f_{e_2}\}\in C(\Gamma)$ as a function $\hat{f}\in C([0,\ell_1+\ell_2])$ so that $f_{e_1}(\ell_1) = \hat{f}(v) = f_{e_2}(0)$. Consider the function $f = \{f_{e_1},f_{e_2}\}$ given by
+\begin{equation*}
+    \begin{cases}
+        f_{e_1}(t) = t^4,& t\in[0,\ell_1],\\
+        f_{e_2}(t) = (t+\ell_1)^4,& t\in[0,\ell_2].
+    \end{cases}
+\end{equation*}
+Its edgewise derivatives are given by
+\begin{equation*}
+    \begin{cases}
+        f'_{e_1}(t) = 4t^3,& t\in[0,\ell_1],\\
+        f'_{e_2}(t) = 4(t+\ell_1)^3,& t\in[0,\ell_2].
+    \end{cases}
+\end{equation*}
+Under the above identification, $f$ corresponds to the function
+\begin{align*}
+    \hat{f}(t) = t^4,\quad t\in[0,\ell_1 + \ell_2],
+\end{align*}
+whose derivative is
+\begin{align*}
+    \hat{f}(t) = 4t^3,\quad t\in[0,\ell_1 + \ell_2].
+\end{align*}
+In particular, $\hat{f} \in C^1([0,\ell_1+\ell_2])$, and therefore $f$ has a continuous first derivative across the vertex $v$. Moreover, the edgewise derivatives must agree at $v$, that is, we must have $f'_{e_1}(\ell_1) = \hat{f}'(v) = f'_{e_2}(0)$, which is the case since
+\begin{align*}
+    f'_{e_1}(\ell_1) = 4\ell_1^3\quad\text{ and }\quad  \hat{f}'(v) = \hat{f}'(\ell_1)=4\ell_1^3\quad \text{ and }\quad f'_{e_2}(0)  = 4\ell_1^3.
+\end{align*}
+By using \eqref{eq:dir_der}, we see that 
+\begin{align*}
+        \partial_{e_1}f(v) = -f'_{e_1}(\ell_1)=-4\ell_1^3\quad\text{ and }\quad \partial_{e_2}f(v) = f'_{e_2}(0)=4\ell_1^3,
+\end{align*}
+and therefore,
+\begin{equation}
+\sum_{e \in \mathcal{E}_v} \partial_e f(v) = -f'_{e_1}(\ell_1) + f'_{e_2}(0) = 0,
+\end{equation}
+which means that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond}. This is an instance of the fact that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond}
+
+
+```{r}
+h = 0.02
+ell1 <- 0.4
+ell2 <- 0.2
+e1 <- rbind(c(-ell1,0), # (x,y) = underline(e_1) 
+            c(0,0))  # (x,y) = overline(e_1) 
+e2 <- rbind(c(0,0),
+            c(ell2,0))
+
+e1_ini_x <- -ell1; e1_ini_y <- 0; e1_ini_z <- 0
+e1_fin_x <- 0; e1_fin_y <- 0; e1_fin_z <- 0
+
+# Midpoint
+xm1 <- (e1_fin_x + e1_ini_x)/2
+ym1 <- (e1_fin_y + e1_ini_y)/2
+zm1 <- (e1_fin_z + e1_ini_z)/2
+
+# Direction vector
+dx1 <- e1_fin_x - e1_ini_x
+dy1 <- e1_fin_y - e1_ini_y
+dz1 <- e1_fin_z - e1_ini_z
+
+e2_ini_x <- 0; e2_ini_y <- 0; e2_ini_z <- 0
+e2_fin_x <- ell2; e2_fin_y <- 0; e2_fin_z <- 0
+
+# Midpoint
+xm2 <- (e2_fin_x + e2_ini_x)/2
+ym2 <- (e2_fin_y + e2_ini_y)/2
+zm2 <- (e2_fin_z + e2_ini_z)/2
+
+# Direction vector
+dx2 <- e2_fin_x - e2_ini_x
+dy2 <- e2_fin_y - e2_ini_y
+dz2 <- e2_fin_z - e2_ini_z
+
+
+graph <- metric_graph$new(edges = list(e1 = e1, e2 = e2))
+graph$build_mesh(h = h)
+```
+
+
+```{r}
+fe1 <- function(t) t^4
+fe2 <- function(t) (t + ell1)^4
+
+dfe1 <- function(t) 4*t^3
+dfe2 <- function(t) 4*(t + ell1)^3
+
+ddfe1 <- function(t) 12*t^2
+ddfe2 <- function(t) 12*(t + ell1)^2
+
+dddfe1 <- function(t) 24*t
+dddfe2 <- function(t) 24*(t + ell1)
+
+f_list <- list(fe1, fe2)
+df_list <- list(dfe1, dfe2)
+ddf_list <- list(ddfe1, ddfe2)
+dddf_list <- list(dddfe1, dddfe2)
+
+f <- apply_edge_functions_fast(graph, f_list)
+df <- apply_edge_functions_fast(graph, df_list)
+ddf <- apply_edge_functions_fast(graph, ddf_list)
+dddf <- apply_edge_functions_fast(graph, dddf_list)
+```
+
+
+
+```{r, eval =TRUE}
+sizeref <- 0.04
+pf <- graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+pdf <- graph$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f'"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+pddf <- graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+pdddf <- graph$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f'''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+
+# Incompatible orientation
+
+
+
+```{r}
+e2 <- e2[2:1,]
+graph <- metric_graph$new(edges = list(e1 = e1, e2 = e2))
+graph$build_mesh(h = h)
+```
+
+
+```{r}
+e1_ini_x <- -ell1; e1_ini_y <- 0; e1_ini_z <- 0
+e1_fin_x <- 0; e1_fin_y <- 0; e1_fin_z <- 0
+
+# Midpoint
+xm1 <- (e1_fin_x + e1_ini_x)/2
+ym1 <- (e1_fin_y + e1_ini_y)/2
+zm1 <- (e1_fin_z + e1_ini_z)/2
+
+# Direction vector
+dx1 <- e1_fin_x - e1_ini_x
+dy1 <- e1_fin_y - e1_ini_y
+dz1 <- e1_fin_z - e1_ini_z
+
+e2_ini_x <- ell2; e2_ini_y <- 0; e2_ini_z <- 0
+e2_fin_x <- 0; e2_fin_y <- 0; e2_fin_z <- 0
+
+# Midpoint
+xm2 <- (e2_fin_x + e2_ini_x)/2
+ym2 <- (e2_fin_y + e2_ini_y)/2
+zm2 <- (e2_fin_z + e2_ini_z)/2
+
+# Direction vector
+dx2 <- e2_fin_x - e2_ini_x
+dy2 <- e2_fin_y - e2_ini_y
+dz2 <- e2_fin_z - e2_ini_z
+```
+
+```{r}
+fe1 <- function(t) t^4
+fe2 <- function(t) (t - (ell1 + ell2))^4
+
+dfe1 <- function(t) 4*t^3
+dfe2 <- function(t) 4*(t - (ell1 + ell2))^3
+
+ddfe1 <- function(t) 12*t^2
+ddfe2 <- function(t) 12*(t - (ell1 + ell2))^2
+
+dddfe1 <- function(t) 24*t
+dddfe2 <- function(t) 24*(t - (ell1 + ell2))
+
+f_list <- list(fe1, fe2)
+df_list <- list(dfe1, dfe2)
+ddf_list <- list(ddfe1, ddfe2)
+dddf_list <- list(dddfe1, dddfe2)
+
+f <- apply_edge_functions_fast(graph, f_list)
+df <- apply_edge_functions_fast(graph, df_list)
+ddf <- apply_edge_functions_fast(graph, ddf_list)
+dddf <- apply_edge_functions_fast(graph, dddf_list)
+```
+
+
+```{r}
+my_apply_edge_functions <- function(graph, f_list, ell1, ell2, h){
+  l1_mesh <- seq(0, ell1, by = h)
+  l2_mesh <- seq(0, ell2, by = h)
+  f1 <- f_list[[1]](l1_mesh)
+  f2 <- f_list[[2]](l2_mesh)
+  l1_mesh_norm <- l1_mesh/ell1
+  l2_mesh_norm <- l2_mesh/ell2
+  PtE1 <- cbind(rep(1, length(l1_mesh)), l1_mesh_norm)
+  PtE2 <- cbind(rep(2, length(l2_mesh)), l2_mesh_norm)
+  XY1 <- graph$coordinates(PtE1)
+  XY2 <- graph$coordinates(PtE2)
+  DF1 <- data.frame(x = XY1[,1], y = XY1[,2], z = f1)
+  DF2 <- data.frame(x = XY2[,1], y = XY2[,2], z = f2)
+  DF <- rbind(DF1, rep(NA, 3), DF2)
+  return(list(DF = DF))
+}
+```
+
+
+
+
+```{r, eval =FALSE}
+pf2 <- graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+pdf2 <- graph$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f'"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+pddf2 <- graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+pdddf2 <- graph$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f'''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+
+```{r}
+f <- my_apply_edge_functions(graph, f_list, ell1, ell2, h)
+df <- my_apply_edge_functions(graph, df_list, ell1, ell2, h)
+ddf <- my_apply_edge_functions(graph, ddf_list, ell1, ell2, h)
+dddf <- my_apply_edge_functions(graph, dddf_list, ell1, ell2, h)
+```
+
+
+```{r, eval =TRUE}
+p_base <- graph$plot_function(X = rep(0, nrow(graph$mesh$VtE)), vertex_size = 3, line_color = "black", edge_width = 3, line_width = 3, type = "plotly")
+DF <- f$DF
+pf3 <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = 3),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+DF <- df$DF
+pdf3 <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = 3),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f'"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+DF <- ddf$DF
+pddf3 <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = 3),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+
+DF <- dddf$DF
+pdddf3 <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = 3),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = TeX("f'''"), 
+                 scene = list(
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0))
+                 ))
+```
+
+:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t+\\ell_1)^4$.")}
+pf
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t+\\ell_1)^3$.")}
+pdf
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t+\\ell_1)^2$.")}
+pddf
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t+\\ell_1)$.")}
+pdddf
+```
+
+
+:::
+
+::::
+
+
+
+:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =FALSE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t-(\\ell_1+\\ell_2))^4$.")}
+pf2
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =FALSE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t-(\\ell_1+\\ell_2))^3$.")}
+pdf2
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =FALSE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t-(\\ell_1+\\ell_2))^2$.")}
+pddf2
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =FALSE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t-(\\ell_1+\\ell_2))$.")}
+pdddf2
+```
+
+
+:::
+
+::::
+
+
+
+:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t-(\\ell_1+\\ell_2))^4$.")}
+pf3
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t-(\\ell_1+\\ell_2))^3$.")}
+pdf3
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t-(\\ell_1+\\ell_2))^2$.")}
+pddf3
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t-(\\ell_1+\\ell_2))$.")}
+pdddf3
+```
+
+
+:::
+
+::::
+
+# References
+
+```{r, eval =TRUE}
+grateful::cite_packages(output = "paragraph", out.dir = ".")
+```
+
