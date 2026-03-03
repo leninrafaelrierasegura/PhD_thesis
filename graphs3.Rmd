@@ -172,23 +172,23 @@ whose derivative is
 \begin{align*}
     \hat{f}(t) = 4t^3,\quad t\in[0,\ell_1 + \ell_2].
 \end{align*}
-In particular, $\hat{f} \in C^1([0,\ell_1+\ell_2])$, and therefore $f$ has a continuous first derivative across the vertex $v$. Moreover, the edgewise derivatives must agree at $v$, that is, we must have $f'_{e_1}(\ell_1) = \hat{f}'(v) = f'_{e_2}(0)$, which is the case since
+In particular, $\hat{f} \in C^1([0,\ell_1+\ell_2])$, and therefore $f$ has a continuous first derivative across the vertex $v$. See Figure 2 below. Moreover, the edgewise derivatives must agree at $v$, that is, we must have $f'_{e_1}(\ell_1) = \hat{f}'(v) = f'_{e_2}(0)$, which is the case since
 \begin{align*}
     f'_{e_1}(\ell_1) = 4\ell_1^3\quad\text{ and }\quad  \hat{f}'(v) = \hat{f}'(\ell_1)=4\ell_1^3\quad \text{ and }\quad f'_{e_2}(0)  = 4\ell_1^3.
 \end{align*}
-By using \eqref{eq:dir_der}, we see that 
+By using \eqref{eq:dir_der}, we get that 
 \begin{align*}
         \partial_{e_1}f(v) = -f'_{e_1}(\ell_1)=-4\ell_1^3\quad\text{ and }\quad \partial_{e_2}f(v) = f'_{e_2}(0)=4\ell_1^3,
 \end{align*}
 and therefore,
 \begin{equation}
-\sum_{e \in \mathcal{E}_v} \partial_e f(v) = -f'_{e_1}(\ell_1) + f'_{e_2}(0) = 0,
+\sum_{e \in \mathcal{E}_v} \partial_e f(v) =\partial_{e_1}f(v) + \partial_{e_2}f(v) = -f'_{e_1}(\ell_1) + f'_{e_2}(0) = -4\ell_1^3 + 4\ell_1^3 = 0,
 \end{equation}
 which means that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond} at vertex $v$. This is an instance of the fact that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond} at all vertices $v$ with $\deg(v) =2$ if and only if $f'$ is continuous at at all vertices $v$ with $\deg(v) =2$.
 
 
 ```{r}
-h = 0.1
+h = 0.01
 ell1 <- 1
 ell2 <- 0.4
 e1 <- rbind(c(-ell1,0), # (x,y) = underline(e_1) 
@@ -254,7 +254,7 @@ dddf <- apply_edge_functions_fast(graph, dddf_list)
 
 
 
-```{r, eval =TRUE}
+```{r}
 sizeref <- 0.1
 pf <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   add_trace(
@@ -290,7 +290,7 @@ pf <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5
   cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f"), 
+  plotly::layout(title = list(text = TeX("f"), y = 0.8),
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
@@ -369,7 +369,7 @@ pdf <- graph$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width =
   cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'"), 
+  plotly::layout(title = list(text = TeX("f'"), y = 0.8),
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
@@ -448,7 +448,7 @@ pddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width
   cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f''"), 
+  plotly::layout(title = list(text = TeX("f''"), y = 0.8), 
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
@@ -527,7 +527,7 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_wid
   cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'''"), 
+  plotly::layout(title = list(text = TeX("f'''"), y = 0.8),
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
@@ -579,7 +579,7 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_wid
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t+\\ell_1)^4$.")}
+```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t+\\ell_1)^4$.")}
 pf
 ```
 
@@ -588,7 +588,7 @@ pf
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t+\\ell_1)^3$.")}
+```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t+\\ell_1)^3$.")}
 pdf
 ```
 
@@ -597,7 +597,7 @@ pdf
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t+\\ell_1)^2$.")}
+```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t+\\ell_1)^2$.")}
 pddf
 ```
 
@@ -606,7 +606,7 @@ pddf
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t+\\ell_1)$.")}
+```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t+\\ell_1)$.")}
 pdddf
 ```
 
@@ -617,6 +617,7 @@ pdddf
 
 
 # Incompatible orientation
+
 
 
 ```{r}
@@ -637,6 +638,69 @@ my_apply_edge_functions <- function(graph, f_list, ell1, ell2, h){
   return(list(DF = DF))
 }
 ```
+
+Now study the case where the edges are not compatible oriented. For that, we flip edge $e_2$, that is, $e_1 = [0,\ell_1]$ and $e_2=[0,\ell_2]$ with $v$ corresponding to $\ell_1$ on $e_1$ and $\ell_2$ on $e_2$. Consider the function $g = \{g_{e_1},g_{e_2}\}$ given by
+\begin{equation*}
+    \begin{cases}
+        g_{e_1}(\tau) = \tau^4,& \tau\in[0,\ell_1],\\
+        g_{e_2}(\tau) = (\tau-(\ell_1+\ell_2))^4,& \tau\in[0,\ell_2].
+    \end{cases}
+\end{equation*}
+Its edgewise derivatives are given by
+\begin{equation*}
+    \begin{cases}
+        g'_{e_1}(\tau) = 4\tau^3,& \tau\in[0,\ell_1],\\
+        g'_{e_2}(\tau) = 4(\tau-(\ell_1+\ell_2))^3,& \tau\in[0,\ell_2].
+    \end{cases}
+\end{equation*}
+The coordinates derivatives at $v$ are given by
+\begin{equation}
+g'_{e_1}(\ell_1)=4\ell_1^3\quad\text{ and }\quad g'_{e_2}(\ell_2)=-4\ell_1^3.
+\end{equation}
+Let us check the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond} at vertex $v$. By using \eqref{eq:dir_der}, we get that 
+\begin{align*}
+        \partial_{e_1}g(v) = -g'_{e_1}(\ell_1)=-4\ell_1^3\quad\text{ and }\quad \partial_{e_2}g(v) = -g'_{e_2}(\ell_2)=4\ell_1^3,
+\end{align*}
+and therefore,
+\begin{equation}
+\label{eq:invariant_c}
+\tag{3}
+\sum_{e \in \mathcal{E}_v} \partial_e g(v) =\partial_{e_1}g(v) + \partial_{e_2}g(v) = -g'_{e_1}(\ell_1) -g'_{e_2}(\ell_2) = -4\ell_1^3 + 4\ell_1^3 = 0,
+\end{equation}
+which shows that $g$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond} at vertex $v$. At first glance, the edgewise derivative, $g' = \{g'_{e_1},g'_{e_2}\}$ appears discontinuous at $v$, which might seem contradictory. See Figure 6 below.
+
+To clarify, observe that $f = g$ as functions on the graph. Indeed, by reparametrizing edge $e_1$ by $\tau=t$ and edge $e_2$ by $\tau = \ell_2-t$, we obtain $f_{e_1}=g_{e_1}$  and $f_{e_2}=g_{e_2}$. More precisely,
+\begin{align}
+\label{eq:eq_of_f_g}
+\tag{4}
+     g_{e_1}(\tau) = g_{e_1}(t) = t^4 = f_{e_1}(t)\quad\text{ and }\quad   g_{e_2}(\tau) = g_{e_2}(\ell_2-t) = (\ell_2-t-(\ell_1+\ell_2))^4 = (t+\ell_1)^4= f_{e_2}(t),
+\end{align}
+Thus $f$ and $g$ coincide on each edge after reparametrization, and define the same function on the graph. The apparent discontinuity of $g'$ arises solely from the reversed coordinate on $e_2$. The function itself has not changed, only its coordinate representation.
+
+From \eqref{eq:eq_of_f_g}, by the chain rule, the first derivative transforms as
+\begin{equation}
+\label{eq:der_inv}
+\tag{5}
+g'_{e_2}(\tau) = \dfrac{d}{d\tau} (g_{e_2}(\tau)) = \dfrac{d}{d\tau} (f_{e_2}(t)) = \dfrac{d}{dt} (f_{e_2}(t)) \dfrac{dt}{d\tau} = - \dfrac{d}{dt} (f_{e_2}(t)) = - f'_{e_2}(t)
+\end{equation}
+
+so the coordinate derivative changes sign under reparametrization. Hence, edgewise derivatives are not invariant under orientation changes. By contrast, the outward derivative $\partial_e g(v)$ is invariant, and is therefore the correct intrinsic quantity to check the Kirchhoff condition.
+
+In the compatible orientation case, $f'_{e_1}(\ell_1) = f'_{e_2}(0)$, so the coordinate derivatives match. In the flipped orientation case, $g'_{e_1}(\ell_1) \neq g'_{e_2}(\ell_2)$, but this mismatch is purely a consequence of the reversed parametrization. The correct invariant comparison is \eqref{eq:invariant_c}, which demonstrates that the Kirchhoff condition is intrinsic and independent of edge parametrization.
+
+In conclusion, the apparent contradiction arises only when comparing coordinate derivatives with opposite orientations, which is not geometrically meaningful. Continuity of the derivative at a vertex must be interpreted intrinsically: at a degree-two vertex, this intrinsic continuity is equivalent to the Kirchhoff condition.
+
+# Even order derivatives are orientation-independent
+
+We again apply the chain rule in \eqref{eq:der_inv} to obtain
+\begin{equation}
+g''_{e_2}(\tau) = \dfrac{d}{d\tau} ( - f'_{e_2}(t)) = - \dfrac{d}{dt} (f'_{e_2}(t)) \dfrac{dt}{d\tau} = f''_{e_2}(t),
+\end{equation}
+so that the second derivative does not change sign under a flip. See Figure 7. In general, for the $k$-th derivative, we have
+\begin{equation}
+\dfrac{d^k}{d\tau^k}(g_{e_2}(\tau)) = (-1)^k\dfrac{d^k}{dt^k}(f_{e_2}(t)).
+\end{equation}
+
 
 
 ```{r}
@@ -699,7 +763,7 @@ dddf <- my_apply_edge_functions(graph, dddf_list, ell1, ell2, h)
 ```
 
 
-```{r, eval =TRUE}
+```{r}
 p_base <- graph$plot_function(X = rep(0, nrow(graph$mesh$VtE)), vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly")
 DF <- f$DF
 pf3 <- p_base |>
@@ -751,7 +815,7 @@ pf3 <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f"), 
+  plotly::layout(title = list(text = TeX("g"), y = 0.8),
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
@@ -846,7 +910,7 @@ pdf3 <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'"), 
+  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
@@ -941,7 +1005,7 @@ pddf3 <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f''"), 
+  plotly::layout(title = list(text = TeX("g''"), y = 0.8), 
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
@@ -1036,7 +1100,7 @@ pdddf3 <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'''"), 
+  plotly::layout(title = list(text = TeX("g'''"), y = 0.8), 
                  scene = list(
                    aspectratio = list(x = 2, 
                                  y = 2, 
@@ -1090,7 +1154,7 @@ pdddf3 <- p_base |>
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t-(\\ell_1+\\ell_2))^4$.")}
+```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(s) = \\tau^4$ and $g_{e_2}(s) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
 pf3
 ```
 
@@ -1099,7 +1163,7 @@ pf3
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t-(\\ell_1+\\ell_2))^3$.")}
+```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_1}(s) = 4\\tau^3$ and $g'_{e_2}(s) = 4(\\tau-(\\ell_1+\\ell_2))^3$.")}
 pdf3
 ```
 
@@ -1108,7 +1172,7 @@ pdf3
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t-(\\ell_1+\\ell_2))^2$.")}
+```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_1}(s) = 12\\tau^2$ and $g''_{e_2}(s) = 12(\\tau-(\\ell_1+\\ell_2))^2$.")}
 pddf3
 ```
 
@@ -1117,7 +1181,7 @@ pddf3
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t-(\\ell_1+\\ell_2))$.")}
+```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_1}(s) = 24\\tau$ and $g'''_{e_2}(s) = 24(\\tau-(\\ell_1+\\ell_2))$.")}
 pdddf3
 ```
 
@@ -1128,7 +1192,7 @@ pdddf3
 
 # References
 
-```{r, eval =TRUE}
+```{r}
 grateful::cite_packages(output = "paragraph", out.dir = ".")
 ```
 
