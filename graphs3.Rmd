@@ -102,27 +102,6 @@ source(here::here("functionality1.R"))
 ```
 
 
-```{r}
-apply_edge_functions_fast <- function(graph, f_list) {
-  
-  if (length(f_list) != graph$nE) {
-    stop(sprintf(
-      "Number of functions (%d) must equal number of edges (%d).",
-      length(f_list), graph$nE
-    ))
-  }
-  VtE <- graph$mesh$VtE
-  edge_lengths <- graph$edge_lengths
-  
-  edge   <- VtE[,1]
-  s_norm <- VtE[,2]
-  s_true <- s_norm * edge_lengths[edge]
-
-  out <- sapply(seq_len(nrow(VtE)), function(i) f_list[[edge[i]]](s_true[i]))
-  return(out)
-}
-```
-
 
 ```{r}
 x_eye <- 5#8
@@ -148,6 +127,28 @@ where $\mathcal{E}_v$ denotes the set of edges incident to $v$, and
 \end{equation}
 
 # Compatible orientation
+
+```{r}
+apply_edge_functions_fast <- function(graph, f_list) {
+  
+  if (length(f_list) != graph$nE) {
+    stop(sprintf(
+      "Number of functions (%d) must equal number of edges (%d).",
+      length(f_list), graph$nE
+    ))
+  }
+  VtE <- graph$mesh$VtE
+  edge_lengths <- graph$edge_lengths
+  
+  edge   <- VtE[,1]
+  s_norm <- VtE[,2]
+  s_true <- s_norm * edge_lengths[edge]
+
+  out <- sapply(seq_len(nrow(VtE)), function(i) f_list[[edge[i]]](s_true[i]))
+  return(out)
+}
+```
+
 
 We first assume that the edges are compatibly oriented, namely $e_1 = [0,\ell_1]$ and $e_2=[0,\ell_2]$, with the vertex $v$ corresponding to $\ell_1$ on $e_1$ and $0$ on $e_2$. With this parametrization, we can glue the two edges into a single interval $[e_1,e_2]\simeq [0,\ell_1+\ell_2]$ and view a function $f = \{f_{e_1},f_{e_2}\}\in C(\Gamma)$ as a function $\hat{f}\in C([0,\ell_1+\ell_2])$ so that $f_{e_1}(\ell_1) = \hat{f}(v) = f_{e_2}(0)$. Consider the function $f = \{f_{e_1},f_{e_2}\}$ given by
 \begin{equation*}
@@ -188,7 +189,7 @@ which means that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchho
 
 ```{r}
 h = 0.1
-ell1 <- 0.4
+ell1 <- 1
 ell2 <- 0.4
 e1 <- rbind(c(-ell1,0), # (x,y) = underline(e_1) 
             c(0,0))  # (x,y) = overline(e_1) 
@@ -254,8 +255,8 @@ dddf <- apply_edge_functions_fast(graph, dddf_list)
 
 
 ```{r, eval =TRUE}
-sizeref <- 0.04
-pf <- graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+sizeref <- 0.1
+pf <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -299,10 +300,42 @@ pf <- graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-pdf <- graph$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+pdf <- graph$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -346,10 +379,42 @@ pdf <- graph$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width =
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-pddf <- graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |>
+pddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -393,10 +458,42 @@ pddf <- graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-pdddf <- graph$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -440,7 +537,39 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_wid
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
 ```
 
@@ -489,6 +618,25 @@ pdddf
 
 # Incompatible orientation
 
+
+```{r}
+my_apply_edge_functions <- function(graph, f_list, ell1, ell2, h){
+  l1_mesh <- seq(0, ell1, by = h)
+  l2_mesh <- seq(0, ell2, by = h)
+  f1 <- f_list[[1]](l1_mesh)
+  f2 <- f_list[[2]](l2_mesh)
+  l1_mesh_norm <- l1_mesh/ell1
+  l2_mesh_norm <- l2_mesh/ell2
+  PtE1 <- cbind(rep(1, length(l1_mesh)), l1_mesh_norm)
+  PtE2 <- cbind(rep(2, length(l2_mesh)), l2_mesh_norm)
+  XY1 <- graph$coordinates(PtE1)
+  XY2 <- graph$coordinates(PtE2)
+  DF1 <- data.frame(x = XY1[,1], y = XY1[,2], z = f1)
+  DF2 <- data.frame(x = XY2[,1], y = XY2[,2], z = f2)
+  DF <- rbind(DF1, rep(NA, 3), DF2)
+  return(list(DF = DF))
+}
+```
 
 
 ```{r}
@@ -544,203 +692,6 @@ df_list <- list(dfe1, dfe2)
 ddf_list <- list(ddfe1, ddfe2)
 dddf_list <- list(dddfe1, dddfe2)
 
-f <- apply_edge_functions_fast(graph, f_list)
-df <- apply_edge_functions_fast(graph, df_list)
-ddf <- apply_edge_functions_fast(graph, ddf_list)
-dddf <- apply_edge_functions_fast(graph, dddf_list)
-```
-
-
-```{r}
-my_apply_edge_functions <- function(graph, f_list, ell1, ell2, h){
-  l1_mesh <- seq(0, ell1, by = h)
-  l2_mesh <- seq(0, ell2, by = h)
-  f1 <- f_list[[1]](l1_mesh)
-  f2 <- f_list[[2]](l2_mesh)
-  l1_mesh_norm <- l1_mesh/ell1
-  l2_mesh_norm <- l2_mesh/ell2
-  PtE1 <- cbind(rep(1, length(l1_mesh)), l1_mesh_norm)
-  PtE2 <- cbind(rep(2, length(l2_mesh)), l2_mesh_norm)
-  XY1 <- graph$coordinates(PtE1)
-  XY2 <- graph$coordinates(PtE2)
-  DF1 <- data.frame(x = XY1[,1], y = XY1[,2], z = f1)
-  DF2 <- data.frame(x = XY2[,1], y = XY2[,2], z = f2)
-  DF <- rbind(DF1, rep(NA, 3), DF2)
-  return(list(DF = DF))
-}
-```
-
-
-
-
-```{r, eval =FALSE}
-pf2 <- graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
-  add_trace(
-  type = "cone",
-  x = ym1,
-  y = xm1,
-  z = zm1,
-  u = dy1,
-  v = dx1,
-  w = dz1,
-  sizemode = "absolute",
-  sizeref = sizeref,
-  showscale = FALSE,
-  showlegend = FALSE
-) |>
-  add_trace(
-  type = "cone",
-  x = ym2,
-  y = xm2,
-  z = zm2,
-  u = dy2,
-  v = dx2,
-  w = dz2,
-  sizemode = "absolute",
-  sizeref = sizeref,
-  showscale = FALSE,
-  showlegend = FALSE
-) |>
-  config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f"), 
-                 scene = list(
-                   aspectratio = list(x = 2, 
-                                 y = 2, 
-                                 z = 2),
-                   camera = list(eye = list(x = x_eye, 
-                                       y = y_eye, 
-                                       z = z_eye),
-                            center = list(x = 0, 
-                                          y = 0, 
-                                          z = 0))
-                 ))
-
-pdf2 <- graph$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
-  add_trace(
-  type = "cone",
-  x = ym1,
-  y = xm1,
-  z = zm1,
-  u = dy1,
-  v = dx1,
-  w = dz1,
-  sizemode = "absolute",
-  sizeref = sizeref,
-  showscale = FALSE,
-  showlegend = FALSE
-) |>
-  add_trace(
-  type = "cone",
-  x = ym2,
-  y = xm2,
-  z = zm2,
-  u = dy2,
-  v = dx2,
-  w = dz2,
-  sizemode = "absolute",
-  sizeref = sizeref,
-  showscale = FALSE,
-  showlegend = FALSE
-) |>
-  config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'"), 
-                 scene = list(
-                   aspectratio = list(x = 2, 
-                                 y = 2, 
-                                 z = 2),
-                   camera = list(eye = list(x = x_eye, 
-                                       y = y_eye, 
-                                       z = z_eye),
-                            center = list(x = 0, 
-                                          y = 0, 
-                                          z = 0))
-                 ))
-
-pddf2 <- graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
-  add_trace(
-  type = "cone",
-  x = ym1,
-  y = xm1,
-  z = zm1,
-  u = dy1,
-  v = dx1,
-  w = dz1,
-  sizemode = "absolute",
-  sizeref = sizeref,
-  showscale = FALSE,
-  showlegend = FALSE
-) |>
-  add_trace(
-  type = "cone",
-  x = ym2,
-  y = xm2,
-  z = zm2,
-  u = dy2,
-  v = dx2,
-  w = dz2,
-  sizemode = "absolute",
-  sizeref = sizeref,
-  showscale = FALSE,
-  showlegend = FALSE
-) |>
-  config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f''"), 
-                 scene = list(
-                   aspectratio = list(x = 2, 
-                                 y = 2, 
-                                 z = 2),
-                   camera = list(eye = list(x = x_eye, 
-                                       y = y_eye, 
-                                       z = z_eye),
-                            center = list(x = 0, 
-                                          y = 0, 
-                                          z = 0))
-                 ))
-
-pdddf2 <- graph$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
-  add_trace(
-  type = "cone",
-  x = ym1,
-  y = xm1,
-  z = zm1,
-  u = dy1,
-  v = dx1,
-  w = dz1,
-  sizemode = "absolute",
-  sizeref = sizeref,
-  showscale = FALSE,
-  showlegend = FALSE
-) |>
-  add_trace(
-  type = "cone",
-  x = ym2,
-  y = xm2,
-  z = zm2,
-  u = dy2,
-  v = dx2,
-  w = dz2,
-  sizemode = "absolute",
-  sizeref = sizeref,
-  showscale = FALSE,
-  showlegend = FALSE
-) |>
-  config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'''"), 
-                 scene = list(
-                   aspectratio = list(x = 2, 
-                                 y = 2, 
-                                 z = 2),
-                   camera = list(eye = list(x = x_eye, 
-                                       y = y_eye, 
-                                       z = z_eye),
-                            center = list(x = 0, 
-                                          y = 0, 
-                                          z = 0))
-                 ))
-```
-
-
-```{r}
 f <- my_apply_edge_functions(graph, f_list, ell1, ell2, h)
 df <- my_apply_edge_functions(graph, df_list, ell1, ell2, h)
 ddf <- my_apply_edge_functions(graph, ddf_list, ell1, ell2, h)
@@ -749,7 +700,7 @@ dddf <- my_apply_edge_functions(graph, dddf_list, ell1, ell2, h)
 
 
 ```{r, eval =TRUE}
-p_base <- graph$plot_function(X = rep(0, nrow(graph$mesh$VtE)), vertex_size = 3, line_color = "black", edge_width = 3, line_width = 3, type = "plotly")
+p_base <- graph$plot_function(X = rep(0, nrow(graph$mesh$VtE)), vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly")
 DF <- f$DF
 pf3 <- p_base |>
   add_trace(
@@ -790,7 +741,7 @@ pf3 <- p_base |>
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 3),
+            line = list(color = "rgb(0,0,200)", width = 5),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -810,7 +761,39 @@ pf3 <- p_base |>
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
 DF <- df$DF
@@ -853,7 +836,7 @@ pdf3 <- p_base |>
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 3),
+            line = list(color = "rgb(0,0,200)", width = 5),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -873,7 +856,39 @@ pdf3 <- p_base |>
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
 DF <- ddf$DF
@@ -916,7 +931,7 @@ pddf3 <- p_base |>
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 3),
+            line = list(color = "rgb(0,0,200)", width = 5),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -936,7 +951,39 @@ pddf3 <- p_base |>
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
 DF <- dddf$DF
@@ -979,7 +1026,7 @@ pdddf3 <- p_base |>
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 3),
+            line = list(color = "rgb(0,0,200)", width = 5),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -999,52 +1046,42 @@ pdddf3 <- p_base |>
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 25,
+               font = list(color = "black", size = 14),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
 ```
 
-
-
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
-
-
-::: {}
-
-```{r, eval =FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t-(\\ell_1+\\ell_2))^4$.")}
-pf2
-```
-
-:::
-
-
-::: {}
-
-```{r, eval =FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t-(\\ell_1+\\ell_2))^3$.")}
-pdf2
-```
-
-:::
-
-
-::: {}
-
-```{r, eval =FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t-(\\ell_1+\\ell_2))^2$.")}
-pddf2
-```
-
-:::
-
-
-::: {}
-
-```{r, eval =FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t-(\\ell_1+\\ell_2))$.")}
-pdddf2
-```
-
-
-:::
-
-::::
 
 
 
