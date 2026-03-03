@@ -183,13 +183,13 @@ and therefore,
 \begin{equation}
 \sum_{e \in \mathcal{E}_v} \partial_e f(v) = -f'_{e_1}(\ell_1) + f'_{e_2}(0) = 0,
 \end{equation}
-which means that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond}. This is an instance of the fact that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond}
+which means that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond} at vertex $v$. This is an instance of the fact that $f$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond} at all vertices $v$ with $\deg(v) =2$ if and only if $f'$ is continuous at at all vertices $v$ with $\deg(v) =2$.
 
 
 ```{r}
-h = 0.02
+h = 0.1
 ell1 <- 0.4
-ell2 <- 0.2
+ell2 <- 0.4
 e1 <- rbind(c(-ell1,0), # (x,y) = underline(e_1) 
             c(0,0))  # (x,y) = overline(e_1) 
 e2 <- rbind(c(0,0),
@@ -267,7 +267,10 @@ pf <- graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
 ) |>
   add_trace(
   type = "cone",
@@ -280,7 +283,10 @@ pf <- graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f"), 
@@ -308,7 +314,10 @@ pdf <- graph$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width =
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
 ) |>
   add_trace(
   type = "cone",
@@ -321,7 +330,10 @@ pdf <- graph$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width =
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f'"), 
@@ -349,7 +361,10 @@ pddf <- graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
 ) |>
   add_trace(
   type = "cone",
@@ -362,7 +377,10 @@ pddf <- graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f''"), 
@@ -390,7 +408,10 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_wid
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
 ) |>
   add_trace(
   type = "cone",
@@ -403,7 +424,10 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_wid
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f'''"), 
@@ -419,6 +443,48 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_wid
                                           z = 0))
                  ))
 ```
+
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t+\\ell_1)^4$.")}
+pf
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t+\\ell_1)^3$.")}
+pdf
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t+\\ell_1)^2$.")}
+pddf
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t+\\ell_1)$.")}
+pdddf
+```
+
+
+:::
+
+::::
 
 
 # Incompatible orientation
@@ -697,7 +763,10 @@ pf3 <- p_base |>
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
 ) |>
   add_trace(
   type = "cone",
@@ -710,7 +779,10 @@ pf3 <- p_base |>
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
 ) |>
     add_trace(data = DF,
             x = ~y, 
@@ -754,7 +826,10 @@ pdf3 <- p_base |>
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
 ) |>
   add_trace(
   type = "cone",
@@ -767,7 +842,10 @@ pdf3 <- p_base |>
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
 ) |>
     add_trace(data = DF,
             x = ~y, 
@@ -811,7 +889,10 @@ pddf3 <- p_base |>
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
 ) |>
   add_trace(
   type = "cone",
@@ -824,7 +905,10 @@ pddf3 <- p_base |>
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
 ) |>
     add_trace(data = DF,
             x = ~y, 
@@ -868,7 +952,10 @@ pdddf3 <- p_base |>
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
 ) |>
   add_trace(
   type = "cone",
@@ -881,7 +968,10 @@ pdddf3 <- p_base |>
   sizemode = "absolute",
   sizeref = sizeref,
   showscale = FALSE,
-  showlegend = FALSE
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
 ) |>
     add_trace(data = DF,
             x = ~y, 
@@ -913,55 +1003,14 @@ pdddf3 <- p_base |>
                  ))
 ```
 
-:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
+
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t+\\ell_1)^4$.")}
-pf
-```
-
-:::
-
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t+\\ell_1)^3$.")}
-pdf
-```
-
-:::
-
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t+\\ell_1)^2$.")}
-pddf
-```
-
-:::
-
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t+\\ell_1)$.")}
-pdddf
-```
-
-
-:::
-
-::::
-
-
-
-:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
-
-
-::: {}
-
-```{r, eval =FALSE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t-(\\ell_1+\\ell_2))^4$.")}
+```{r, eval =FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t-(\\ell_1+\\ell_2))^4$.")}
 pf2
 ```
 
@@ -970,7 +1019,7 @@ pf2
 
 ::: {}
 
-```{r, eval =FALSE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t-(\\ell_1+\\ell_2))^3$.")}
+```{r, eval =FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t-(\\ell_1+\\ell_2))^3$.")}
 pdf2
 ```
 
@@ -979,7 +1028,7 @@ pdf2
 
 ::: {}
 
-```{r, eval =FALSE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t-(\\ell_1+\\ell_2))^2$.")}
+```{r, eval =FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t-(\\ell_1+\\ell_2))^2$.")}
 pddf2
 ```
 
@@ -988,7 +1037,7 @@ pddf2
 
 ::: {}
 
-```{r, eval =FALSE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t-(\\ell_1+\\ell_2))$.")}
+```{r, eval =FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t-(\\ell_1+\\ell_2))$.")}
 pdddf2
 ```
 
@@ -999,12 +1048,12 @@ pdddf2
 
 
 
-:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t-(\\ell_1+\\ell_2))^4$.")}
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t-(\\ell_1+\\ell_2))^4$.")}
 pf3
 ```
 
@@ -1013,7 +1062,7 @@ pf3
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t-(\\ell_1+\\ell_2))^3$.")}
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t-(\\ell_1+\\ell_2))^3$.")}
 pdf3
 ```
 
@@ -1022,7 +1071,7 @@ pdf3
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t-(\\ell_1+\\ell_2))^2$.")}
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t-(\\ell_1+\\ell_2))^2$.")}
 pddf3
 ```
 
@@ -1031,7 +1080,7 @@ pddf3
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t-(\\ell_1+\\ell_2))$.")}
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t-(\\ell_1+\\ell_2))$.")}
 pdddf3
 ```
 
