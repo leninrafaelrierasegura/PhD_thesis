@@ -116,6 +116,62 @@ graph_disc <- graph$clone()
 ```
 
 
+```{r}
+e1_ini_x <- edges[[1]][1,1]; e1_ini_y <- edges[[1]][1,2]; e1_ini_z <- 0
+e1_fin_x <- edges[[1]][2,1]; e1_fin_y <- edges[[1]][2,2]; e1_fin_z <- 0
+
+# Midpoint
+xm1 <- (e1_fin_x + e1_ini_x)/2
+ym1 <- (e1_fin_y + e1_ini_y)/2
+zm1 <- (e1_fin_z + e1_ini_z)/2
+
+# Direction vector
+dx1 <- e1_fin_x - e1_ini_x
+dy1 <- e1_fin_y - e1_ini_y
+dz1 <- e1_fin_z - e1_ini_z
+
+e2_ini_x <- edges[[2]][1,1]; e2_ini_y <- edges[[2]][1,2]; e2_ini_z <- 0
+e2_fin_x <- edges[[2]][2,1]; e2_fin_y <- edges[[2]][2,2]; e2_fin_z <- 0
+
+# Midpoint
+xm2 <- (e2_fin_x + e2_ini_x)/2
+ym2 <- (e2_fin_y + e2_ini_y)/2
+zm2 <- (e2_fin_z + e2_ini_z)/2
+
+# Direction vector
+dx2 <- e2_fin_x - e2_ini_x
+dy2 <- e2_fin_y - e2_ini_y
+dz2 <- e2_fin_z - e2_ini_z
+
+e3_ini_x <- edges[[3]][1,1]; e3_ini_y <- edges[[3]][1,2]; e3_ini_z <- 0
+e3_fin_x <- edges[[3]][2,1]; e3_fin_y <- edges[[3]][2,2]; e3_fin_z <- 0
+
+# Midpoint
+xm3 <- (e3_fin_x + e3_ini_x)/2
+ym3 <- (e3_fin_y + e3_ini_y)/2
+zm3 <- (e3_fin_z + e3_ini_z)/2
+
+# Direction vector
+dx3 <- e3_fin_x - e3_ini_x
+dy3 <- e3_fin_y - e3_ini_y
+dz3 <- e3_fin_z - e3_ini_z
+
+e4_ini_x <- 0; e4_ini_y <- 0; e4_ini_z <- 0
+e4_fin_x <- -my_length; e4_fin_y <- 0; e4_fin_z <- 0
+
+# Midpoint
+xm4 <- (e4_fin_x + e4_ini_x)/2
+ym4 <- (e4_fin_y + e4_ini_y)/2
+zm4 <- (e4_fin_z + e4_ini_z)/2
+
+# Direction vector
+dx4 <- e4_fin_x - e4_ini_x
+dy4 <- e4_fin_y - e4_ini_y
+dz4 <- e4_fin_z - e4_ini_z
+
+sizeref <- 0.2
+```
+
 
 ```{r}
 h = 0.02
@@ -255,8 +311,8 @@ y_eye <- -1#-2
 z_eye <- 2#3
 ```
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
-graph_disc$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width = 3, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+```{r, eval = FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
+graph_disc$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width = 5, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f'"), 
                  scene = list(
@@ -273,16 +329,66 @@ graph_disc$plot_function(X = df, vertex_size = 3, edge_width = 3, line_width = 3
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
-graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
+graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f"), 
-                 scene = list(
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym3,
+  y = xm3,
+  z = zm3,
+  u = dy3,
+  v = dx3,
+  w = dz3,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("f"), y = 0.8),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -306,15 +412,63 @@ graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3, type
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
-graph$plot_function(X = f*0, vertex_size = 3, line_color = "black", edge_width = 3, line_width = 3, type = "plotly") |>
-  add_trace(data = DF,
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
+graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly") |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym3,
+  y = xm3,
+  z = zm3,
+  u = dy3,
+  v = dx3,
+  w = dz3,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
             x = ~y, 
             y = ~x, 
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 3),
+            line = list(color = "rgb(0,0,200)", width = 5),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -324,8 +478,10 @@ graph$plot_function(X = f*0, vertex_size = 3, line_color = "black", edge_width =
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'"), 
-                 scene = list(
+  plotly::layout(title = list(text = TeX("f'"), y = 0.8),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -344,11 +500,61 @@ graph$plot_function(X = f*0, vertex_size = 3, line_color = "black", edge_width =
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}''(s) = -\\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2,3$.")}
-graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width = 3, continuous = TRUE, interpolate_plot = TRUE, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}''(s) = -\\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2,3$.")}
+graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = TRUE, interpolate_plot = TRUE, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym3,
+  y = xm3,
+  z = zm3,
+  u = dy3,
+  v = dx3,
+  w = dz3,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f''"), 
-                 scene = list(
+  plotly::layout(title = list(text = TeX("f''"), y = 0.8),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -366,11 +572,61 @@ graph$plot_function(X = ddf, vertex_size = 3, edge_width = 3, line_width = 3, co
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'''(s) = -\\dfrac{2 b_i}{\\ell^2}$ for $i=1,2,3$.")}
-graph_disc$plot_function(X = dddf, vertex_size = 3, edge_width = 3, line_width = 3, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'''(s) = -\\dfrac{2 b_i}{\\ell^2}$ for $i=1,2,3$.")}
+graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym3,
+  y = xm3,
+  z = zm3,
+  u = dy3,
+  v = dx3,
+  w = dz3,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'''"), 
-                 scene = list(
+  plotly::layout(title = list(text = TeX("f'''"), y = 0.8),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -439,16 +695,66 @@ dddg <- apply_edge_functions_fast(graph, dddg_list)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = g, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = g, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("g"), 
-                 scene = list(
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym3,
+  y = xm3,
+  z = zm3,
+  u = dy3,
+  v = dx3,
+  w = dz3,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("g"), y = 0.8), 
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -466,11 +772,61 @@ graph$plot_function(X = g, vertex_size = 3, edge_width = 3, line_width = 3, type
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = dg, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = dg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("g'"), 
-                 scene = list(
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym3,
+  y = xm3,
+  z = zm3,
+  u = dy3,
+  v = dx3,
+  w = dz3,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -488,11 +844,61 @@ graph$plot_function(X = dg, vertex_size = 3, edge_width = 3, line_width = 3, typ
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}''(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = ddg, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}''(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = ddg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("g''"), 
-                 scene = list(
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym3,
+  y = xm3,
+  z = zm3,
+  u = dy3,
+  v = dx3,
+  w = dz3,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("g''"), y = 0.8),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -510,11 +916,61 @@ graph$plot_function(X = ddg, vertex_size = 3, edge_width = 3, line_width = 3, ty
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'''(s) = \\dfrac{\\pi^3}{\\ell^3}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = dddg, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'''(s) = \\dfrac{\\pi^3}{\\ell^3}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+graph$plot_function(X = dddg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("g'''"), 
-                 scene = list(
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym3,
+  y = xm3,
+  z = zm3,
+  u = dy3,
+  v = dx3,
+  w = dz3,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("g'''"), y = 0.8),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -584,28 +1040,51 @@ DF_NO_NA <- rbind(DF1, DF2)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 300px 300px 300px 300px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
 
-```{r}
-graph$plot(direction = TRUE)
-```
-
-
-
-:::
-
-::: {}
-
-
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
-graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3, type = "plotly") |> 
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f"), 
-                 scene = list(
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym4,
+  y = xm4,
+  z = zm4,
+  u = dy4,
+  v = dx4,
+  w = dz4,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("f"), y = 0.8), 
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -624,15 +1103,47 @@ graph$plot_function(X = f, vertex_size = 3, edge_width = 3, line_width = 3, type
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 4, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
-graph$plot_function(X = f*0, vertex_size = 3, line_color = "black", edge_width = 3, line_width = 3, type = "plotly") |>
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly") |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym4,
+  y = xm4,
+  z = zm4,
+  u = dy4,
+  v = dx4,
+  w = dz4,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
   add_trace(data = DF,
             x = ~y, 
             y = ~x, 
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 3),
+            line = list(color = "rgb(0,0,200)", width = 5),
             showlegend = FALSE) |>
   add_trace(x = rep(DF_NO_NA$y, each = 3), 
             y = rep(DF_NO_NA$x, each = 3), 
@@ -642,8 +1153,10 @@ graph$plot_function(X = f*0, vertex_size = 3, line_color = "black", edge_width =
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'"), 
-                 scene = list(
+  plotly::layout(title = list(text = TeX("f'"), y = 0.8), 
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),

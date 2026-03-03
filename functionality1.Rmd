@@ -140,9 +140,9 @@ plotting.order <- function(v, graph){
 
 ```{r}
 tadpole.layout <- function(x_range, y_range, z_range){
-  return(list(xaxis = list(title = "x", range = x_range),
-              yaxis = list(title = "y", range = y_range),
-              zaxis = list(title = "z", range = z_range),
+  return(list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray"), range = x_range),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray"), range = y_range),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray"), range = z_range),
               aspectratio = list(x = 2*(1+2/pi), 
                                  y = 2*(2/pi), 
                                  z = 1*(2/pi)),

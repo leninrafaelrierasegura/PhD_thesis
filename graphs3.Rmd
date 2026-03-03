@@ -1,5 +1,5 @@
 ---
-title: "Graphs 3"
+title: "Intrinsic continuity is equivalent to the Kirchhoff condition for degree-two vertices"
 date: "Last modified: `r format(Sys.time(), '%d-%m-%Y.')`"
 output:
   html_document:
@@ -57,7 +57,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = TRUE,       
+  eval = FALSE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -172,7 +172,7 @@ whose derivative is
 \begin{align*}
     \hat{f}(t) = 4t^3,\quad t\in[0,\ell_1 + \ell_2].
 \end{align*}
-In particular, $\hat{f} \in C^1([0,\ell_1+\ell_2])$, and therefore $f$ has a continuous first derivative across the vertex $v$. See Figure 2 below. Moreover, the edgewise derivatives must agree at $v$, that is, we must have $f'_{e_1}(\ell_1) = \hat{f}'(v) = f'_{e_2}(0)$, which is the case since
+In particular, $\hat{f} \in C^1([0,\ell_1+\ell_2])$, and therefore $f$ has a continuous first derivative across the vertex $v$. See Figure 2. Moreover, the edgewise derivatives must agree at $v$, that is, we must have $f'_{e_1}(\ell_1) = \hat{f}'(v) = f'_{e_2}(0)$, which is the case since
 \begin{align*}
     f'_{e_1}(\ell_1) = 4\ell_1^3\quad\text{ and }\quad  \hat{f}'(v) = \hat{f}'(\ell_1)=4\ell_1^3\quad \text{ and }\quad f'_{e_2}(0)  = 4\ell_1^3.
 \end{align*}
@@ -291,7 +291,9 @@ pf <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f"), y = 0.8),
-                 scene = list(
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -306,32 +308,32 @@ pf <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -370,7 +372,9 @@ pdf <- graph$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width =
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f'"), y = 0.8),
-                 scene = list(
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -385,32 +389,32 @@ pdf <- graph$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width =
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -449,7 +453,9 @@ pddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f''"), y = 0.8), 
-                 scene = list(
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -464,32 +470,32 @@ pddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -528,7 +534,9 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_wid
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f'''"), y = 0.8),
-                 scene = list(
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -543,34 +551,39 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_wid
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
+
+save(pf, file = here::here("data_files/pf.Rdata"))
+save(pdf, file = here::here("data_files/pdf.Rdata"))
+save(pddf, file = here::here("data_files/pddf.Rdata"))
+save(pdddf, file = here::here("data_files/pdddf.Rdata"))
 ```
 
 
@@ -579,7 +592,8 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_wid
 
 ::: {}
 
-```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(s) = t^4$ and $f_{e_2}(s) = (t+\\ell_1)^4$.")}
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
+load(here::here("data_files/pf.Rdata"))
 pf
 ```
 
@@ -588,7 +602,8 @@ pf
 
 ::: {}
 
-```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(s) = 4t^3$ and $f'_{e_2}(s) = 4(t+\\ell_1)^3$.")}
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{e_2}(t) = 4(t+\\ell_1)^3$.")}
+load(here::here("data_files/pdf.Rdata"))
 pdf
 ```
 
@@ -597,7 +612,8 @@ pdf
 
 ::: {}
 
-```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(s) = 12t^2$ and $f''_{e_2}(s) = 12(t+\\ell_1)^2$.")}
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{e_2}(t) = 12(t+\\ell_1)^2$.")}
+load(here::here("data_files/pddf.Rdata"))
 pddf
 ```
 
@@ -606,7 +622,8 @@ pddf
 
 ::: {}
 
-```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(s) = 24t$ and $f'''_{e_2}(s) = 24(t+\\ell_1)$.")}
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{e_2}(t) = 24(t+\\ell_1)$.")}
+load(here::here("data_files/pdddf.Rdata"))
 pdddf
 ```
 
@@ -667,7 +684,7 @@ and therefore,
 \tag{3}
 \sum_{e \in \mathcal{E}_v} \partial_e g(v) =\partial_{e_1}g(v) + \partial_{e_2}g(v) = -g'_{e_1}(\ell_1) -g'_{e_2}(\ell_2) = -4\ell_1^3 + 4\ell_1^3 = 0,
 \end{equation}
-which shows that $g$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond} at vertex $v$. At first glance, the edgewise derivative, $g' = \{g'_{e_1},g'_{e_2}\}$ appears discontinuous at $v$, which might seem contradictory. See Figure 6 below.
+which shows that $g$ satisfies the Kirchhoff vertex conditions \eqref{eq:kirchhoff_cond} at vertex $v$. At first glance, the edgewise derivative, $g' = \{g'_{e_1},g'_{e_2}\}$ appears discontinuous at $v$, which might seem contradictory. See Figure 6.
 
 To clarify, observe that $f = g$ as functions on the graph. Indeed, by reparametrizing edge $e_1$ by $\tau=t$ and edge $e_2$ by $\tau = \ell_2-t$, we obtain $f_{e_1}=g_{e_1}$  and $f_{e_2}=g_{e_2}$. More precisely,
 \begin{align}
@@ -689,17 +706,6 @@ so the coordinate derivative changes sign under reparametrization. Hence, edgewi
 In the compatible orientation case, $f'_{e_1}(\ell_1) = f'_{e_2}(0)$, so the coordinate derivatives match. In the flipped orientation case, $g'_{e_1}(\ell_1) \neq g'_{e_2}(\ell_2)$, but this mismatch is purely a consequence of the reversed parametrization. The correct invariant comparison is \eqref{eq:invariant_c}, which demonstrates that the Kirchhoff condition is intrinsic and independent of edge parametrization.
 
 In conclusion, the apparent contradiction arises only when comparing coordinate derivatives with opposite orientations, which is not geometrically meaningful. Continuity of the derivative at a vertex must be interpreted intrinsically: at a degree-two vertex, this intrinsic continuity is equivalent to the Kirchhoff condition.
-
-# Even order derivatives are orientation-independent
-
-We again apply the chain rule in \eqref{eq:der_inv} to obtain
-\begin{equation}
-g''_{e_2}(\tau) = \dfrac{d}{d\tau} ( - f'_{e_2}(t)) = - \dfrac{d}{dt} (f'_{e_2}(t)) \dfrac{dt}{d\tau} = f''_{e_2}(t),
-\end{equation}
-so that the second derivative does not change sign under a flip. See Figure 7. In general, for the $k$-th derivative, we have
-\begin{equation}
-\dfrac{d^k}{d\tau^k}(g_{e_2}(\tau)) = (-1)^k\dfrac{d^k}{dt^k}(f_{e_2}(t)).
-\end{equation}
 
 
 
@@ -816,7 +822,9 @@ pf3 <- p_base |>
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("g"), y = 0.8),
-                 scene = list(
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -831,32 +839,32 @@ pf3 <- p_base |>
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -911,7 +919,9 @@ pdf3 <- p_base |>
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("g'"), y = 0.8),
-                 scene = list(
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -926,32 +936,32 @@ pdf3 <- p_base |>
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1006,7 +1016,9 @@ pddf3 <- p_base |>
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("g''"), y = 0.8), 
-                 scene = list(
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1021,32 +1033,32 @@ pddf3 <- p_base |>
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1101,7 +1113,9 @@ pdddf3 <- p_base |>
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("g'''"), y = 0.8), 
-                 scene = list(
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1116,35 +1130,45 @@ pdddf3 <- p_base |>
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 14),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
+
+save(pf3, file = here::here("data_files/pf3.Rdata"))
+save(pdf3, file = here::here("data_files/pdf3.Rdata"))
+save(pddf3, file = here::here("data_files/pddf3.Rdata"))
+save(pdddf3, file = here::here("data_files/pdddf3.Rdata"))
 ```
+
+
+
+
+
 
 
 
@@ -1154,7 +1178,8 @@ pdddf3 <- p_base |>
 
 ::: {}
 
-```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(s) = \\tau^4$ and $g_{e_2}(s) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{e_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+load(here::here("data_files/pf3.Rdata"))
 pf3
 ```
 
@@ -1163,7 +1188,8 @@ pf3
 
 ::: {}
 
-```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_1}(s) = 4\\tau^3$ and $g'_{e_2}(s) = 4(\\tau-(\\ell_1+\\ell_2))^3$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_1}(\\tau) = 4\\tau^3$ and $g'_{e_2}(\\tau) = 4(\\tau-(\\ell_1+\\ell_2))^3$.")}
+load(here::here("data_files/pdf3.Rdata"))
 pdf3
 ```
 
@@ -1172,7 +1198,8 @@ pdf3
 
 ::: {}
 
-```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_1}(s) = 12\\tau^2$ and $g''_{e_2}(s) = 12(\\tau-(\\ell_1+\\ell_2))^2$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_1}(\\tau) = 12\\tau^2$ and $g''_{e_2}(\\tau) = 12(\\tau-(\\ell_1+\\ell_2))^2$.")}
+load(here::here("data_files/pddf3.Rdata"))
 pddf3
 ```
 
@@ -1181,7 +1208,8 @@ pddf3
 
 ::: {}
 
-```{r, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_1}(s) = 24\\tau$ and $g'''_{e_2}(s) = 24(\\tau-(\\ell_1+\\ell_2))$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_1}(\\tau) = 24\\tau$ and $g'''_{e_2}(\\tau) = 24(\\tau-(\\ell_1+\\ell_2))$.")}
+load(here::here("data_files/pdddf3.Rdata"))
 pdddf3
 ```
 
@@ -1189,6 +1217,23 @@ pdddf3
 :::
 
 ::::
+
+
+Figure 6 illustrates precisely the relation expressed in \eqref{eq:der_inv}. That is, $g'_{e_2}$ can be obtained by multiplying $f'_{e_2}$ by $-1$.
+
+# Even order derivatives are orientation-independent
+
+We again apply the chain rule in \eqref{eq:der_inv} to obtain
+\begin{equation}
+g''_{e_2}(\tau) = \dfrac{d}{d\tau} ( - f'_{e_2}(t)) = - \dfrac{d}{dt} (f'_{e_2}(t)) \dfrac{dt}{d\tau} = f''_{e_2}(t),
+\end{equation}
+so that the second derivative does not change sign under a flip. See Figure 7. This means that even order derivatives are orientation-independent. In general, for the $k$-th derivative, we have
+\begin{equation}
+\dfrac{d^k}{d\tau^k}(g_{e_2}(\tau)) = (-1)^k\dfrac{d^k}{dt^k}(f_{e_2}(t)).
+\end{equation}
+
+
+
 
 # References
 
