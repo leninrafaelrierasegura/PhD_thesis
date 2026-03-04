@@ -494,10 +494,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="index.html">Section 2.1</a>
+      <a href="model_prop1.html">Section 2.1</a>
     </li>
     <li>
-      <a href="index.html">Section 2.2</a>
+      <a href="model_prop2.html">Section 2.2</a>
     </li>
     <li>
       <a href="index.html">Section 2.3</a>
@@ -613,7 +613,13 @@ div.tocify {
 <span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">slackr_setup</span>(<span class="at">token =</span> token) <span class="co"># token comes from keys.R</span></span></code></pre></div>
 <pre><code>## [1] &quot;Successfully connected to Slack&quot;</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Color for axis name and axis numbers</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>colaxnn <span class="ot">&lt;-</span> <span class="st">&quot;lightgray&quot;</span></span></code></pre></div>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>colaxnn <span class="ot">&lt;-</span> <span class="st">&quot;lightgray&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># Global font size</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>gfsize <span class="ot">&lt;-</span> <span class="dv">16</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># Dark blue color</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>mydarkblue <span class="ot">&lt;-</span> <span class="st">&quot;#0000C8&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co"># Global size or widht for objects</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>gsw <span class="ot">&lt;-</span> <span class="dv">7</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>gets.graph.interval <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  edge <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>))</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  edges <span class="ot">=</span> <span class="fu">list</span>(edge)</span>
@@ -668,19 +674,25 @@ div.tocify {
 2025)</span> and the following R packages: here v. 1.0.1 <span
 class="citation">(Müller 2020)</span>, htmltools v. 0.5.8.1 <span
 class="citation">(Cheng et al. 2024)</span>, knitr v. 1.50 <span
-class="citation">(Xie 2014, 2015, 2025)</span>, MetricGraph v.
-1.5.0.9000 <span class="citation">(Bolin, Simas, and Wallin 2023a,
+class="citation">(Xie 2014, 2015, 2025)</span>, latex2exp v. 0.9.8 <span
+class="citation">(Meschiari 2026)</span>, Matrix v. 1.7.3 <span
+class="citation">(Bates, Maechler, and Jagan 2025)</span>, MetricGraph
+v. 1.5.0.9000 <span class="citation">(Bolin, Simas, and Wallin 2023a,
 2023b, 2024, 2025; Bolin et al. 2024)</span>, patchwork v. 1.3.1 <span
 class="citation">(Pedersen 2025)</span>, plotly v. 4.11.0 <span
 class="citation">(Sievert 2020)</span>, renv v. 1.1.7 <span
 class="citation">(Ushey and Wickham 2026)</span>, reshape2 v. 1.4.4
 <span class="citation">(Wickham 2007)</span>, rmarkdown v. 2.30 <span
 class="citation">(Xie, Allaire, and Grolemund 2018; Xie, Dervieux, and
-Riederer 2020; Allaire et al. 2025)</span>, slackr v. 3.4.0 <span
-class="citation">(Kaye et al. 2025)</span>, tidyverse v. 2.0.0 <span
-class="citation">(Wickham et al. 2019)</span>, viridis v. 0.6.5 <span
-class="citation">(Garnier et al. 2024)</span>, xaringanExtra v. 0.8.0
-<span class="citation">(Aden-Buie and Warkentin 2024)</span>.</p>
+Riederer 2020; Allaire et al. 2025)</span>, rSPDE v. 2.5.1.9000 <span
+class="citation">(Bolin and Kirchner 2020; Bolin and Simas 2023; Bolin,
+Simas, and Xiong 2024)</span>, scales v. 1.4.0 <span
+class="citation">(Wickham, Pedersen, and Seidel 2025)</span>, slackr v.
+3.4.0 <span class="citation">(Kaye et al. 2025)</span>, tidyverse v.
+2.0.0 <span class="citation">(Wickham et al. 2019)</span>, viridis v.
+0.6.5 <span class="citation">(Garnier et al. 2024)</span>, xaringanExtra
+v. 0.8.0 <span class="citation">(Aden-Buie and Warkentin
+2024)</span>.</p>
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
 <div id="ref-xaringanExtra" class="csl-entry">
@@ -695,12 +707,31 @@ Luraschi, Kevin Ushey, Aron Atkins, et al. 2025. <em><span
 class="nocase">rmarkdown</span>: Dynamic Documents for r</em>. <a
 href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown</a>.
 </div>
+<div id="ref-Matrix" class="csl-entry">
+Bates, Douglas, Martin Maechler, and Mikael Jagan. 2025.
+<em><span>Matrix</span>: Sparse and Dense Matrix Classes and
+Methods</em>. <a
+href="https://doi.org/10.32614/CRAN.package.Matrix">https://doi.org/10.32614/CRAN.package.Matrix</a>.
+</div>
+<div id="ref-rSPDE2020" class="csl-entry">
+Bolin, David, and Kristin Kirchner. 2020. <span>“The Rational
+<span>SPDE</span> Approach for <span>Gaussian</span> Random Fields with
+General Smoothness.”</span> <em>Journal of Computational and Graphical
+Statistics</em> 29 (2): 274–85. <a
+href="https://doi.org/10.1080/10618600.2019.1665537">https://doi.org/10.1080/10618600.2019.1665537</a>.
+</div>
 <div id="ref-MetricGraph2024c" class="csl-entry">
 Bolin, David, Mihály Kovács, Vivek Kumar, and Alexandre B. Simas. 2024.
 <span>“Regularity and Numerical Approximation of Fractional Elliptic
 Differential Equations on Compact Metric Graphs.”</span> <em>Mathematics
 of Computation</em> 93 (349): 2439–72. <a
 href="https://doi.org/10.1090/mcom/3929">https://doi.org/10.1090/mcom/3929</a>.
+</div>
+<div id="ref-rSPDE2023" class="csl-entry">
+Bolin, David, and Alexandre B. Simas. 2023. <em><span
+class="nocase">rSPDE</span>: Rational Approximations of Fractional
+Stochastic Partial Differential Equations</em>. <a
+href="https://CRAN.R-project.org/package=rSPDE">https://CRAN.R-project.org/package=rSPDE</a>.
 </div>
 <div id="ref-MetricGraph2023a" class="csl-entry">
 Bolin, David, Alexandre B. Simas, and Jonas Wallin. 2023a.
@@ -723,6 +754,13 @@ href="https://doi.org/10.3150/23-BEJ1647">https://doi.org/10.3150/23-BEJ1647</a>
 Metric Graphs.”</span> <em>Bernoulli</em>. <a
 href="https://doi.org/10.48550/arXiv.2304.03190">https://doi.org/10.48550/arXiv.2304.03190</a>.
 </div>
+<div id="ref-rSPDE2024" class="csl-entry">
+Bolin, David, Alexandre B. Simas, and Zhen Xiong. 2024.
+<span>“Covariance-Based Rational Approximations of Fractional SPDEs for
+Computationally Efficient Bayesian Inference.”</span> <em>Journal of
+Computational and Graphical Statistics</em> 33 (1): 64–74. <a
+href="https://doi.org/10.1080/10618600.2023.2231051">https://doi.org/10.1080/10618600.2023.2231051</a>.
+</div>
 <div id="ref-htmltools" class="csl-entry">
 Cheng, Joe, Carson Sievert, Barret Schloerke, Winston Chang, Yihui Xie,
 and Jeff Allen. 2024. <em><span class="nocase">htmltools</span>: Tools
@@ -740,6 +778,11 @@ Kaye, Matt, Bob Rudis, Andrie de Vries, and Jonathan Sidi. 2025.
 <em><span class="nocase">slackr</span>: Send Messages, Images, r Objects
 and Files to <span>“<span>Slack</span>”</span> Channels/Users</em>. <a
 href="https://github.com/mrkaye97/slackr">https://github.com/mrkaye97/slackr</a>.
+</div>
+<div id="ref-latex2exp" class="csl-entry">
+Meschiari, Stefano. 2026. <em>Latex2exp: Use LaTeX Expressions in
+Plots</em>. <a
+href="https://doi.org/10.32614/CRAN.package.latex2exp">https://doi.org/10.32614/CRAN.package.latex2exp</a>.
 </div>
 <div id="ref-here" class="csl-entry">
 Müller, Kirill. 2020. <em><span class="nocase">here</span>: A Simpler
@@ -780,6 +823,11 @@ D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019.
 <em>Journal of Open Source Software</em> 4 (43): 1686. <a
 href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
 </div>
+<div id="ref-scales" class="csl-entry">
+Wickham, Hadley, Thomas Lin Pedersen, and Dana Seidel. 2025. <em><span
+class="nocase">scales</span>: Scale Functions for Visualization</em>. <a
+href="https://scales.r-lib.org">https://scales.r-lib.org</a>.
+</div>
 <div id="ref-knitr2014" class="csl-entry">
 Xie, Yihui. 2014. <span>“<span class="nocase">knitr</span>: A
 Comprehensive Tool for Reproducible Research in <span>R</span>.”</span>
@@ -810,7 +858,7 @@ href="https://bookdown.org/yihui/rmarkdown-cookbook">https://bookdown.org/yihui/
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRnVuY3Rpb25hbGl0eSIKZGF0ZTogIkxhc3QgbW9kaWZpZWQ6IGByIGZvcm1hdChTeXMudGltZSgpLCAnJWQtJW0tJVkuJylgIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIG1hdGhqYXg6ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL21hdGhqYXhAMy9lczUvdGV4LW1tbC1jaHRtbC5qcyIKICAgIGhpZ2hsaWdodDogcHlnbWVudHMKICAgIHRoZW1lOiBmbGF0bHkKICAgIGNvZGVfZm9sZGluZzogc2hvdyAjIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUiIHRvIGhpZGUgY29kZSBhbmQgYWRkIGEgYnV0dG9uIHRvIHNob3cgaXQKICAgIGRmX3ByaW50OiBwYWdlZAogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6CiAgICAgIGNvbGxhcHNlZDogdHJ1ZQogICAgICBzbW9vdGhfc2Nyb2xsOiB0cnVlCiAgICBudW1iZXJfc2VjdGlvbnM6IHRydWUKICAgIGZpZ19jYXB0aW9uOiB0cnVlCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjc3M6IHZpc3VhbC5jc3MKYWx3YXlzX2FsbG93X2h0bWw6IHRydWUKYmlibGlvZ3JhcGh5OiAKICAtIHJlZmVyZW5jZXMuYmliCiAgLSBncmF0ZWZ1bC1yZWZzLmJpYgpoZWFkZXItaW5jbHVkZXM6CiAgLSBcbmV3Y29tbWFuZHtcYXJ9e1xtYXRoYmJ7Un19CiAgLSBcbmV3Y29tbWFuZHtcbGxhdn1bMV17XGxlZnRceyMxXHJpZ2h0XH19CiAgLSBcbmV3Y29tbWFuZHtccGFyZX1bMV17XGxlZnQoIzFccmlnaHQpfQogIC0gXG5ld2NvbW1hbmR7XE5jYWx9e1xtYXRoY2Fse059fQogIC0gXG5ld2NvbW1hbmR7XFZjYWx9e1xtYXRoY2Fse1Z9fQogIC0gXG5ld2NvbW1hbmR7XEVjYWx9e1xtYXRoY2Fse0V9fQogIC0gXG5ld2NvbW1hbmR7XFdjYWx9e1xtYXRoY2Fse1d9fQogIC0gXG5ld2NvbW1hbmR7XGFsbW9zdGV2ZXJ5d2hlcmV9e1xtYXRocm17YS5lLn1cO30KLS0tCgpHbyBiYWNrIHRvIHRoZSBbQ29udGVudHNdKGFib3V0Lmh0bWwpIHBhZ2UuCgo8ZGl2IHN0eWxlPSJjb2xvcjogIzJjM2U1MDsgdGV4dC1hbGlnbjogcmlnaHQ7Ij4KKioqKioqKiogIAo8c3Ryb25nPlByZXNzIFNob3cgdG8gcmV2ZWFsIHRoZSBjb2RlIGNodW5rcy48L3N0cm9uZz4gIAoKKioqKioqKioKPC9kaXY+CgoKYGBge3J9CiMgQ3JlYXRlIGEgY2xpcGJvYXJkIGJ1dHRvbiBvbiB0aGUgcmVuZGVyZWQgSFRNTCBwYWdlCnNvdXJjZShoZXJlOjpoZXJlKCJjbGlwYm9hcmQuUiIpKTsgY2xpcGJvYXJkCiMgU2V0IHNlZWQgZm9yIHJlcHJvZHVjaWJpbGl0eQpzZXQuc2VlZCgxOTgyKSAKIyBTZXQgZ2xvYmFsIG9wdGlvbnMgZm9yIGFsbCBjb2RlIGNodW5rcwprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgIyBEaXNhYmxlIG1lc3NhZ2VzIHByaW50ZWQgYnkgUiBjb2RlIGNodW5rcwogIG1lc3NhZ2UgPSBGQUxTRSwgICAgCiAgIyBEaXNhYmxlIHdhcm5pbmdzIHByaW50ZWQgYnkgUiBjb2RlIGNodW5rcwogIHdhcm5pbmcgPSBGQUxTRSwgICAgCiAgIyBTaG93IFIgY29kZSB3aXRoaW4gY29kZSBjaHVua3MgaW4gb3V0cHV0CiAgZWNobyA9IFRSVUUsICAgICAgICAKICAjIEluY2x1ZGUgYm90aCBSIGNvZGUgYW5kIGl0cyByZXN1bHRzIGluIG91dHB1dAogIGluY2x1ZGUgPSBUUlVFLCAgICAgCiAgIyBFdmFsdWF0ZSBSIGNvZGUgY2h1bmtzCiAgZXZhbCA9IFRSVUUsICAgICAgIAogICMgRW5hYmxlIGNhY2hpbmcgb2YgUiBjb2RlIGNodW5rcyBmb3IgZmFzdGVyIHJlbmRlcmluZwogIGNhY2hlID0gRkFMU0UsICAgICAgCiAgIyBBbGlnbiBmaWd1cmVzIGluIHRoZSBjZW50ZXIgb2YgdGhlIG91dHB1dAogIGZpZy5hbGlnbiA9ICJjZW50ZXIiLAogICMgRW5hYmxlIHJldGluYSBkaXNwbGF5IGZvciBoaWdoLXJlc29sdXRpb24gZmlndXJlcwogIHJldGluYSA9IDIsCiAgIyBTaG93IGVycm9ycyBpbiB0aGUgb3V0cHV0IGluc3RlYWQgb2Ygc3RvcHBpbmcgcmVuZGVyaW5nCiAgZXJyb3IgPSBUUlVFLAogICMgRG8gbm90IGNvbGxhcHNlIGNvZGUgYW5kIG91dHB1dCBpbnRvIGEgc2luZ2xlIGJsb2NrCiAgY29sbGFwc2UgPSBGQUxTRQopCiMgU3RhcnQgdGhlIGZpZ3VyZSBjb3VudGVyCmZpZ19jb3VudCA8LSAwCiMgRGVmaW5lIHRoZSBjYXB0aW9uZXIgZnVuY3Rpb24KY2FwdGlvbmVyIDwtIGZ1bmN0aW9uKGNhcHRpb24pIHsKICBmaWdfY291bnQgPDwtIGZpZ19jb3VudCArIDEKICBwYXN0ZTAoIkZpZ3VyZSAiLCBmaWdfY291bnQsICI6ICIsIGNhcHRpb24pCn0KCmBgYAoKYGBge3J9CmxpYnJhcnkoTWV0cmljR3JhcGgpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShyZXNoYXBlMikKbGlicmFyeShkcGx5cikKbGlicmFyeSh2aXJpZGlzKQpsaWJyYXJ5KHBsb3RseSkKbGlicmFyeShwYXRjaHdvcmspCmxpYnJhcnkoc2xhY2tyKQpzb3VyY2UoImtleXMuUiIpCnNsYWNrcl9zZXR1cCh0b2tlbiA9IHRva2VuKSAjIHRva2VuIGNvbWVzIGZyb20ga2V5cy5SCmBgYAoKCmBgYHtyfQojIENvbG9yIGZvciBheGlzIG5hbWUgYW5kIGF4aXMgbnVtYmVycwpjb2xheG5uIDwtICJsaWdodGdyYXkiCmBgYAoKYGBge3J9CmdldHMuZ3JhcGguaW50ZXJ2YWwgPC0gZnVuY3Rpb24obil7CiAgZWRnZSA8LSByYmluZChjKDAsMCksYygxLDApKQogIGVkZ2VzID0gbGlzdChlZGdlKQogIGdyYXBoIDwtIG1ldHJpY19ncmFwaCRuZXcoZWRnZXMgPSBlZGdlcykKICBncmFwaCRidWlsZF9tZXNoKG4gPSBuKQogIHJldHVybihncmFwaCkKfQpgYGAKCmBgYHtyfQpnZXRzLmdyYXBoLmNpcmNsZSA8LSBmdW5jdGlvbihuKXsKICByID0gMS8ocGkpCiAgdGhldGEgPC0gc2VxKGZyb209LXBpLHRvPXBpLGxlbmd0aC5vdXQgPSAxMDApCiAgZWRnZSA8LSBjYmluZCgxK3Ircipjb3ModGhldGEpLHIqc2luKHRoZXRhKSkKICBlZGdlcyA9IGxpc3QoZWRnZSkKICBncmFwaCA8LSBtZXRyaWNfZ3JhcGgkbmV3KGVkZ2VzID0gZWRnZXMpCiAgZ3JhcGgkYnVpbGRfbWVzaChuID0gbikKICByZXR1cm4oZ3JhcGgpCn0KYGBgCgoKYGBge3J9CiMgRnVuY3Rpb24gdG8gYnVpbGQgYSB0YWRwb2xlIGdyYXBoIGFuZCBjcmVhdGUgYSBtZXNoCmdldHMuZ3JhcGgudGFkcG9sZSA8LSBmdW5jdGlvbihoKXsKICBlZGdlMSA8LSByYmluZChjKDAsMCksYygxLDApKQogIHRoZXRhIDwtIHNlcShmcm9tPS1waSx0bz1waSxsZW5ndGgub3V0ID0gMTAwKQogIGVkZ2UyIDwtIGNiaW5kKDErMS9waStjb3ModGhldGEpL3BpLHNpbih0aGV0YSkvcGkpCiAgZWRnZXMgPC0gbGlzdChlZGdlMSwgZWRnZTIpCiAgZ3JhcGggPC0gbWV0cmljX2dyYXBoJG5ldyhlZGdlcyA9IGVkZ2VzLCB2ZXJib3NlID0gMCkKICBncmFwaCRzZXRfbWFudWFsX2VkZ2VfbGVuZ3RocyhlZGdlX2xlbmd0aHMgPSBjKDEsMikpCiAgZ3JhcGgkYnVpbGRfbWVzaChoID0gaCkKICByZXR1cm4oZ3JhcGgpCn0KYGBgCgpgYGB7cn0KIyBGdW5jdGlvbiB0byBvcmRlciB0aGUgdmVydGljZXMgZm9yIHBsb3R0aW5nCnBsb3R0aW5nLm9yZGVyIDwtIGZ1bmN0aW9uKHYsIGdyYXBoKXsKICBlZGdlX251bWJlciA8LSBncmFwaCRtZXNoJFZ0RVssIDFdCiAgcG9zIDwtIHN1bShlZGdlX251bWJlciA9PSAxKSsxCiAgcmV0dXJuKGModlsxXSwgdlszOnBvc10sIHZbMl0sIHZbKHBvcysxKTpsZW5ndGgodildLCB2WzJdKSkKfQpgYGAKCmBgYHtyfQp0YWRwb2xlLmxheW91dCA8LSBmdW5jdGlvbih4X3JhbmdlLCB5X3JhbmdlLCB6X3JhbmdlKXsKICByZXR1cm4obGlzdCh4YXhpcyA9IGxpc3QodGl0bGUgPSBsaXN0KHRleHQgPSAieCIsIGZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubikpLCAgdGlja2ZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubiksIHJhbmdlID0geF9yYW5nZSksCiAgICAgICAgICAgICAgeWF4aXMgPSBsaXN0KHRpdGxlID0gbGlzdCh0ZXh0ID0gInkiLCBmb250ID0gbGlzdChjb2xvciA9IGNvbGF4bm4pKSwgIHRpY2tmb250ID0gbGlzdChjb2xvciA9IGNvbGF4bm4pLCByYW5nZSA9IHlfcmFuZ2UpLAogICAgICAgICAgICAgIHpheGlzID0gbGlzdCh0aXRsZSA9IGxpc3QodGV4dCA9ICJ6IiwgZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSksICB0aWNrZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSwgcmFuZ2UgPSB6X3JhbmdlKSwKICAgICAgICAgICAgICBhc3BlY3RyYXRpbyA9IGxpc3QoeCA9IDIqKDErMi9waSksIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0gMiooMi9waSksIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB6ID0gMSooMi9waSkpLAogICAgICAgICAgICAgIGNhbWVyYSA9IGxpc3QoZXllID0gbGlzdCh4ID0gNSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHkgPSAzLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeiA9IDQpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgY2VudGVyID0gbGlzdCh4ID0gKDErMi9waSkvMiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHkgPSAwLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeiA9IDApKSkpCn0KYGBgCgojIFJlZmVyZW5jZXMKCmBgYHtyLCBwdXJsID0gRkFMU0V9CmdyYXRlZnVsOjpjaXRlX3BhY2thZ2VzKG91dHB1dCA9ICJwYXJhZ3JhcGgiLCBvdXQuZGlyID0gIi4iKQpgYGAKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRnVuY3Rpb25hbGl0eSIKZGF0ZTogIkxhc3QgbW9kaWZpZWQ6IGByIGZvcm1hdChTeXMudGltZSgpLCAnJWQtJW0tJVkuJylgIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIG1hdGhqYXg6ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL21hdGhqYXhAMy9lczUvdGV4LW1tbC1jaHRtbC5qcyIKICAgIGhpZ2hsaWdodDogcHlnbWVudHMKICAgIHRoZW1lOiBmbGF0bHkKICAgIGNvZGVfZm9sZGluZzogc2hvdyAjIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUiIHRvIGhpZGUgY29kZSBhbmQgYWRkIGEgYnV0dG9uIHRvIHNob3cgaXQKICAgIGRmX3ByaW50OiBwYWdlZAogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6CiAgICAgIGNvbGxhcHNlZDogdHJ1ZQogICAgICBzbW9vdGhfc2Nyb2xsOiB0cnVlCiAgICBudW1iZXJfc2VjdGlvbnM6IHRydWUKICAgIGZpZ19jYXB0aW9uOiB0cnVlCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjc3M6IHZpc3VhbC5jc3MKYWx3YXlzX2FsbG93X2h0bWw6IHRydWUKYmlibGlvZ3JhcGh5OiAKICAtIHJlZmVyZW5jZXMuYmliCiAgLSBncmF0ZWZ1bC1yZWZzLmJpYgpoZWFkZXItaW5jbHVkZXM6CiAgLSBcbmV3Y29tbWFuZHtcYXJ9e1xtYXRoYmJ7Un19CiAgLSBcbmV3Y29tbWFuZHtcbGxhdn1bMV17XGxlZnRceyMxXHJpZ2h0XH19CiAgLSBcbmV3Y29tbWFuZHtccGFyZX1bMV17XGxlZnQoIzFccmlnaHQpfQogIC0gXG5ld2NvbW1hbmR7XE5jYWx9e1xtYXRoY2Fse059fQogIC0gXG5ld2NvbW1hbmR7XFZjYWx9e1xtYXRoY2Fse1Z9fQogIC0gXG5ld2NvbW1hbmR7XEVjYWx9e1xtYXRoY2Fse0V9fQogIC0gXG5ld2NvbW1hbmR7XFdjYWx9e1xtYXRoY2Fse1d9fQogIC0gXG5ld2NvbW1hbmR7XGFsbW9zdGV2ZXJ5d2hlcmV9e1xtYXRocm17YS5lLn1cO30KLS0tCgpHbyBiYWNrIHRvIHRoZSBbQ29udGVudHNdKGFib3V0Lmh0bWwpIHBhZ2UuCgo8ZGl2IHN0eWxlPSJjb2xvcjogIzJjM2U1MDsgdGV4dC1hbGlnbjogcmlnaHQ7Ij4KKioqKioqKiogIAo8c3Ryb25nPlByZXNzIFNob3cgdG8gcmV2ZWFsIHRoZSBjb2RlIGNodW5rcy48L3N0cm9uZz4gIAoKKioqKioqKioKPC9kaXY+CgoKYGBge3J9CiMgQ3JlYXRlIGEgY2xpcGJvYXJkIGJ1dHRvbiBvbiB0aGUgcmVuZGVyZWQgSFRNTCBwYWdlCnNvdXJjZShoZXJlOjpoZXJlKCJjbGlwYm9hcmQuUiIpKTsgY2xpcGJvYXJkCiMgU2V0IHNlZWQgZm9yIHJlcHJvZHVjaWJpbGl0eQpzZXQuc2VlZCgxOTgyKSAKIyBTZXQgZ2xvYmFsIG9wdGlvbnMgZm9yIGFsbCBjb2RlIGNodW5rcwprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgIyBEaXNhYmxlIG1lc3NhZ2VzIHByaW50ZWQgYnkgUiBjb2RlIGNodW5rcwogIG1lc3NhZ2UgPSBGQUxTRSwgICAgCiAgIyBEaXNhYmxlIHdhcm5pbmdzIHByaW50ZWQgYnkgUiBjb2RlIGNodW5rcwogIHdhcm5pbmcgPSBGQUxTRSwgICAgCiAgIyBTaG93IFIgY29kZSB3aXRoaW4gY29kZSBjaHVua3MgaW4gb3V0cHV0CiAgZWNobyA9IFRSVUUsICAgICAgICAKICAjIEluY2x1ZGUgYm90aCBSIGNvZGUgYW5kIGl0cyByZXN1bHRzIGluIG91dHB1dAogIGluY2x1ZGUgPSBUUlVFLCAgICAgCiAgIyBFdmFsdWF0ZSBSIGNvZGUgY2h1bmtzCiAgZXZhbCA9IFRSVUUsICAgICAgIAogICMgRW5hYmxlIGNhY2hpbmcgb2YgUiBjb2RlIGNodW5rcyBmb3IgZmFzdGVyIHJlbmRlcmluZwogIGNhY2hlID0gRkFMU0UsICAgICAgCiAgIyBBbGlnbiBmaWd1cmVzIGluIHRoZSBjZW50ZXIgb2YgdGhlIG91dHB1dAogIGZpZy5hbGlnbiA9ICJjZW50ZXIiLAogICMgRW5hYmxlIHJldGluYSBkaXNwbGF5IGZvciBoaWdoLXJlc29sdXRpb24gZmlndXJlcwogIHJldGluYSA9IDIsCiAgIyBTaG93IGVycm9ycyBpbiB0aGUgb3V0cHV0IGluc3RlYWQgb2Ygc3RvcHBpbmcgcmVuZGVyaW5nCiAgZXJyb3IgPSBUUlVFLAogICMgRG8gbm90IGNvbGxhcHNlIGNvZGUgYW5kIG91dHB1dCBpbnRvIGEgc2luZ2xlIGJsb2NrCiAgY29sbGFwc2UgPSBGQUxTRQopCiMgU3RhcnQgdGhlIGZpZ3VyZSBjb3VudGVyCmZpZ19jb3VudCA8LSAwCiMgRGVmaW5lIHRoZSBjYXB0aW9uZXIgZnVuY3Rpb24KY2FwdGlvbmVyIDwtIGZ1bmN0aW9uKGNhcHRpb24pIHsKICBmaWdfY291bnQgPDwtIGZpZ19jb3VudCArIDEKICBwYXN0ZTAoIkZpZ3VyZSAiLCBmaWdfY291bnQsICI6ICIsIGNhcHRpb24pCn0KCmBgYAoKYGBge3J9CmxpYnJhcnkoTWV0cmljR3JhcGgpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShyZXNoYXBlMikKbGlicmFyeShkcGx5cikKbGlicmFyeSh2aXJpZGlzKQpsaWJyYXJ5KHBsb3RseSkKbGlicmFyeShwYXRjaHdvcmspCmxpYnJhcnkoc2xhY2tyKQpzb3VyY2UoImtleXMuUiIpCnNsYWNrcl9zZXR1cCh0b2tlbiA9IHRva2VuKSAjIHRva2VuIGNvbWVzIGZyb20ga2V5cy5SCmBgYAoKCmBgYHtyfQojIENvbG9yIGZvciBheGlzIG5hbWUgYW5kIGF4aXMgbnVtYmVycwpjb2xheG5uIDwtICJsaWdodGdyYXkiCiMgR2xvYmFsIGZvbnQgc2l6ZQpnZnNpemUgPC0gMTYKIyBEYXJrIGJsdWUgY29sb3IKbXlkYXJrYmx1ZSA8LSAiIzAwMDBDOCIKIyBHbG9iYWwgc2l6ZSBvciB3aWRodCBmb3Igb2JqZWN0cwpnc3cgPC0gNwpgYGAKCmBgYHtyfQpnZXRzLmdyYXBoLmludGVydmFsIDwtIGZ1bmN0aW9uKG4pewogIGVkZ2UgPC0gcmJpbmQoYygwLDApLGMoMSwwKSkKICBlZGdlcyA9IGxpc3QoZWRnZSkKICBncmFwaCA8LSBtZXRyaWNfZ3JhcGgkbmV3KGVkZ2VzID0gZWRnZXMpCiAgZ3JhcGgkYnVpbGRfbWVzaChuID0gbikKICByZXR1cm4oZ3JhcGgpCn0KYGBgCgpgYGB7cn0KZ2V0cy5ncmFwaC5jaXJjbGUgPC0gZnVuY3Rpb24obil7CiAgciA9IDEvKHBpKQogIHRoZXRhIDwtIHNlcShmcm9tPS1waSx0bz1waSxsZW5ndGgub3V0ID0gMTAwKQogIGVkZ2UgPC0gY2JpbmQoMStyK3IqY29zKHRoZXRhKSxyKnNpbih0aGV0YSkpCiAgZWRnZXMgPSBsaXN0KGVkZ2UpCiAgZ3JhcGggPC0gbWV0cmljX2dyYXBoJG5ldyhlZGdlcyA9IGVkZ2VzKQogIGdyYXBoJGJ1aWxkX21lc2gobiA9IG4pCiAgcmV0dXJuKGdyYXBoKQp9CmBgYAoKCmBgYHtyfQojIEZ1bmN0aW9uIHRvIGJ1aWxkIGEgdGFkcG9sZSBncmFwaCBhbmQgY3JlYXRlIGEgbWVzaApnZXRzLmdyYXBoLnRhZHBvbGUgPC0gZnVuY3Rpb24oaCl7CiAgZWRnZTEgPC0gcmJpbmQoYygwLDApLGMoMSwwKSkKICB0aGV0YSA8LSBzZXEoZnJvbT0tcGksdG89cGksbGVuZ3RoLm91dCA9IDEwMCkKICBlZGdlMiA8LSBjYmluZCgxKzEvcGkrY29zKHRoZXRhKS9waSxzaW4odGhldGEpL3BpKQogIGVkZ2VzIDwtIGxpc3QoZWRnZTEsIGVkZ2UyKQogIGdyYXBoIDwtIG1ldHJpY19ncmFwaCRuZXcoZWRnZXMgPSBlZGdlcywgdmVyYm9zZSA9IDApCiAgZ3JhcGgkc2V0X21hbnVhbF9lZGdlX2xlbmd0aHMoZWRnZV9sZW5ndGhzID0gYygxLDIpKQogIGdyYXBoJGJ1aWxkX21lc2goaCA9IGgpCiAgcmV0dXJuKGdyYXBoKQp9CmBgYAoKYGBge3J9CiMgRnVuY3Rpb24gdG8gb3JkZXIgdGhlIHZlcnRpY2VzIGZvciBwbG90dGluZwpwbG90dGluZy5vcmRlciA8LSBmdW5jdGlvbih2LCBncmFwaCl7CiAgZWRnZV9udW1iZXIgPC0gZ3JhcGgkbWVzaCRWdEVbLCAxXQogIHBvcyA8LSBzdW0oZWRnZV9udW1iZXIgPT0gMSkrMQogIHJldHVybihjKHZbMV0sIHZbMzpwb3NdLCB2WzJdLCB2Wyhwb3MrMSk6bGVuZ3RoKHYpXSwgdlsyXSkpCn0KYGBgCgpgYGB7cn0KdGFkcG9sZS5sYXlvdXQgPC0gZnVuY3Rpb24oeF9yYW5nZSwgeV9yYW5nZSwgel9yYW5nZSl7CiAgcmV0dXJuKGxpc3QoeGF4aXMgPSBsaXN0KHRpdGxlID0gbGlzdCh0ZXh0ID0gIngiLCBmb250ID0gbGlzdChjb2xvciA9IGNvbGF4bm4pKSwgIHRpY2tmb250ID0gbGlzdChjb2xvciA9IGNvbGF4bm4pLCByYW5nZSA9IHhfcmFuZ2UpLAogICAgICAgICAgICAgIHlheGlzID0gbGlzdCh0aXRsZSA9IGxpc3QodGV4dCA9ICJ5IiwgZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSksICB0aWNrZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSwgcmFuZ2UgPSB5X3JhbmdlKSwKICAgICAgICAgICAgICB6YXhpcyA9IGxpc3QodGl0bGUgPSBsaXN0KHRleHQgPSAieiIsIGZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubikpLCAgdGlja2ZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubiksIHJhbmdlID0gel9yYW5nZSksCiAgICAgICAgICAgICAgYXNwZWN0cmF0aW8gPSBsaXN0KHggPSAyKigxKzIvcGkpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IDIqKDIvcGkpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeiA9IDEqKDIvcGkpKSwKICAgICAgICAgICAgICBjYW1lcmEgPSBsaXN0KGV5ZSA9IGxpc3QoeCA9IDUsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0gMywgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHogPSA0KSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNlbnRlciA9IGxpc3QoeCA9ICgxKzIvcGkpLzIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0gMCwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHogPSAwKSkpKQp9CmBgYAoKIyBSZWZlcmVuY2VzCgpgYGB7ciwgcHVybCA9IEZBTFNFfQpncmF0ZWZ1bDo6Y2l0ZV9wYWNrYWdlcyhvdXRwdXQgPSAicGFyYWdyYXBoIiwgb3V0LmRpciA9ICIuIikKYGBgCgoK</div>
 
 
 </div>

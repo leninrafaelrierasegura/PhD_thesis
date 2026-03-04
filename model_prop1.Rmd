@@ -42,7 +42,7 @@ Go back to the [Contents](about.html) page.
 
 
 
-Go back to the [About page](about.html). To see how the covariance function changes when $\nu$ changes, go to [model_properties2.html](model_properties2.html).
+Go back to the [About page](about.html). To see how the covariance function changes when $\nu$ changes, go to [model_properties2.html](model_prop2.html).
 
 ::: {.custom-box}
 This vignette illustrates how our proposed approach allows for Gaussian processes with general smoothness and non-stationary covariance on any compact metric graph. Recall that these processes are defined as solutions to 
@@ -93,7 +93,8 @@ captioner <- function(caption) {
 }
 # Define the function to truncate a number to two decimal places
 truncate_to_two <- function(x) {
-  floor(x * 100) / 100
+  truncated <- floor(x * 100) / 100
+  sprintf("%.2f", truncated)
 }
 ```
 
@@ -189,7 +190,7 @@ logo_graph <- metric_graph$new(edges = edges, perform_merges = TRUE)
 # Prune the vertices
 #logo_graph$prune_vertices()
 # Build the mesh
-h = 0.05
+h <- 0.05
 logo_graph$build_mesh(h = h) 
 # Extract the mesh locations in Euclidean coordinates
 xypoints <- logo_graph$mesh$V
@@ -355,9 +356,9 @@ Below we show 3D plots of the covariance functions $r_i(\cdot)$, $i=1,2,3$, for 
 </div>
 
 ```{r}
-p1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 5, line_color = "#0000C8", line_width = 5)
-p2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 5, line_color = "red", line_width = 5, p = p1)
-p3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 5, line_color = "darkgreen", line_width = 5, p = p2)
+p1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = gsw, line_color = "#0000C8", line_width = gsw)
+p2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = gsw, line_color = "red", line_width = gsw, p = p1)
+p3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = gsw, line_color = "darkgreen", line_width = gsw, p = p2)
 p_A <- p3 %>%
   config(mathjax = 'cdn') %>%
   layout(showlegend = FALSE,
@@ -366,7 +367,7 @@ p_A <- p3 %>%
               zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
            aspectratio = list(x = 1.8, y = 1.8, z = 1.8),
            camera = list(
-      eye = list(x = 3, y = 2, z = 0.5),  # Adjust the viewpoint
+      eye = list(x = 3, y = 2, z = 1),  # Adjust the viewpoint
       center = list(x = 0, y = 0, z = 0)),     # Focus point
            annotations = list(
              list(
@@ -430,59 +431,59 @@ p_A <- p3 %>%
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = 8.5, y = 0.5, z = 0,
+               x = xypoints[m1, 2], y = xypoints[m1, 1], z = 0,
                text = TeX("s_1"),
-               textangle = 0, ax = 0, ay = 15,
+               textangle = 0, ax = 0, ay = -25,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = 2.5, y = 0, z = 0,
+               x = xypoints[m2, 2], y = xypoints[m2, 1], z = 0,
                text = TeX("s_2"),
-               textangle = 0, ax = 0, ay = 15,
+               textangle = 0, ax = 0, ay = -25,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = 3, y = 10, z = 0,
+               x = xypoints[m3, 2], y = xypoints[m3, 1], z = 0,
                text = TeX("s_3"),
-               textangle = 0, ax = 0, ay = 15,
+               textangle = 0, ax = 0, ay = 25,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = xypoints[m1, 2], y = xypoints[m1, 1], z = max(est_cov_matrix[m1, ]) + 0.2,
+               x = xypoints[m1, 2], y = xypoints[m1, 1], z = max(est_cov_matrix[m1, ]) + 0.3,
                text = TeX("r_1(\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
                font = list(color = "#0000C8", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = xypoints[m2, 2], y = xypoints[m2, 1], z = max(est_cov_matrix[m2, ]) + 0.2,
+               x = xypoints[m2, 2], y = xypoints[m2, 1], z = max(est_cov_matrix[m2, ]) + 0.3,
                text = TeX("r_2(\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
                font = list(color = "red", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = xypoints[m3, 2], y = xypoints[m3, 1], z = max(est_cov_matrix[m3, ]) + 0.2,
+               x = xypoints[m3, 2], y = xypoints[m3, 1], z = max(est_cov_matrix[m3, ]) + 0.3,
                text = TeX("r_3(\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
                font = list(color = "darkgreen", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)")))) %>%
   add_trace(x = xypoints[m1, 2], y = xypoints[m1, 1], z = 0, mode = "markers", type = "scatter3d",
-            marker = list(size = 5, color = "#0000C8", symbol = 104)) %>%
+            marker = list(size = gsw, color = "#0000C8", symbol = 104)) %>%
   add_trace(x = xypoints[m2, 2], y = xypoints[m2, 1], z = 0, mode = "markers", type = "scatter3d",
-            marker = list(size = 5, color = "red", symbol = 104)) %>%
+            marker = list(size = gsw, color = "red", symbol = 104)) %>%
   add_trace(x = xypoints[m3, 2], y = xypoints[m3, 1], z = 0, mode = "markers", type = "scatter3d",
-            marker = list(size = 5, color = "darkgreen", symbol = 104))
+            marker = list(size = gsw, color = "darkgreen", symbol = 104))
 # Save the 3D plot
 save(p_A, file = here("data_files/3d_cov_plots_diff_loc.RData"))
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 970px 970px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 670px 670px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
 
-```{r, eval = TRUE, fig.height = 8, out.width = "100%", fig.cap = captioner("Example of covariance functions $r_i(\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Example of covariance functions $r_i(\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
 load(here("data_files/3d_cov_plots_diff_loc.RData"))
 p_A
 ```

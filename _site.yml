@@ -22,7 +22,7 @@ navbar:
         - text: "Section 2.1"
           href: model_prop1.html
         - text: "Section 2.2"
-          href: index.html
+          href: model_prop2.html
         - text: "Section 2.3"
           href: index.html
     - text: "Chapter 3"

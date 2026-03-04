@@ -314,7 +314,7 @@ z_eye <- 2#3
 ```
 
 ```{r, eval = FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
-graph_disc$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width = 5, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+graph_disc$plot_function(X = df, vertex_size = gsw, edge_width = gsw, line_width = gsw, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(title = TeX("f'"), 
                  scene = list(
@@ -334,7 +334,7 @@ graph_disc$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width = 5
 
 
 ```{r}
-star3f <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star3f <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -403,47 +403,47 @@ star3f <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star3df <- graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly") |>
+star3df <- graph$plot_function(X = f*0, vertex_size = gsw, line_color = "black", edge_width = gsw, line_width = gsw, type = "plotly") |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -498,7 +498,7 @@ star3df <- graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", e
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 5),
+            line = list(color = "rgb(0,0,200)", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -527,47 +527,47 @@ star3df <- graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", e
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star3ddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = TRUE, interpolate_plot = TRUE, type = "plotly") |> 
+star3ddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, continuous = TRUE, interpolate_plot = TRUE, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -636,47 +636,47 @@ star3ddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_w
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star3dddf <- graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+star3dddf <- graph_disc$plot_function(X = dddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -745,43 +745,43 @@ star3dddf <- graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5,
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -901,7 +901,7 @@ dddg <- apply_edge_functions_fast(graph, dddg_list)
 
 
 ```{r}
-star3g <- graph$plot_function(X = g, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star3g <- graph$plot_function(X = g, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -970,47 +970,47 @@ star3g <- graph$plot_function(X = g, vertex_size = 5, edge_width = 5, line_width
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star3dg <- graph$plot_function(X = dg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star3dg <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -1079,47 +1079,47 @@ star3dg <- graph$plot_function(X = dg, vertex_size = 5, edge_width = 5, line_wid
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star3ddg <- graph$plot_function(X = ddg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star3ddg <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -1188,47 +1188,47 @@ star3ddg <- graph$plot_function(X = ddg, vertex_size = 5, edge_width = 5, line_w
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star3dddg <- graph$plot_function(X = dddg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star3dddg <- graph$plot_function(X = dddg, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -1297,43 +1297,43 @@ star3dddg <- graph$plot_function(X = dddg, vertex_size = 5, edge_width = 5, line
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1475,7 +1475,7 @@ DF_NO_NA <- rbind(DF1, DF2)
 
 
 ```{r}
-star2f <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star2f <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -1528,35 +1528,35 @@ star2f <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star2df <- graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly") |>
+star2df <- graph$plot_function(X = f*0, vertex_size = gsw, line_color = "black", edge_width = gsw, line_width = gsw, type = "plotly") |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -1595,7 +1595,7 @@ star2df <- graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", e
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 5),
+            line = list(color = "rgb(0,0,200)", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = rep(DF_NO_NA$y, each = 3), 
             y = rep(DF_NO_NA$x, each = 3), 
@@ -1624,35 +1624,35 @@ star2df <- graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", e
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star2ddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star2ddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -1705,35 +1705,35 @@ star2ddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_w
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-star2dddf <- graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+star2dddf <- graph_disc$plot_function(X = dddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -1786,31 +1786,31 @@ star2dddf <- graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5,
                x = 0, y = 0, z = 0,
                text = TeX("v_0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 

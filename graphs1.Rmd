@@ -125,19 +125,19 @@ notes_int <- list(annotations = list(
                x = 0, y = 0, z = 0,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 1, z = 0,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 0.5, z = 0,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)")))
 
 layout_int <- list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
@@ -151,10 +151,10 @@ layout_int <- list(xaxis = list(title = list(text = "x", font = list(color = col
                                           z = 0)))
 
 p11 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
-                           vertex_size = 5,
+                           vertex_size = gsw,
                            type = "plotly", 
-                           line_width = 5, 
-                           edge_width = 5, 
+                           line_width = gsw, 
+                           edge_width = gsw, 
                            line_color = "black")|>
   config(mathjax = 'cdn') |>
   layout(scene =  c(notes_int, layout_int),
@@ -176,21 +176,21 @@ notes_cir <- list(annotations = list(
                x = 0, y = 1, z = 0,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 1 + 2/pi, z = 0,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)")))
   
   
 p22 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
-                           vertex_size = 5,
+                           vertex_size = gsw,
                            type = "plotly", 
-                           line_width = 5, 
-                           edge_width = 5, 
+                           line_width = gsw, 
+                           edge_width = gsw, 
                            line_color = "black") %>% 
   config(mathjax = 'cdn') %>% 
   layout(scene =  c(notes_cir, layout_int),
@@ -212,32 +212,32 @@ notes_tad_1 <- list(annotations = list(
                x = 0, y = 0, z = 0,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 1, z = 0,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 0.5, z = 0,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 1+2/pi, z = 0,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)")))
 
 p33 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
-                           vertex_size = 5,
+                           vertex_size = gsw,
                            type = "plotly", 
-                           line_width = 5, 
-                           edge_width = 5, 
+                           line_width = gsw, 
+                           edge_width = gsw, 
                            line_color = "black") |>
   config(mathjax = 'cdn') |>
   layout(scene =  c(notes_tad_1, layout_int),
@@ -281,43 +281,43 @@ notes1 <- list(annotations = list(
                      x = 0, y = 0, z = 0,
                      text = TeX("v_1"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 1, y = 0, z = 0,
                      text = TeX("v_2"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 0.5, y = 0, z = 0,
                      text = TeX("e_1"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)"),
                    list(
                      x = 1+2/pi, y = 0, z = 0,
                      text = TeX("e_2"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)"),
                    list(
                      x = 0.25, y = 0, z = 0,
                      text = TeX("s_1"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 1+1/pi, y = 1/pi, z = 0,
                      text = TeX("s_2"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 0.25, y = 0, z = 1,
                      text = TeX("f=\\gamma\\big|_\\Gamma"),
                      textangle = 0, ax = -40, ay = 0,
-                     font = list(color = "rgb(0,0,200)", size = 16),
+                     font = list(color = "rgb(0,0,200)", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)")))
     
 # to plot the path 
@@ -339,35 +339,35 @@ df2 <- data.frame(x = 1+1/pi+cos(theta)/pi,
 p1 <- plot_ly() |> 
   config(mathjax = 'cdn') |>
   add_trace(x = 0, y = 0, z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "black", symbol = 104),
+            marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   add_trace(x = 1, y = 0, z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "black", symbol = 104),
+            marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   add_trace(x = 0.25, y = 0, z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "red", symbol = 104),
+            marker = list(size = gsw, color = "red", symbol = 104),
             showlegend = FALSE) |> 
   add_trace(x = 1+1/pi, y = 1/pi, z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "red", symbol = 104),
+            marker = list(size = gsw, color = "red", symbol = 104),
             showlegend = FALSE) |> 
   add_trace(data = SS1, x = ~x, y = ~y, z = ~z, mode = "lines", type = "scatter3d",
-            line = list(width = 5, color = "black", symbol = 104),
+            line = list(width = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   add_trace(data = SS2, x = ~x, y = ~y, z = ~z, mode = "lines", type = "scatter3d",
-            line = list(width = 5, color = "black", symbol = 104),
+            line = list(width = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   add_trace(data = df1, x = ~x, y = ~y, z = ~z, mode = "lines", type = "scatter3d",
-            line = list(width = 5, color = "red", symbol = 104),
+            line = list(width = gsw, color = "red", symbol = 104),
             showlegend = FALSE) |>
   add_trace(data = df2, x = ~x, y = ~y, z = ~z, mode = "lines", type = "scatter3d",
-            line = list(width = 5, color = "red", symbol = 104),
+            line = list(width = gsw, color = "red", symbol = 104),
             showlegend = FALSE) |>
   add_trace(x = x, 
             y = y, 
             z = f, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 5),
+            line = list(color = "rgb(0,0,200)", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = rep(x, each = 3), 
             y = rep(y, each = 3), 
@@ -399,73 +399,73 @@ notes2 <- list(annotations = list(
                      x = 0, y = 0, z = 0,
                      text = TeX("v_1"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 1, y = 0, z = 0,
                      text = TeX("v_2"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = df4[1,1], y = df4[1,2], z = 0,
                      text = TeX("x_1^{e_2}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = df4[2,1], y = df4[2,2], z = 0,
                      text = TeX("x_2^{e_2}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = df4[3,1], y = df4[3,2], z = 0,
                      text = TeX("x_3^{e_2}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = df4[4,1], y = df4[4,2], z = 0,
                      text = TeX("x_4^{e_2}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = df4[5,1], y = df4[5,2], z = 0,
                      text = TeX("x_5^{e_2}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = df4[6,1], y = df4[6,2], z = 0,
                      text = TeX("x_6^{e_2}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = df4[7,1], y = df4[7,2], z = 0,
                      text = TeX("x_7^{e_2}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 0.25, y = 0, z = 0,
                      text = TeX("x_1^{e_1}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 0.5, y = 0, z = 0,
                      text = TeX("x_2^{e_1}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 0.75, y = 0, z = 0,
                      text = TeX("x_3^{e_1}"),
                      textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1)))
 
 p2 <- plot_ly() |> 
@@ -475,15 +475,15 @@ p2 <- plot_ly() |>
             z = x*0, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "black", width = 5),
+            line = list(color = "black", width = gsw),
             showlegend = FALSE) |>
   add_trace(data = df3, x = ~x, y = ~y, z = ~z, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "gray", symbol = 104)) |>
+            marker = list(size = gsw, color = "gray", symbol = 104)) |>
   add_trace(x = 0, y = 0, z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "black", symbol = 104),
+            marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   add_trace(x = 1, y = 0, z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "black", symbol = 104),
+            marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   layout(scene = c(tadpole.layout(x_range, y_range, z_range), notes2),
          showlegend = FALSE,
@@ -525,49 +525,49 @@ notes3 <- list(annotations = list(
                      x = 0, y = 0, z = 1,
                      text = TeX("\\phi_{v_1}"),
                      textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "red", size = 16),
+                     font = list(color = "red", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)"),
                    list(
                      x = 0, y = 0, z = 0,
                      text = TeX("\\mathcal{N}_{v_1}"),
                      textangle = 0, ax = 25, ay = 5,
-                     font = list(color = "green", size = 16),
+                     font = list(color = "green", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)"),
                    list(
                      x = 1, y = 0, z = 1,
                      text = TeX("\\phi_{v_2}"),
                      textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "red", size = 16),
+                     font = list(color = "red", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)"),
                    list(
                      x = 0, y = 0, z = 0,
                      text = TeX("v_1"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 1, y = 0, z = 0,
                      text = TeX("v_2"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = 1, y = 0, z = 0,
                      text = TeX("\\mathcal{N}_{v_2}"),
                      textangle = 0, ax = 40, ay = -10,
-                     font = list(color = "green", size = 16),
+                     font = list(color = "green", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)"),
                    list(
                      x = df4[5,1], y = df4[5,2], z = 0,
                      text = TeX("x_5^{e_2}"),
                      textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 16),
+                     font = list(color = "black", size = gfsize),
                      arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
                    list(
                      x = df4[5,1], y = df4[5,2], z = 1,
                      text = TeX("\\varphi_5^{e_2}"),
                      textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "rgb(0,0,200)", size = 16),
+                     font = list(color = "rgb(0,0,200)", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)")))
 
 p3 <- plot_ly() |> 
@@ -577,14 +577,14 @@ p3 <- plot_ly() |>
             z = as.vector(A[, 1:graph$nV]), 
             type = "scatter3d", 
             mode = "lines",
-            line = list(color = "red", width = 5), 
+            line = list(color = "red", width = gsw), 
             showlegend = FALSE) |>
   add_trace(x = rep(x, times = ncol(A) - graph$nV), 
             y = rep(y, times = ncol(A) - graph$nV), 
             z = as.vector(A[, (graph$nV+1):ncol(A)]), 
             type = "scatter3d",
             mode = "lines", 
-            line = list(color = "darkgray", width = 5), 
+            line = list(color = "darkgray", width = gsw), 
             showlegend = FALSE) |>
   add_trace(x = rep(x, each = 3), 
             y = rep(y, each = 3), 
@@ -598,14 +598,14 @@ p3 <- plot_ly() |>
             z = as.vector(A[, 10]), 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 5),
+            line = list(color = "rgb(0,0,200)", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = x, 
             y = y, 
             z = x*0, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "black", width = 5),
+            line = list(color = "black", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = rep(x, times = graph$nV), 
             y = rep(y, times = graph$nV), 
@@ -613,16 +613,16 @@ p3 <- plot_ly() |>
                   replace(rep(NA, nrow(A)), c(31:51, 111:121), 0)), 
             type = "scatter3d", 
             mode = "lines",
-            line = list(color = "green", width = 5), 
+            line = list(color = "green", width = gsw), 
             showlegend = FALSE) |>
   add_trace(x = df4[5,1], y = df4[5,2], z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "rgb(0,0,200)", symbol = 104),
+            marker = list(size = gsw, color = "rgb(0,0,200)", symbol = 104),
             showlegend = FALSE) |>
   add_trace(x = 0, y = 0, z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "black", symbol = 104),
+            marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   add_trace(x = 1, y = 0, z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = 5, color = "black", symbol = 104),
+            marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   layout(scene = c(tadpole.layout(x_range, y_range, z_range), notes3),
          showlegend = FALSE,

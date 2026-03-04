@@ -100,6 +100,8 @@ colaxnn <- "lightgray"
 gfsize <- 16
 # Dark blue color
 mydarkblue <- "#0000C8"
+# Global size or widht for objects
+gsw <- 7
 ```
 
 ```{r}

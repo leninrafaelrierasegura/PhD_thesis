@@ -256,7 +256,7 @@ dddf <- apply_edge_functions_fast(graph, dddf_list)
 
 ```{r}
 sizeref <- 0.1
-pf <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+pf <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -309,35 +309,35 @@ pf <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-pdf <- graph$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+pdf <- graph$plot_function(X = df, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -390,35 +390,35 @@ pdf <- graph$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width =
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-pddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |>
+pddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -471,35 +471,35 @@ pddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+pdddf <- graph$plot_function(X = dddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -552,31 +552,31 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_wid
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -770,7 +770,7 @@ dddf <- my_apply_edge_functions(graph, dddf_list, ell1, ell2, h)
 
 
 ```{r}
-p_base <- graph$plot_function(X = rep(0, nrow(graph$mesh$VtE)), vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly")
+p_base <- graph$plot_function(X = rep(0, nrow(graph$mesh$VtE)), vertex_size = gsw, line_color = "black", edge_width = gsw, line_width = gsw, type = "plotly")
 DF <- f$DF
 pf3 <- p_base |>
   add_trace(
@@ -811,7 +811,7 @@ pf3 <- p_base |>
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 5),
+            line = list(color = "rgb(0,0,200)", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -840,31 +840,31 @@ pf3 <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -908,7 +908,7 @@ pdf3 <- p_base |>
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 5),
+            line = list(color = "rgb(0,0,200)", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -937,31 +937,31 @@ pdf3 <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1005,7 +1005,7 @@ pddf3 <- p_base |>
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 5),
+            line = list(color = "rgb(0,0,200)", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -1034,31 +1034,31 @@ pddf3 <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1102,7 +1102,7 @@ pdddf3 <- p_base |>
             z = ~z, 
             type = "scatter3d",
             mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = 5),
+            line = list(color = "rgb(0,0,200)", width = gsw),
             showlegend = FALSE) |>
   add_trace(x = rep(DF$y, each = 3), 
             y = rep(DF$x, each = 3), 
@@ -1131,31 +1131,31 @@ pdddf3 <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = 16),
+               font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
