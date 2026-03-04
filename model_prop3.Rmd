@@ -292,8 +292,7 @@ plot(std_cheap - std_expensive)
 
 ```{r}
 a = 2.8
-msdwmf <- graph$plot_function(X = std_expensive, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = 7, edge_color = "black", edge_width = 7) %>% # true one
-  graph$plot_function(X = std_cheap, p = ., vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = 7, edge_color = "black", edge_width = 7) %>% # approx one
+msdwmf <- graph$plot_function(X = std_cheap, vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = gsw, edge_color = "black", edge_width = gsw) %>% # approx one
   config(mathjax = 'cdn') %>% 
   layout(title = list(text = TeX("\\sigma_{\\kappa}(\\cdot)"), y = 0.8),
          font = list(family = "Palatino"),
@@ -306,7 +305,7 @@ camera = list(
       eye = list(x = -0.7*a, y = 0.7*a, z = 0.7*a))))
 
 
-msdvswmf <- graph$plot_function(X = nonstat_est_sigma, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = 7, edge_color = "black", edge_width = 7) %>%  
+msdvswmf <- graph$plot_function(X = nonstat_est_sigma, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = gsw, edge_color = "black", edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
   layout(title = list(text = TeX("\\sigma_0"), y = 0.8),
          font = list(family = "Palatino"),
@@ -388,7 +387,7 @@ est_sigma_0 <- sqrt(Matrix::diag(est_cov_matrix))
 
 
 ```{r}
-msdwmf_fem <- graph_copy2$plot_function(X = est_sigma_s, vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = 7, edge_color = "black", edge_width = 7) %>% 
+msdwmf_fem <- graph_copy2$plot_function(X = est_sigma_s, vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = gsw, edge_color = "black", edge_width = gsw) %>% 
   config(mathjax = 'cdn') %>% 
   layout(title = list(text = TeX("\\sigma_{\\kappa}(\\cdot)"), y = 0.8),
          font = list(family = "Palatino"),
@@ -401,7 +400,7 @@ camera = list(
       eye = list(x = -0.7*a, y = 0.7*a, z = 0.7*a))))
 
 
-msdvswmf_fem <- graph_copy2$plot_function(X = est_sigma_0, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = 7, edge_color = "black", edge_width = 7) %>%  
+msdvswmf_fem <- graph_copy2$plot_function(X = est_sigma_0, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = gsw, edge_color = "black", edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
   layout(title = list(text = TeX("\\sigma_0"), y = 0.8),
          font = list(family = "Palatino"),
