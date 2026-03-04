@@ -1,5 +1,5 @@
 ---
-title: "Graphs"
+title: "Kirchhoff vertex conditions"
 date: "Last modified: `r format(Sys.time(), '%d-%m-%Y.')`"
 output:
   html_document:
@@ -57,7 +57,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = TRUE,       
+  eval = FALSE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -214,12 +214,14 @@ apply_edge_functions_fast <- function(graph, f_list) {
 }
 ```
 
+
 # Example of a function $f\in C(\Gamma)\cap \mathcal{K}(\Gamma)\setminus C^1(\Gamma)$
 
-Let us consider the $3$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v_0, v_1, v_2, v_3\}$ and $\mathcal{E} = \{e_1, e_2, e_3\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v_0$ to the outer vertex $v_i$ for $i=1,2,3$ in such a way that $v_0 = \underline{e_1} = \underline{e_2} = \underline{e_3}$. On $\Gamma$ we define the function $f = \{f_e\}_{e\in\mathcal{E}}$ as follows:
+
+Let us consider the $3$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v_0, v_1, v_2, v_3\}$ and $\mathcal{E} = \{e_1, e_2, e_3\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v_0$ to the outer vertex $v_i$ for $i=1,2,3$ in such a way that $v_0 = \underline{e_1} = \underline{e_2} = \underline{e_3}$. On $\Gamma$, we define the function $f = \{f_e\}_{e\in\mathcal{E}}$ via
 
 $$
-f_{e_1}(s) = a + b_1 s - \frac{b_1 s^3}{3\ell^2}, \quad f_{e_2}(s) = a + b_2 s - \frac{b_2 s^3}{3\ell^2}, \quad f_{e_3}(s) = a + b_3 s - \frac{b_3 s^3}{3\ell^2}
+f_{e_1}(s) = a + b_1 s - \frac{b_1 s^3}{3\ell^2}, \quad f_{e_2}(s) = a + b_2 s - \frac{b_2 s^3}{3\ell^2}, \quad f_{e_3}(s) = a + b_3 s - \frac{b_3 s^3}{3\ell^2},
 $$
 
 where $a$ (to be chosen) is the value of $f$ at the central vertex and $b_1, b_2, b_3$ are constants (to be chosen) such that $b_1 + b_2 + b_3 = 0$. Clearly, $f$ is a continuous function since 
@@ -245,7 +247,7 @@ $$
 f_{e_1}'(\ell) =  f_{e_2}'(\ell) = f_{e_3}'(\ell) = 0.
 $$
 
-For instance, we can choose $b_1 = 1$, $b_2 = 1$ and $b_3 = -2$, as shown in the following plots of $f$ and $f'$. This choice ensures $f$ to be continuous and satisfy the Kirchhoff vertex conditions while $f'$ is discontinuous at the central vertex.
+For instance, we can choose $b_1 = 1$, $b_2 = 1$ and $b_3 = -2$. This choice ensures $f$ to be continuous and satisfy the Kirchhoff vertex conditions while $f'$ is discontinuous at the central vertex. See Figure 1 and 2.
 
 
 
@@ -329,13 +331,10 @@ graph_disc$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width = 5
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
 
-::: {}
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
-graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+```{r}
+star3f <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -386,9 +385,9 @@ graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type
   cmax = 1
 ) |>
   plotly::layout(title = list(text = TeX("f"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -397,23 +396,54 @@ graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
+               text = TeX("v_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym3, y = xm3, z = zm3,
+               text = TeX("e_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
-```
 
-
-
-
-
-
-:::
-
-
-::: {}
-
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
-graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly") |>
+star3df <- graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly") |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -479,9 +509,9 @@ graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width =
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f'"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -490,18 +520,54 @@ graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width =
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
+               text = TeX("v_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym3, y = xm3, z = zm3,
+               text = TeX("e_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
-```
 
-
-
-:::
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}''(s) = -\\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2,3$.")}
-graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = TRUE, interpolate_plot = TRUE, type = "plotly") |> 
+star3ddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = TRUE, interpolate_plot = TRUE, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -552,9 +618,9 @@ graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, co
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f''"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -563,17 +629,54 @@ graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, co
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
+               text = TeX("v_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym3, y = xm3, z = zm3,
+               text = TeX("e_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
-```
 
-
-:::
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'''(s) = -\\dfrac{2 b_i}{\\ell^2}$ for $i=1,2,3$.")}
-graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+star3dddf <- graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   add_trace(
   type = "cone",
   x = ym1,
@@ -624,9 +727,9 @@ graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width =
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f'''"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -635,8 +738,106 @@ graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width =
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
+               text = TeX("v_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym3, y = xm3, z = zm3,
+               text = TeX("e_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
+
+
+save(star3f, file = here::here("data_files/star3f.Rdata"))
+save(star3df, file = here::here("data_files/star3df.Rdata"))
+save(star3ddf, file = here::here("data_files/star3ddf.Rdata"))
+save(star3dddf, file = here::here("data_files/star3dddf.Rdata"))
+```
+
+
+
+For illustration purposes, Figure 3 and 4 shows $f''$ and $f'''$.
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
+load(here::here("data_files/star3f.Rdata"))
+star3f
+```
+
+
+
+:::
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
+load(here::here("data_files/star3df.Rdata"))
+star3df
+```
+
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_i}(s) = -\\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2,3$.")}
+load(here::here("data_files/star3ddf.Rdata"))
+star3ddf
+```
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_i}(s) = -\\dfrac{2 b_i}{\\ell^2}$ for $i=1,2,3$.")}
+load(here::here("data_files/star3dddf.Rdata"))
+star3dddf
 ```
 
 
@@ -645,13 +846,16 @@ graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width =
 ::::
 
 
+
 # Example of a function $g\in C^1(\Gamma)\cap \mathcal{K}(\Gamma)$
 
-Let us consider the function $g = \{g_e\}_{e\in\mathcal{E}}$ defined on the $3$-star graph with common edge length $\ell$ as follows:
+
+
+Let us consider the function $g = \{g_e\}_{e\in\mathcal{E}}$ defined on the $3$-star graph with common edge length $\ell$ via
 $$
 g_{e_1}(s) = \cos\left(\frac{\pi s}{\ell}\right), \quad g_{e_2}(s) = \cos\left(\frac{\pi s}{\ell}\right), \quad g_{e_3}(s) = \cos\left(\frac{\pi s}{\ell}\right).
 $$
-Clearly, $g$ is a continuous function defined on the graph since
+Clearly, $g$ is a continuous function (see Figure 5) on $\Gamma$ since
 $$
 g_{e_1}(0) =  g_{e_2}(0) =  g_{e_3}(0) = 1.
 $$
@@ -661,9 +865,9 @@ g_{e_1}'(s) = -\frac{\pi}{\ell}\sin\left(\frac{\pi s}{\ell}\right), \quad g_{e_2
 $$
 Since $g_{e_1}'(0) = g_{e_2}'(0) = g_{e_3}'(0) = 0$, $g$ satisfies the Kirchhoff vertex conditions
 $$
-g_{e_1}'(0) + g_{e_2}'(0) + g_{e_3}'(0) = 0\text{ and }g_{e_1}'(\ell) =  g_{e_2}'(\ell) =  g_{e_3}'(\ell) = 0,
+g_{e_1}'(0) + g_{e_2}'(0) + g_{e_3}'(0) = 0\text{ and }g_{e_1}'(\ell) =  g_{e_2}'(\ell) =  g_{e_3}'(\ell) = 0.
 $$
-Moreover, $g'$ is a continuous function.
+Moreover, $g'$ is a continuous function. See Figure 6.
 
 
 ```{r}
@@ -695,13 +899,9 @@ dddg <- apply_edge_functions_fast(graph, dddg_list)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = g, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+```{r}
+star3g <- graph$plot_function(X = g, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -752,9 +952,9 @@ graph$plot_function(X = g, vertex_size = 5, edge_width = 5, line_width = 5, type
   cmax = 1
 ) |>
   plotly::layout(title = list(text = TeX("g"), y = 0.8), 
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -763,17 +963,54 @@ graph$plot_function(X = g, vertex_size = 5, edge_width = 5, line_width = 5, type
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
+               text = TeX("v_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym3, y = xm3, z = zm3,
+               text = TeX("e_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
-```
 
-:::
-
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = dg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star3dg <- graph$plot_function(X = dg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -824,9 +1061,9 @@ graph$plot_function(X = dg, vertex_size = 5, edge_width = 5, line_width = 5, typ
   cmax = 1
 ) |>
   plotly::layout(title = list(text = TeX("g'"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -835,17 +1072,54 @@ graph$plot_function(X = dg, vertex_size = 5, edge_width = 5, line_width = 5, typ
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
+               text = TeX("v_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym3, y = xm3, z = zm3,
+               text = TeX("e_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
-```
 
-
-:::
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}''(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = ddg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star3ddg <- graph$plot_function(X = ddg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -896,9 +1170,9 @@ graph$plot_function(X = ddg, vertex_size = 5, edge_width = 5, line_width = 5, ty
   cmax = 1
 ) |>
   plotly::layout(title = list(text = TeX("g''"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -907,17 +1181,54 @@ graph$plot_function(X = ddg, vertex_size = 5, edge_width = 5, line_width = 5, ty
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
+               text = TeX("v_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym3, y = xm3, z = zm3,
+               text = TeX("e_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
-```
 
-
-:::
-
-::: {}
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}'''(s) = \\dfrac{\\pi^3}{\\ell^3}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-graph$plot_function(X = dddg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+star3dddg <- graph$plot_function(X = dddg, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -968,9 +1279,9 @@ graph$plot_function(X = dddg, vertex_size = 5, edge_width = 5, line_width = 5, t
   cmax = 1
 ) |>
   plotly::layout(title = list(text = TeX("g'''"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -979,8 +1290,99 @@ graph$plot_function(X = dddg, vertex_size = 5, edge_width = 5, line_width = 5, t
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
+               text = TeX("v_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym3, y = xm3, z = zm3,
+               text = TeX("e_3"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
+
+save(star3g, file = here::here("data_files/star3g.Rdata"))
+save(star3dg, file = here::here("data_files/star3dg.Rdata"))
+save(star3ddg, file = here::here("data_files/star3ddg.Rdata"))
+save(star3dddg, file = here::here("data_files/star3dddg.Rdata"))
+```
+
+For illustration purposes, Figure 7 and 8 shows $g''$ and $g'''$.
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+load(here::here("data_files/star3g.Rdata"))
+star3g
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_i}(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+load(here::here("data_files/star3dg.Rdata"))
+star3dg
+```
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_i}(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+load(here::here("data_files/star3ddg.Rdata"))
+star3ddg
+```
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_i}(s) = \\dfrac{\\pi^3}{\\ell^3}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+load(here::here("data_files/star3dddg.Rdata"))
+star3dddg
 ```
 
 
@@ -988,6 +1390,28 @@ graph$plot_function(X = dddg, vertex_size = 5, edge_width = 5, line_width = 5, t
 
 ::::
 
+# Example of a function $h\in C^1(\Gamma)\cap \mathcal{K}(\Gamma)$ where $h'$ looks discontinuous
+
+
+Let us consider the $2$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v_0, v_1, v_2\}$ and $\mathcal{E} = \{e_1, e_2\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v_0$ to the outer vertex $v_i$ for $i=1,2$ in such a way that $v_0 = \underline{e_1} = \underline{e_2}$. On $\Gamma$, we define the function $h = \{h_e\}_{e\in\mathcal{E}}$ via
+
+$$
+h_{e_1}(s) = a + b_1 s - \frac{b_1 s^3}{3\ell^2}, \quad h_{e_2}(s) = a + b_2 s - \frac{b_2 s^3}{3\ell^2}.
+$$
+Clearly, $h$ is a continuous function (see Figure 9) since
+$$
+h_{e_1}(0) = h_{e_2}(s) = a.
+$$
+The derivative $h' = \{h'_e\}_{e\in\mathcal{E}}$ of $h$ on each edge is given by
+
+$$
+h_{e_1}'(s) = b_1 - \frac{b_1 s^2}{\ell^2}, \quad h_{e_2}'(s) = b_2 - \frac{b_2 s^2}{\ell^2}.
+$$
+By choosing $b_1=1$ and $b_2=-1$, we have that 
+$$
+h_{e_1}'(0)+h_{e_2}'(0) = b_1+b_2=0\quad\text{ and }\quad h_{e_1}'(\ell) =h_{e_2}'(\ell) = 0,
+$$
+so that $h$ satisfies the Kirchhoff conditions at every vertex. This means that $h'$ should be a continuous function. However, Figure 10 shows that $h'$ is discontinuous. This is actually an artefact due to the fact that the edges are not compatible oriented. For a discussion about compatible orientation, go to this [page](graphs3.html).
 
 ```{r}
 n <- 2
@@ -1015,11 +1439,21 @@ f2 <- function(s) a + b[2]*s - b[2]*s^3/(3*L^2)
 df1 <- function(s) b[1] - b[1]*s^2/L^2
 df2 <- function(s) b[2] - b[2]*s^2/L^2
 
+ddf1 <- function(s) -2*b[1]*s/L^2
+ddf2 <- function(s) -2*b[2]*s/L^2
+
+dddf1 <- function(s) -2*b[1]/L^2
+dddf2 <- function(s) -2*b[2]/L^2
+
 f_list <- list(f1, f2)
 df_list <- list(df1, df2)
+ddf_list <- list(ddf1, ddf2)
+dddf_list <- list(dddf1, dddf2)
 
 f <- apply_edge_functions_fast(graph, f_list)
 df <- apply_edge_functions_fast(graph_disc, df_list)
+ddf <- apply_edge_functions_fast(graph, ddf_list)
+dddf <- apply_edge_functions_fast(graph_disc, dddf_list)
 ```
 
 ```{r}
@@ -1040,14 +1474,8 @@ DF_NO_NA <- rbind(DF1, DF2)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
-
-
-::: {}
-
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
-graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+```{r}
+star2f <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -1081,10 +1509,10 @@ graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("f"), y = 0.8), 
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+  plotly::layout(title = list(text = TeX("h"), y = 0.8), 
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1093,18 +1521,42 @@ graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5, type
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym4, y = xm4, z = zm4,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
-```
 
-
-:::
-
-::: {}
-
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
-graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly") |>
+star2df <- graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width = 5, line_width = 5, type = "plotly") |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -1153,10 +1605,10 @@ graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width =
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("f'"), y = 0.8), 
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+  plotly::layout(title = list(text = TeX("h'"), y = 0.8), 
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1165,12 +1617,262 @@ graph$plot_function(X = f*0, vertex_size = 5, line_color = "black", edge_width =
                                        z = z_eye),
                             center = list(x = 0, 
                                           y = 0, 
-                                          z = 0))
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym4, y = xm4, z = zm4,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
                  ))
+
+star2ddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width = 5, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym4,
+  y = xm4,
+  z = zm4,
+  u = dy4,
+  v = dx4,
+  w = dz4,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("h''"), y = 0.8), 
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym4, y = xm4, z = zm4,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+star2dddf <- graph_disc$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_width = 5, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym4,
+  y = xm4,
+  z = zm4,
+  u = dy4,
+  v = dx4,
+  w = dz4,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("h'''"), y = 0.8),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              yaxis = list(title = list(text = "y", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+              zaxis = list(title = list(text = "z", font = list(color = "lightgray")),  tickfont = list(color = "lightgray")),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym4, y = xm4, z = zm4,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 16),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+
+save(star2f, file = here::here("data_files/star2f.Rdata"))
+save(star2df, file = here::here("data_files/star2df.Rdata"))
+save(star2ddf, file = here::here("data_files/star2ddf.Rdata"))
+save(star2dddf, file = here::here("data_files/star2dddf.Rdata"))
+```
+
+
+For illustration purposes, Figure 11 and 12 shows $h''$ and $h'''$.
+
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+load(here::here("data_files/star2f.Rdata"))
+star2f
 ```
 
 
 :::
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("data_files/star2df.Rdata"))
+star2df
+```
+
+
+:::
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("data_files/star2ddf.Rdata"))
+star2ddf
+```
+
+
+:::
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("data_files/star2dddf.Rdata"))
+star2dddf
+```
+
+
+:::
+
 
 ::::
 
