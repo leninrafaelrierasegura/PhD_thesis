@@ -79,7 +79,7 @@ captioner <- function(caption) {
 
 ```
 
-```{r}
+```{r, eval = TRUE}
 library(MetricGraph)
 library(ggplot2)
 library(reshape2)
@@ -1237,7 +1237,7 @@ so that the second derivative does not change sign under a flip. See Figure 7. T
 
 # References
 
-```{r}
+```{r, eval = TRUE}
 grateful::cite_packages(output = "paragraph", out.dir = ".")
 ```
 

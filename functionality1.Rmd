@@ -161,3 +161,10 @@ tadpole.layout <- function(x_range, y_range, z_range){
 }
 ```
 
+# References
+
+```{r, purl = FALSE}
+grateful::cite_packages(output = "paragraph", out.dir = ".")
+```
+
+

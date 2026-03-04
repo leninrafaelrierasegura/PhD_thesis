@@ -79,7 +79,7 @@ captioner <- function(caption) {
 
 ```
 
-```{r}
+```{r, eval = TRUE}
 library(MetricGraph)
 library(ggplot2)
 library(reshape2)
