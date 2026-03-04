@@ -96,6 +96,10 @@ slackr_setup(token = token) # token comes from keys.R
 ```{r}
 # Color for axis name and axis numbers
 colaxnn <- "lightgray"
+# Global font size
+gfsize <- 16
+# Dark blue color
+mydarkblue <- "#0000C8"
 ```
 
 ```{r}
