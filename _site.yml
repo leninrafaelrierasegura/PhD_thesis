@@ -24,7 +24,7 @@ navbar:
         - text: "Section 2.2"
           href: model_prop2.html
         - text: "Section 2.3"
-          href: index.html
+          href: model_prop3.html
     - text: "Chapter 3"
       menu:
         - text: "Section 3.1"

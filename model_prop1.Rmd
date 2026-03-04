@@ -42,7 +42,7 @@ Go back to the [Contents](about.html) page.
 
 
 
-Go back to the [About page](about.html). To see how the covariance function changes when $\nu$ changes, go to [model_properties2.html](model_prop2.html).
+Go back to the [About page](about.html). To see how the covariance function changes when $\nu$ changes, go to [model_prop2.html](model_prop2.html).
 
 ::: {.custom-box}
 This vignette illustrates how our proposed approach allows for Gaussian processes with general smoothness and non-stationary covariance on any compact metric graph. Recall that these processes are defined as solutions to 
@@ -361,7 +361,8 @@ p2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 1, plotly
 p3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = gsw, line_color = "darkgreen", line_width = gsw, p = p2)
 p_A <- p3 %>%
   config(mathjax = 'cdn') %>%
-  layout(showlegend = FALSE,
+  layout(font = list(family = "Palatino"),
+         showlegend = FALSE,
          scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
               zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),

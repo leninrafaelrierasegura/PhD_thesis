@@ -157,7 +157,8 @@ p11 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
                            edge_width = gsw, 
                            line_color = "black")|>
   config(mathjax = 'cdn') |>
-  layout(scene =  c(notes_int, layout_int),
+  layout(font = list(family = "Palatino"),
+         scene =  c(notes_int, layout_int),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p11, file = here::here("data_files/interval_graph.Rdata"))
@@ -193,7 +194,8 @@ p22 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
                            edge_width = gsw, 
                            line_color = "black") %>% 
   config(mathjax = 'cdn') %>% 
-  layout(scene =  c(notes_cir, layout_int),
+  layout(font = list(family = "Palatino"),
+         scene =  c(notes_cir, layout_int),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p22, file = here::here("data_files/circle_graph.Rdata"))
@@ -240,7 +242,8 @@ p33 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
                            edge_width = gsw, 
                            line_color = "black") |>
   config(mathjax = 'cdn') |>
-  layout(scene =  c(notes_tad_1, layout_int),
+  layout(font = list(family = "Palatino"),
+         scene =  c(notes_tad_1, layout_int),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p33, file = here::here("data_files/tadpole_graph.Rdata"))
@@ -376,7 +379,8 @@ p1 <- plot_ly() |>
             mode = "lines",
             line = list(color = "lightgray", width = 0.5),
             showlegend = FALSE) |>
-  layout(scene = c(tadpole.layout(x_range, y_range, z_range),notes1),
+  layout(font = list(family = "Palatino"),
+         scene = c(tadpole.layout(x_range, y_range, z_range),notes1),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p1, file = here::here("data_files/tadpole_graph_function.Rdata"))
@@ -485,7 +489,8 @@ p2 <- plot_ly() |>
   add_trace(x = 1, y = 0, z = 0, mode = "markers", type = "scatter3d", 
             marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
-  layout(scene = c(tadpole.layout(x_range, y_range, z_range), notes2),
+  layout(font = list(family = "Palatino"),
+         scene = c(tadpole.layout(x_range, y_range, z_range), notes2),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p2, file = here::here("data_files/tadpole_graph_mesh.Rdata"))
@@ -516,7 +521,7 @@ which is a star-shaped set with center at $v$ and rays made of the segments cont
         0,&\text{ otherwise},
     \end{cases}
 \end{equation*}
-where $x_v^e$ is either $x_0^e$ or $x_{n_e}^e$ depending on the edge direction and its parameterization. See @arioli2018finite for more. Figure 3 below provides an illustration of the system of basis functions $\{\varphi_j^e, \phi_v\}$ together with the set $\Ncal_v$.
+where $x_v^e$ is either $x_0^e$ or $x_{n_e}^e$ depending on the edge direction and its parameterization. See (@Arioli2018AFinite) for more. Figure 3 below provides an illustration of the system of basis functions $\{\varphi_j^e, \phi_v\}$ together with the set $\Ncal_v$.
 
 
 ```{r}
@@ -624,7 +629,8 @@ p3 <- plot_ly() |>
   add_trace(x = 1, y = 0, z = 0, mode = "markers", type = "scatter3d", 
             marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
-  layout(scene = c(tadpole.layout(x_range, y_range, z_range), notes3),
+  layout(font = list(family = "Palatino"),
+         scene = c(tadpole.layout(x_range, y_range, z_range), notes3),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
