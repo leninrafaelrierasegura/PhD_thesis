@@ -57,7 +57,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = TRUE,       
+  eval = FALSE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -140,9 +140,9 @@ notes_int <- list(annotations = list(
                font = list(color = "black", size = 16),
                arrowcolor = "rgba(0,0,0,0)")))
 
-layout_int <- list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+layout_int <- list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
   camera = list(eye = list(x = 2.3, 
                                        y = 2.3, 
                                        z = 2.3),

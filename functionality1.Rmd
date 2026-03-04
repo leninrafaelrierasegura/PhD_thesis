@@ -92,6 +92,12 @@ source("keys.R")
 slackr_setup(token = token) # token comes from keys.R
 ```
 
+
+```{r}
+# Color for axis name and axis numbers
+colaxnn <- "lightgray"
+```
+
 ```{r}
 gets.graph.interval <- function(n){
   edge <- rbind(c(0,0),c(1,0))
@@ -140,9 +146,9 @@ plotting.order <- function(v, graph){
 
 ```{r}
 tadpole.layout <- function(x_range, y_range, z_range){
-  return(list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray"), range = x_range),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray"), range = y_range),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray"), range = z_range),
+  return(list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = x_range),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
               aspectratio = list(x = 2*(1+2/pi), 
                                  y = 2*(2/pi), 
                                  z = 1*(2/pi)),

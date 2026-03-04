@@ -291,9 +291,9 @@ pf <- graph$plot_function(X = f, vertex_size = 5, edge_width = 5, line_width = 5
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -372,9 +372,9 @@ pdf <- graph$plot_function(X = df, vertex_size = 5, edge_width = 5, line_width =
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f'"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -453,9 +453,9 @@ pddf <- graph$plot_function(X = ddf, vertex_size = 5, edge_width = 5, line_width
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f''"), y = 0.8), 
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -534,9 +534,9 @@ pdddf <- graph$plot_function(X = dddf, vertex_size = 5, edge_width = 5, line_wid
 ) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("f'''"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -822,9 +822,9 @@ pf3 <- p_base |>
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("g"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -919,9 +919,9 @@ pdf3 <- p_base |>
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("g'"), y = 0.8),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1016,9 +1016,9 @@ pddf3 <- p_base |>
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("g''"), y = 0.8), 
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1113,9 +1113,9 @@ pdddf3 <- p_base |>
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
   plotly::layout(title = list(text = TeX("g'''"), y = 0.8), 
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray")),
-              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray")),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
