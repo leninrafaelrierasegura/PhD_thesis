@@ -45,7 +45,7 @@ Go back to the [Contents](about.html) page.
 # Create a clipboard button on the rendered HTML page
 source(here::here("clipboard.R")); clipboard
 # Set seed for reproducibility
-set.seed(1982) 
+#set.seed(1982) 
 # Set global options for all code chunks
 knitr::opts_chunk$set(
   # Disable messages printed by R code chunks
