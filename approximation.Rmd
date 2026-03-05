@@ -91,6 +91,7 @@ truncate_to_two <- function(x) {
 # Import libraries
 
 ```{r, eval = TRUE}
+# to update
 # remotes::install_github("davidbolin/rspde", ref = "devel")
 # remotes::install_github("davidbolin/metricgraph", ref = "devel")
 library(MetricGraph)
