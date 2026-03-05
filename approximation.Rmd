@@ -141,7 +141,7 @@ gets_graph_interval <- function(n){
 
 
 ```{r}
-# Matern covariance function
+# Matern covariance function ff
 matern.covariance <- function(h, kappa, nu, sigma) {
   if (nu == 1 / 2) {
     C <- sigma^2 * exp(-kappa * abs(h))
