@@ -72,7 +72,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = FALSE,       
+  eval = TRUE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -190,7 +190,7 @@ logo_graph <- metric_graph$new(edges = edges, perform_merges = TRUE)
 # Prune the vertices
 #logo_graph$prune_vertices()
 # Build the mesh
-h <- 0.05
+h <- 1#0.05
 logo_graph$build_mesh(h = h) 
 # Extract the mesh locations in Euclidean coordinates
 xypoints <- logo_graph$mesh$V
@@ -255,41 +255,54 @@ m1 <- which.min((xypoints[,1]-point1[1])^2 + (xypoints[,2]-point1[2])^2)
 m2 <- which.min((xypoints[,1]-point2[1])^2 + (xypoints[,2]-point2[2])^2)
 m3 <- which.min((xypoints[,1]-point3[1])^2 + (xypoints[,2]-point3[2])^2)
 # Create a plot of the model for tau
-TAU <- logo_graph$plot_function(X = model_for_tau, vertex_size = 0) +
-  ggtitle("Model for tau") +
+TAU <- logo_graph$plot_function(X = model_for_tau, vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\tau(s) = e^{0.05\\cdot(x(s)-y(s))}$") +
   theme_minimal() +
-  theme(text = element_text(family = "Palatino"))
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) 
 # Create a plot of the model for kappa
-KAPPA <- logo_graph$plot_function(X = model_for_kappa, vertex_size = 0) +
-  ggtitle("Model for kappa") +
+KAPPA <- logo_graph$plot_function(X = model_for_kappa, vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\kappa(s) = e^{0.1\\cdot(x(s)-y(s))}$") +
   theme_minimal() +
-  theme(text = element_text(family = "Palatino"))
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) 
 # Create a plot for the practical correlation range
-r1 <- logo_graph$plot_function(X = est_range, vertex_size = 0) +
-  ggtitle("Practical correlation range") +
+r1 <- logo_graph$plot_function(X = est_range, vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\rho(s)$") +
   theme_minimal() +
-  theme(text = element_text(family = "Palatino")) +
-  annotate("point", x = xypoints[m1,1], y = xypoints[m1,2], size = 1, color = "#0000C8") +
-  annotate("point", x = xypoints[m2,1], y = xypoints[m2,2], size = 1, color = "red") +
-  annotate("point", x = xypoints[m3,1], y = xypoints[m3,2], size = 1, color = "darkgreen") +
-  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "s[1]", parse = TRUE, size = 3, hjust = 0, color = "black") +
-  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "s[2]", parse = TRUE, size = 3, hjust = 0, color = "black") +
-  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "s[3]", parse = TRUE, size = 3, hjust = 0, color = "black")
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) +
+  annotate("point", x = xypoints[m1,1], y = xypoints[m1,2], size = 2, color = "#0000C8") +
+  annotate("point", x = xypoints[m2,1], y = xypoints[m2,2], size = 2, color = "red") +
+  annotate("point", x = xypoints[m3,1], y = xypoints[m3,2], size = 2, color = "darkgreen") +
+  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "$s_1$", size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "$s_2$", size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "$s_3$", size = 4, hjust = 0, color = "black")
 # Create a plot for the standard deviation
-s1 <- logo_graph$plot_function(X = est_sigma, vertex_size = 0) +
-  ggtitle("Standard deviation") +
+s1 <- logo_graph$plot_function(X = est_sigma, vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\sigma(s)$") +
   theme_minimal() +
-  theme(text = element_text(family = "Palatino")) +
-  annotate("point", x = xypoints[m1,1], y = xypoints[m1,2], size = 1, color = "#0000C8") +
-  annotate("point", x = xypoints[m2,1], y = xypoints[m2,2], size = 1, color = "red") +
-  annotate("point", x = xypoints[m3,1], y = xypoints[m3,2], size = 1, color = "darkgreen") +
-  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "s[1]", parse = TRUE, size = 3, hjust = 0, color = "black") +
-  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "s[2]", parse = TRUE, size = 3, hjust = 0, color = "black") +
-  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "s[3]", parse = TRUE, size = 3, hjust = 0, color = "black")
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm"))  +
+  annotate("point", x = xypoints[m1,1], y = xypoints[m1,2], size = 2, color = "#0000C8") +
+  annotate("point", x = xypoints[m2,1], y = xypoints[m2,2], size = 2, color = "red") +
+  annotate("point", x = xypoints[m3,1], y = xypoints[m3,2], size = 2, color = "darkgreen") +
+  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "$s_1$", size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "$s_2$", size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "$s_3$", size = 4, hjust = 0, color = "black")
 # Combine the four plots
 four_plots <- (TAU + KAPPA) / (s1 + r1)
 # Save the combined plot
-ggsave(here("data_files/four_plots.png"), plot = four_plots, width = 9.22, height = 7.05, dpi = 300)
+#ggsave(here("data_files/four_plots.png"), plot = four_plots, width = 9.22, height = 7.05, dpi = 300)
+myggsave(four_plots, width = 9.22, height = 7.05)
 save(four_plots, file = here::here("data_files/four_plots.Rdata"))
 ```
 
@@ -356,9 +369,9 @@ Below we show 3D plots of the covariance functions $r_i(\cdot)$, $i=1,2,3$, for 
 </div>
 
 ```{r}
-p1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = gsw, line_color = "#0000C8", line_width = gsw)
-p2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = gsw, line_color = "red", line_width = gsw, p = p1)
-p3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = gsw, line_color = "darkgreen", line_width = gsw, p = p2)
+p1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 7, line_color = "#0000C8", line_width = 7)
+p2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 7, line_color = "red", line_width = 7, p = p1)
+p3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 7, line_color = "darkgreen", line_width = 7, p = p2)
 p_A <- p3 %>%
   config(mathjax = 'cdn') %>%
   layout(font = list(family = "Palatino"),
