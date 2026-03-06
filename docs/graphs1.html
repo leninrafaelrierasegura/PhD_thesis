@@ -517,6 +517,12 @@ div.tocify {
     <li>
       <a href="approximation.html">Section 2.5</a>
     </li>
+    <li>
+      <a href="num_error.html">Section 2.6</a>
+    </li>
+    <li>
+      <a href="conv_rates.html">Section 2.7</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -1289,29 +1295,38 @@ Figure 6: Basis functions on the tadpole graph.
 <h1><span class="header-section-number">5</span> References</h1>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>grateful<span class="sc">::</span><span class="fu">cite_packages</span>(<span class="at">output =</span> <span class="st">&quot;paragraph&quot;</span>, <span class="at">out.dir =</span> <span class="st">&quot;.&quot;</span>)</span></code></pre></div>
 <p>We used R version 4.5.2 <span class="citation">(R Core Team
-2025)</span> and the following R packages: here v. 1.0.1 <span
+2025)</span> and the following R packages: ggtext v. 0.1.2 <span
+class="citation">(Wilke and Wiernik 2022)</span>, here v. 1.0.1 <span
 class="citation">(Müller 2020)</span>, htmltools v. 0.5.8.1 <span
-class="citation">(Cheng et al. 2024)</span>, knitr v. 1.50 <span
-class="citation">(Xie 2014, 2015, 2025)</span>, Matrix v. 1.7.3 <span
-class="citation">(Bates, Maechler, and Jagan 2025)</span>, MetricGraph
-v. 1.5.0.9000 <span class="citation">(Bolin, Simas, and Wallin 2023a,
-2023b, 2024, 2025; Bolin et al. 2024)</span>, patchwork v. 1.3.1 <span
-class="citation">(Pedersen 2025)</span>, plotly v. 4.11.0 <span
-class="citation">(Sievert 2020)</span>, renv v. 1.1.7 <span
+class="citation">(Cheng et al. 2024)</span>, INLA v. 25.11.22 <span
+class="citation">(Rue, Martino, and Chopin 2009; Lindgren, Rue, and
+Lindström 2011; Martins et al. 2013; Lindgren and Rue 2015; De Coninck
+et al. 2016; Rue et al. 2017; Verbosio et al. 2017; Bakka et al. 2018;
+Kourounis, Fuchs, and Schenk 2018)</span>, inlabru v. 2.13.0 <span
+class="citation">(Yuan et al. 2017; Bachl et al. 2019)</span>, knitr v.
+1.50 <span class="citation">(Xie 2014, 2015, 2025)</span>, latex2exp v.
+0.9.8 <span class="citation">(Meschiari 2026)</span>, Matrix v. 1.7.3
+<span class="citation">(Bates, Maechler, and Jagan 2025)</span>,
+MetricGraph v. 1.5.0.9000 <span class="citation">(Bolin, Simas, and
+Wallin 2023a, 2023b, 2024, 2025; Bolin et al. 2024)</span>, patchwork v.
+1.3.1 <span class="citation">(Pedersen 2025)</span>, plotly v. 4.11.0
+<span class="citation">(Sievert 2020)</span>, plotrix v. 3.8.14 <span
+class="citation">(J 2006)</span>, renv v. 1.1.7 <span
 class="citation">(Ushey and Wickham 2026)</span>, reshape2 v. 1.4.4
 <span class="citation">(Wickham 2007)</span>, rmarkdown v. 2.30 <span
 class="citation">(Xie, Allaire, and Grolemund 2018; Xie, Dervieux, and
 Riederer 2020; Allaire et al. 2025)</span>, rSPDE v. 2.5.2.9000 <span
 class="citation">(Bolin and Kirchner 2020; Bolin and Simas 2023; Bolin,
 Simas, and Xiong 2024)</span>, scales v. 1.4.0 <span
-class="citation">(Wickham, Pedersen, and Seidel 2025)</span>, slackr v.
-3.4.0 <span class="citation">(Kaye et al. 2025)</span>, sp v. 2.2.1
-<span class="citation">(Pebesma and Bivand 2005; Bivand, Pebesma, and
-Gomez-Rubio 2013)</span>, tidyverse v. 2.0.0 <span
-class="citation">(Wickham et al. 2019)</span>, tikzDevice v. 0.12.6
-<span class="citation">(Sharpsteen and Bracken 2023)</span>, viridis v.
-0.6.5 <span class="citation">(Garnier et al. 2024)</span>, xaringanExtra
-v. 0.8.0 <span class="citation">(Aden-Buie and Warkentin
+class="citation">(Wickham, Pedersen, and Seidel 2025)</span>, sf v.
+1.1.0 <span class="citation">(E. Pebesma 2018; E. Pebesma and Bivand
+2023)</span>, slackr v. 3.4.0 <span class="citation">(Kaye et al.
+2025)</span>, sp v. 2.2.1 <span class="citation">(E. J. Pebesma and
+Bivand 2005; Bivand, Pebesma, and Gomez-Rubio 2013)</span>, tidyverse v.
+2.0.0 <span class="citation">(Wickham et al. 2019)</span>, tikzDevice v.
+0.12.6 <span class="citation">(Sharpsteen and Bracken 2023)</span>,
+viridis v. 0.6.5 <span class="citation">(Garnier et al. 2024)</span>,
+xaringanExtra v. 0.8.0 <span class="citation">(Aden-Buie and Warkentin
 2024)</span>.</p>
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
@@ -1331,6 +1346,22 @@ href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown
 Arioli, Mario, and Michele Benzi. 2018. <span>“A Finite Element Method
 for Quantum Graphs.”</span> <em>IMA J. Numer. Anal.</em> 38 (3):
 1119–63.
+</div>
+<div id="ref-inlabru2019" class="csl-entry">
+Bachl, Fabian E., Finn Lindgren, David L. Borchers, and Janine B.
+Illian. 2019. <span>“<span class="nocase">inlabru</span>: An
+<span>R</span> Package for <span>Bayesian</span> Spatial Modelling from
+Ecological Survey Data.”</span> <em>Methods in Ecology and
+Evolution</em> 10: 760–66. <a
+href="https://doi.org/10.1111/2041-210X.13168">https://doi.org/10.1111/2041-210X.13168</a>.
+</div>
+<div id="ref-INLA2018f" class="csl-entry">
+Bakka, Haakon, Håvard Rue, Geir-Arne Fuglstad, Andrea I. Riebler, David
+Bolin, Janine Illian, Elias Krainski, Daniel P. Simpson, and Finn K.
+Lindgren. 2018. <span>“Spatial Modelling with <span>INLA</span>:
+<span>A</span> Review.”</span> <em>WIRES (Invited Extended Review)</em>
+xx (Feb): xx–. <a
+href="http://arxiv.org/abs/1802.06350">http://arxiv.org/abs/1802.06350</a>.
 </div>
 <div id="ref-Matrix" class="csl-entry">
 Bates, Douglas, Martin Maechler, and Mikael Jagan. 2025.
@@ -1398,11 +1429,23 @@ and Jeff Allen. 2024. <em><span class="nocase">htmltools</span>: Tools
 for HTML</em>. <a
 href="https://github.com/rstudio/htmltools">https://github.com/rstudio/htmltools</a>.
 </div>
+<div id="ref-INLA2016g" class="csl-entry">
+De Coninck, Arne, Bernard De Baets, Drosos Kourounis, Fabio Verbosio,
+Olaf Schenk, Steven Maenhout, and Jan Fostier. 2016.
+<span>“<span>Needles</span>: Toward Large-Scale Genomic Prediction with
+Marker-by-Environment Interaction.”</span> <em>Genetics</em> 203 (1):
+543–55. <a
+href="https://doi.org/10.1534/genetics.115.179887">https://doi.org/10.1534/genetics.115.179887</a>.
+</div>
 <div id="ref-viridis" class="csl-entry">
 Garnier, Simon, Ross, Noam, Rudis, Robert, Camargo, et al. 2024.
 <em><span class="nocase">viridis(Lite)</span> - Colorblind-Friendly
 Color Maps for r</em>. <a
 href="https://doi.org/10.5281/zenodo.4679423">https://doi.org/10.5281/zenodo.4679423</a>.
+</div>
+<div id="ref-plotrix" class="csl-entry">
+J, Lemon. 2006. <span>“<span>Plotrix</span>: A Package in the Red Light
+District of r.”</span> <em>R-News</em> 6 (4): 8–12.
 </div>
 <div id="ref-slackr" class="csl-entry">
 Kaye, Matt, Bob Rudis, Andrie de Vries, and Jonathan Sidi. 2025.
@@ -1410,16 +1453,58 @@ Kaye, Matt, Bob Rudis, Andrie de Vries, and Jonathan Sidi. 2025.
 and Files to <span>“<span>Slack</span>”</span> Channels/Users</em>. <a
 href="https://github.com/mrkaye97/slackr">https://github.com/mrkaye97/slackr</a>.
 </div>
+<div id="ref-INLA2018i" class="csl-entry">
+Kourounis, D., A. Fuchs, and O. Schenk. 2018. <span>“Towards the Next
+Generation of Multiperiod Optimal Power Flow Solvers.”</span> <em>IEEE
+Transactions on Power Systems</em> PP (99): 1–10. <a
+href="https://doi.org/10.1109/TPWRS.2017.2789187">https://doi.org/10.1109/TPWRS.2017.2789187</a>.
+</div>
+<div id="ref-INLA2015d" class="csl-entry">
+Lindgren, Finn, and Håvard Rue. 2015. <span>“Bayesian Spatial Modelling
+with <span>R</span>-<span>INLA</span>.”</span> <em>Journal of
+Statistical Software</em> 63 (19): 1–25. <a
+href="http://www.jstatsoft.org/v63/i19/">http://www.jstatsoft.org/v63/i19/</a>.
+</div>
+<div id="ref-INLA2011c" class="csl-entry">
+Lindgren, Finn, Håvard Rue, and Johan Lindström. 2011. <span>“An
+Explicit Link Between <span>Gaussian</span> Fields and
+<span>Gaussian</span> <span>Markov</span> Random Fields: The Stochastic
+Partial Differential Equation Approach (with Discussion).”</span>
+<em>Journal of the Royal Statistical Society B</em> 73 (4): 423–98.
+</div>
+<div id="ref-INLA2013b" class="csl-entry">
+Martins, Thiago G., Daniel Simpson, Finn Lindgren, and Håvard Rue. 2013.
+<span>“Bayesian Computing with <span>INLA</span>: <span>N</span>ew
+Features.”</span> <em>Computational Statistics and Data Analysis</em>
+67: 68–83.
+</div>
+<div id="ref-latex2exp" class="csl-entry">
+Meschiari, Stefano. 2026. <em>Latex2exp: Use LaTeX Expressions in
+Plots</em>. <a
+href="https://doi.org/10.32614/CRAN.package.latex2exp">https://doi.org/10.32614/CRAN.package.latex2exp</a>.
+</div>
 <div id="ref-here" class="csl-entry">
 Müller, Kirill. 2020. <em><span class="nocase">here</span>: A Simpler
 Way to Find Your Files</em>. <a
 href="https://doi.org/10.32614/CRAN.package.here">https://doi.org/10.32614/CRAN.package.here</a>.
+</div>
+<div id="ref-sf2018" class="csl-entry">
+Pebesma, Edzer. 2018. <span>“<span class="nocase">Simple Features for R:
+Standardized Support for Spatial Vector Data</span>.”</span>
+<em><span>The R Journal</span></em> 10 (1): 439–46. <a
+href="https://doi.org/10.32614/RJ-2018-009">https://doi.org/10.32614/RJ-2018-009</a>.
 </div>
 <div id="ref-sp2005" class="csl-entry">
 Pebesma, Edzer J., and Roger Bivand. 2005. <span>“Classes and Methods
 for Spatial Data in <span>R</span>.”</span> <em>R News</em> 5 (2): 9–13.
 <a
 href="https://CRAN.R-project.org/doc/Rnews/">https://CRAN.R-project.org/doc/Rnews/</a>.
+</div>
+<div id="ref-sf2023" class="csl-entry">
+Pebesma, Edzer, and Roger Bivand. 2023. <em><span class="nocase">Spatial
+Data Science: With applications in R</span></em>. <span>Chapman and
+Hall/CRC</span>. <a
+href="https://doi.org/10.1201/9780429459016">https://doi.org/10.1201/9780429459016</a>.
 </div>
 <div id="ref-patchwork" class="csl-entry">
 Pedersen, Thomas Lin. 2025. <em><span class="nocase">patchwork</span>:
@@ -1431,6 +1516,20 @@ R Core Team. 2025. <em><span>R</span>: A Language and Environment for
 Statistical Computing</em>. Vienna, Austria: R Foundation for
 Statistical Computing. <a
 href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-INLA2009a" class="csl-entry">
+Rue, Håvard, Sara Martino, and Nicholas Chopin. 2009. <span>“Approximate
+<span>Bayesian</span> Inference for Latent <span>Gaussian</span> Models
+Using Integrated Nested <span>Laplace</span> Approximations (with
+Discussion).”</span> <em>Journal of the Royal Statistical Society B</em>
+71: 319–92.
+</div>
+<div id="ref-INLA2017e" class="csl-entry">
+Rue, Håvard, Andrea I. Riebler, Sigrunn H. Sørbye, Janine B. Illian,
+Daniel P. Simpson, and Finn K. Lindgren. 2017. <span>“Bayesian Computing
+with <span>INLA</span>: <span>A</span> Review.”</span> <em>Annual
+Reviews of Statistics and Its Applications</em> 4 (March): 395–421. <a
+href="http://arxiv.org/abs/1604.00860">http://arxiv.org/abs/1604.00860</a>.
 </div>
 <div id="ref-tikzDevice" class="csl-entry">
 Sharpsteen, Charlie, and Cameron Bracken. 2023. <em><span
@@ -1447,6 +1546,13 @@ href="https://plotly-r.com">https://plotly-r.com</a>.
 Ushey, Kevin, and Hadley Wickham. 2026. <em><span
 class="nocase">renv</span>: Project Environments</em>. <a
 href="https://doi.org/10.32614/CRAN.package.renv">https://doi.org/10.32614/CRAN.package.renv</a>.
+</div>
+<div id="ref-INLA2017h" class="csl-entry">
+Verbosio, Fabio, Arne De Coninck, Drosos Kourounis, and Olaf Schenk.
+2017. <span>“Enhancing the Scalability of Selected Inversion
+Factorization Algorithms in Genomic Prediction.”</span> <em>Journal of
+Computational Science</em> 22 (Supplement C): 99–108. <a
+href="https://doi.org/10.1016/j.jocs.2017.08.013">https://doi.org/10.1016/j.jocs.2017.08.013</a>.
 </div>
 <div id="ref-reshape2" class="csl-entry">
 Wickham, Hadley. 2007. <span>“Reshaping Data with the <span
@@ -1465,6 +1571,12 @@ href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</
 Wickham, Hadley, Thomas Lin Pedersen, and Dana Seidel. 2025. <em><span
 class="nocase">scales</span>: Scale Functions for Visualization</em>. <a
 href="https://scales.r-lib.org">https://scales.r-lib.org</a>.
+</div>
+<div id="ref-ggtext" class="csl-entry">
+Wilke, Claus O., and Brenton M. Wiernik. 2022. <em><span
+class="nocase">ggtext</span>: Improved Text Rendering Support for
+<span>“<span class="nocase">ggplot2</span>”</span></em>. <a
+href="https://doi.org/10.32614/CRAN.package.ggtext">https://doi.org/10.32614/CRAN.package.ggtext</a>.
 </div>
 <div id="ref-knitr2014" class="csl-entry">
 Xie, Yihui. 2014. <span>“<span class="nocase">knitr</span>: A
@@ -1492,6 +1604,13 @@ href="https://bookdown.org/yihui/rmarkdown">https://bookdown.org/yihui/rmarkdown
 Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R
 Markdown Cookbook</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a
 href="https://bookdown.org/yihui/rmarkdown-cookbook">https://bookdown.org/yihui/rmarkdown-cookbook</a>.
+</div>
+<div id="ref-inlabru2017" class="csl-entry">
+Yuan, Yuan, Bachl, Fabian E., Lindgren, Finn, Borchers, et al. 2017.
+<span>“Point Process Models for Spatio-Temporal Distance Sampling Data
+from a Large-Scale Survey of Blue Whales.”</span> <em>Ann. Appl.
+Stat.</em> 11 (4): 2270–97. <a
+href="https://doi.org/10.1214/17-AOAS1078">https://doi.org/10.1214/17-AOAS1078</a>.
 </div>
 </div>
 </div>

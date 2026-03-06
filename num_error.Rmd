@@ -90,7 +90,7 @@ truncate_to_two <- function(x) {
 
 # Import libraries
 
-```{r}
+```{r, eval = TRUE}
 library(MetricGraph)
 library(Matrix)
 library(rSPDE)
