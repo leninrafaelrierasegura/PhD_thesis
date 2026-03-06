@@ -10,3 +10,6 @@ purl_log.txt
 docs/old/**/*.html
 old/**/*.html
 keys.R
+# tikzDevice dictionary files (only root and docs/)
+*-tikzDictionary
+docs/*-tikzDictionary

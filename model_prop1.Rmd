@@ -72,7 +72,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = TRUE,       
+  eval = FALSE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -190,7 +190,7 @@ logo_graph <- metric_graph$new(edges = edges, perform_merges = TRUE)
 # Prune the vertices
 #logo_graph$prune_vertices()
 # Build the mesh
-h <- 1#0.05
+h <- 0.05
 logo_graph$build_mesh(h = h) 
 # Extract the mesh locations in Euclidean coordinates
 xypoints <- logo_graph$mesh$V
@@ -307,13 +307,16 @@ save(four_plots, file = here::here("data_files/four_plots.Rdata"))
 ```
 
 
-```{r, eval = TRUE, fig.width = 9.22, fig.height = 7.05, fig.cap = captioner("Top row: Non-stationary models for $\\tau(\\cdot)$ and $\\kappa(\\cdot)$. Bottom row: Non-stationary standard deviation and practical correlation range on the `MetricGraph` package's logo.")}
-load(here::here("data_files/four_plots.Rdata"))
-four_plots
+
+```{r, eval = TRUE, out.width="922px", out.height="705px", fig.cap = captioner("Top row: Non-stationary models for $\\tau(\\cdot)$ and $\\kappa(\\cdot)$. Bottom row: Non-stationary standard deviation $\\sigma(\\cdot)$ and practical correlation range $\\rho(\\cdot)$ on the `MetricGraph` package's logo.")}
+knitr::include_graphics(here::here("data_files/tikzpic/four_plots.pdf"))
 ```
+
+
+
 # Covariance plots
 
-Below we plot the covariance functions $r_i(\cdot)=\text{Cov}(u(s_i),u(\cdot))$, $i=1,2,3$, for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.
+Below we plot the covariance functions $\varrho^\alpha(s_i,\cdot)=\text{Cov}(u(s_i),u(\cdot))$, $i=1,2,3$, for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.
 
 <div style="color: #2c3e50; text-align: right;">
 ********  
@@ -324,42 +327,48 @@ Below we plot the covariance functions $r_i(\cdot)=\text{Cov}(u(s_i),u(\cdot))$,
 
 ```{r}
 # Create a plot for the covariance between point1 and all other points
-c1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 0) +
-  ggtitle(latex2exp::TeX("$r_1$")) +
+c1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\varrho^\\alpha(s_1,\\cdot)$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
-        plot.title = element_text(size = gfsize)) +
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) +
   annotate("point", x = xypoints[m1,1], y = xypoints[m1,2], size = 1, color = "#0000C8") +
-  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "s[1]", parse = TRUE, size = 3, hjust = 0, color = "black")
+  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "$s_1$", size = 4, hjust = 0, color = "black")
 # Create a plot for the covariance between point2 and all other points
-c2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 0) +
-  ggtitle(latex2exp::TeX("$r_2$")) +
+c2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\varrho^\\alpha(s_2,\\cdot)$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
-        plot.title = element_text(size = gfsize)) +
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) +
   annotate("point", x = xypoints[m2,1], y = xypoints[m2,2], size = 1, color = "red") +
-  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "s[2]", parse = TRUE, size = 3, hjust = 0, color = "black")
+  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "$s_2$", size = 4, hjust = 0, color = "black")
 # Create a plot for the covariance between point3 and all other points
-c3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 0) +
-  ggtitle(latex2exp::TeX("$r_3$")) +
+c3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\varrho^\\alpha(s_3,\\cdot)$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
-        plot.title = element_text(size = gfsize)) +
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) +
   annotate("point", x = xypoints[m3,1], y = xypoints[m3,2], size = 1, color = "darkgreen") +
-  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "s[3]", parse = TRUE, size = 3, hjust = 0, color = "black")
+  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "$s_3$", size = 4, hjust = 0, color = "black")
 # Combine the three plots
 cs <- c1 + c2 + c3
 # Save the combined plot
-ggsave(here("data_files/cov_plots_diff_loc.png"), plot = cs, width = 13.83, height = 4.5, dpi = 300)
+#ggsave(here("data_files/cov_plots_diff_loc.png"), plot = cs, width = 13.83, height = 4.5, dpi = 300)
+myggsave(cs, width = 13.83, height = 4.5)
 save(cs, file = here::here("data_files/cs.Rdata"))
 ```
 
-```{r, eval = TRUE, fig.width = 13.83, fig.height = 4.5, fig.cap = captioner("Example of covariance functions $r_i(\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
-load(here::here("data_files/cs.Rdata"))
-cs
+```{r, eval = TRUE, out.width="1383px", out.height="450px", fig.cap = captioner("Example of covariance functions $\\varrho^\\alpha(s_i,\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
+knitr::include_graphics(here::here("data_files/tikzpic/cs.pdf"))
 ```
 
-Below we show 3D plots of the covariance functions $r_i(\cdot)$, $i=1,2,3$, for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo. The practical correlation range $\rho(s_i)$ and the standard deviation $\sigma(s_i)$ are also shown for each location $s_i$.
+Below we show 3D plots of the covariance functions $\varrho^\alpha(s_i,\cdot)$, $i=1,2,3$, for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo. The practical correlation range $\rho(s_i)$ and the standard deviation $\sigma(s_i)$ are also shown for each location $s_i$.
 
 <div style="color: #2c3e50; text-align: right;">
 ********  
@@ -464,19 +473,19 @@ p_A <- p3 %>%
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m1, 2], y = xypoints[m1, 1], z = max(est_cov_matrix[m1, ]) + 0.3,
-               text = TeX("r_1(\\cdot)"),
+               text = TeX("\\varrho^\\alpha(s_1,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
                font = list(color = "#0000C8", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m2, 2], y = xypoints[m2, 1], z = max(est_cov_matrix[m2, ]) + 0.3,
-               text = TeX("r_2(\\cdot)"),
+               text = TeX("\\varrho^\\alpha(s_2,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
                font = list(color = "red", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m3, 2], y = xypoints[m3, 1], z = max(est_cov_matrix[m3, ]) + 0.3,
-               text = TeX("r_3(\\cdot)"),
+               text = TeX("\\varrho^\\alpha(s_3,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
                font = list(color = "darkgreen", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)")))) %>%
@@ -497,7 +506,7 @@ save(p_A, file = here("data_files/3d_cov_plots_diff_loc.RData"))
 ::: {}
 
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Example of covariance functions $r_i(\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Example of covariance functions $\\varrho^\\alpha(s_i,\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
 load(here("data_files/3d_cov_plots_diff_loc.RData"))
 p_A
 ```
@@ -521,26 +530,32 @@ Below we simulate the non-stationary field and plot the graph and the non-statio
 # Simulate the non-stationary field
 u_non_stat <- simulate(op)
 # Plot the graph
-plot_graph <- logo_graph$plot(vertex_size = 1, vertex_color = "#0000C8") +
-  ggtitle(latex2exp::TeX("MetricGraph package's logo")) +
+plot_graph <- logo_graph$plot(vertex_size = 2, vertex_color = "#0000C8", edge_width = 2) +
+  ggtitle("MetricGraph package's logo") +
   theme_minimal() +
-  theme(text = element_text(family = "Palatino"))
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) 
 # Plot the non-stationary field
-plot_sim <- logo_graph$plot_function(X = u_non_stat, vertex_size = 0) +
+plot_sim <- logo_graph$plot_function(X = u_non_stat, vertex_size = 0, edge_width = 2) +
   ggtitle("Simulated non-stationary process") +
   theme_minimal() +
-  theme(text = element_text(family = "Palatino"))
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) 
 # Combine the two plots
 graph_plus_sim <- plot_graph + plot_sim
 # Save the combined plot
-ggsave(here("data_files/graph_plus_sim.png"), plot = graph_plus_sim, width = 9.22, height = 4.01, dpi = 300)
+#ggsave(here("data_files/graph_plus_sim.png"), plot = graph_plus_sim, width = 9.22, height = 4.01, dpi = 300)
+myggsave(graph_plus_sim, width = 9.22, height = 4.01)
 save(graph_plus_sim, file = here("data_files/graph_plus_sim.RData"))
 ```
 
 
-```{r, eval = TRUE, fig.width = 9.22, fig.height = 4.01, fig.cap = captioner("`MetricGraph` package's logo and a simulated non-stationary process on it.")}
-load(file = here("data_files/graph_plus_sim.RData"))
-graph_plus_sim
+```{r, eval = TRUE, out.width="922px", out.height="401px", fig.cap = captioner("`MetricGraph` package's logo and a simulated non-stationary process on it.")}
+knitr::include_graphics(here::here("data_files/tikzpic/graph_plus_sim.pdf"))
 ```
 
 
