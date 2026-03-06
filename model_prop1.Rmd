@@ -255,12 +255,12 @@ m1 <- which.min((xypoints[,1]-point1[1])^2 + (xypoints[,2]-point1[2])^2)
 m2 <- which.min((xypoints[,1]-point2[1])^2 + (xypoints[,2]-point2[2])^2)
 m3 <- which.min((xypoints[,1]-point3[1])^2 + (xypoints[,2]-point3[2])^2)
 # Create a plot of the model for tau
-TAU <- logo_graph$plot_function(X = model_for_tau, vertex_size = 0, plotly = FALSE) +
+TAU <- logo_graph$plot_function(X = model_for_tau, vertex_size = 0) +
   ggtitle("Model for tau") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"))
 # Create a plot of the model for kappa
-KAPPA <- logo_graph$plot_function(X = model_for_kappa, vertex_size = 0, plotly = FALSE) +
+KAPPA <- logo_graph$plot_function(X = model_for_kappa, vertex_size = 0) +
   ggtitle("Model for kappa") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"))

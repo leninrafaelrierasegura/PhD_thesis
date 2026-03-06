@@ -1,0 +1,116 @@
+library(ggplot2)
+library(tikzDevice)
+
+df <- data.frame(x = 1:10, y = (1:10)^2)
+
+# Create TikZ file in old/
+tikz("old/ggplot.tex", standAlone = TRUE)
+print(
+  ggplot(df, aes(x, y)) +
+    geom_line() +
+    labs(title = "$f(x)$") +
+    theme_minimal()
+)
+dev.off()
+
+# Compile LaTeX with output in old/
+system("pdflatex -output-directory=old old/ggplot.tex")
+browseURL("old/ggplot.pdf")
+
+
+
+TAU <- logo_graph$plot_function(X = model_for_tau, vertex_size = 0) +
+  ggtitle("$\\tau(s) = e^{0.05\\cdot(x(s)-y(s))}$") +
+  theme_minimal() +
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12))
+
+
+
+tikz("old/ggplot.tex", standAlone = TRUE)
+print(
+  r1
+)
+dev.off()
+
+# Compile LaTeX with output in old/
+system("pdflatex -output-directory=old old/ggplot.tex")
+browseURL("old/ggplot.pdf")
+
+
+r1 <- logo_graph$plot_function(X = est_range, vertex_size = 0) +
+  ggtitle("$\\rho(s)$") +
+  theme_minimal() +
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12))  +
+  annotate("point", x = xypoints[m1,1], y = xypoints[m1,2], size = 2, color = "#0000C8") +
+  annotate("point", x = xypoints[m2,1], y = xypoints[m2,2], size = 2, color = "red") +
+  annotate("point", x = xypoints[m3,1], y = xypoints[m3,2], size = 2, color = "darkgreen") +
+  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "$s_1$",  size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "$s_2$",  size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "$s_3$",  size = 4, hjust = 0, color = "black")
+
+
+
+
+
+
+# Create a plot of the model for tau
+TAU <- logo_graph$plot_function(X = model_for_tau, vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\tau(s) = e^{0.05\\cdot(x(s)-y(s))}$") +
+  theme_minimal() +
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) 
+# Create a plot of the model for kappa
+KAPPA <- logo_graph$plot_function(X = model_for_kappa, vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\kappa(s) = e^{0.1\\cdot(x(s)-y(s))}$") +
+  theme_minimal() +
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) 
+# Create a plot for the practical correlation range
+r1 <- logo_graph$plot_function(X = est_range, vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\rho(s)$") +
+  theme_minimal() +
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm")) +
+  annotate("point", x = xypoints[m1,1], y = xypoints[m1,2], size = 2, color = "#0000C8") +
+  annotate("point", x = xypoints[m2,1], y = xypoints[m2,2], size = 2, color = "red") +
+  annotate("point", x = xypoints[m3,1], y = xypoints[m3,2], size = 2, color = "darkgreen") +
+  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "$s_1$", size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "$s_2$", size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "$s_3$", size = 4, hjust = 0, color = "black")
+# Create a plot for the standard deviation
+s1 <- logo_graph$plot_function(X = est_sigma, vertex_size = 0, edge_width = 2) +
+  ggtitle("$\\sigma(s)$") +
+  theme_minimal() +
+  theme(text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        legend.key.width = unit(0.2, "cm"),
+        legend.key.height = unit(1, "cm"))  +
+  annotate("point", x = xypoints[m1,1], y = xypoints[m1,2], size = 2, color = "#0000C8") +
+  annotate("point", x = xypoints[m2,1], y = xypoints[m2,2], size = 2, color = "red") +
+  annotate("point", x = xypoints[m3,1], y = xypoints[m3,2], size = 2, color = "darkgreen") +
+  annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "$s_1$", size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "$s_2$", size = 4, hjust = 0, color = "black") +
+  annotate("text", x = xypoints[m3,1] - 0.8, y = xypoints[m3,2], label = "$s_3$", size = 4, hjust = 0, color = "black")
+# Combine the four plots
+four_plots <- (TAU + KAPPA) / (s1 + r1)
+
+tikz("old/ggplot.tex", standAlone = TRUE , width = 9.22, height = 7.05)
+print(
+  four_plots
+)
+dev.off()
+
+# Compile LaTeX with output in old/
+system("pdflatex -output-directory=old old/ggplot.tex")
+browseURL("old/ggplot.pdf")
+
+
+
