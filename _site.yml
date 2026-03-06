@@ -29,6 +29,8 @@ navbar:
           href: model_prop4.html
         - text: "Section 2.5"
           href: approximation.html
+        - text: "Section 2.6"
+          href: num_error.html
     - text: "Chapter 3"
       menu:
         - text: "Section 3.1"
