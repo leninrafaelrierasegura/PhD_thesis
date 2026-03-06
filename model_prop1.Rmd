@@ -144,7 +144,7 @@ Below we define function `compute_pcr()`, which computes the practical correlati
 compute_pcr <- function(op, cor_threshold) {
   
   # Compute the covariance matrix
-  cov_matrix <- op$covariance_mesh() 
+  cov_matrix <- covariance_mesh(op) 
   # Compute the correlation matrix
   cor_matrix <-cov2cor(cov_matrix)
   # Compute the geodesic distance matrix
@@ -227,7 +227,7 @@ op <- rSPDE::spde.matern.operators(graph = logo_graph,
                                       theta = theta,
                                       alpha = alpha)
 # Compute the covariance matrix
-est_cov_matrix <- op$covariance_mesh()
+est_cov_matrix <- covariance_mesh(op)
 # Compute the practical correlation range
 cor_threshold <- 0.1
 est_range <- compute_pcr(op, cor_threshold)

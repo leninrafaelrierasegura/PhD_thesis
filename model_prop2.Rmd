@@ -115,6 +115,7 @@ library(rmarkdown)
 # Cite all loaded packages
 library(grateful) 
 
+
 library(slackr)
 source("keys.R")
 slackr_setup(token = token) # token comes from keys.R
@@ -144,7 +145,7 @@ Below we define function `compute_pcr()`, which computes the practical correlati
 compute_pcr <- function(op, cor_threshold) {
   
   # Compute the covariance matrix
-  cov_matrix <- op$covariance_mesh() 
+  cov_matrix <- covariance_mesh(op)  
   # Compute the correlation matrix
   cor_matrix <-cov2cor(cov_matrix)
   # Compute the geodesic distance matrix
@@ -231,7 +232,7 @@ op1 <- rSPDE::spde.matern.operators(graph = logo_graph,
                                       theta = theta, 
                                       alpha = alpha1)
 # Compute the covariance between the rownumber-th point and all other points
-est_cov_matrix1 <- op1$covariance_mesh()
+est_cov_matrix1 <- covariance_mesh(op1)
 rowfromcov1 <- est_cov_matrix1[rownumber, ]
 # Choose alpha
 nu2 <- 0.8
@@ -244,7 +245,7 @@ op2 <- rSPDE::spde.matern.operators(graph = logo_graph,
                                       theta = theta, 
                                       alpha = alpha2)
 # Compute the covariance between the rownumber-th point and all other points
-est_cov_matrix2 <- op2$covariance_mesh()
+est_cov_matrix2 <- covariance_mesh(op2)
 rowfromcov2 <- est_cov_matrix2[rownumber, ]
 # Choose alpha
 nu3 <- 1.6
@@ -257,7 +258,7 @@ op3 <- rSPDE::spde.matern.operators(graph = logo_graph,
                                       theta = theta, 
                                       alpha = alpha3)
 # Compute the covariance between the rownumber-th point and all other points
-est_cov_matrix3 <- op3$covariance_mesh()
+est_cov_matrix3 <- covariance_mesh(op3)
 rowfromcov3 <- est_cov_matrix3[rownumber, ]
 
 ```
@@ -278,7 +279,7 @@ Below we plot the covariance functions $r_\nu(\cdot)=\text{Cov}(u(s_0),u(\cdot))
 
 ```{r}
 # Create a plot for the covariance between point1 and all other points
-c1 <- logo_graph$plot_function(X = rowfromcov1, vertex_size = 0) +
+c1 <- logo_graph$plot_function(data = rowfromcov1, vertex_size = 0) +
   ggtitle(latex2exp::TeX("$r_{0.4}$")) +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
@@ -286,7 +287,7 @@ c1 <- logo_graph$plot_function(X = rowfromcov1, vertex_size = 0) +
   annotate("point", x = xypoints[rownumber,1], y = xypoints[rownumber,2], size = 1, color = "black") +
   annotate("text", x = xypoints[rownumber,1] - 0.8, y = xypoints[rownumber,2], label = "s[0]", parse = TRUE, size = 3, hjust = 0, color = "black")
 # Create a plot for the covariance between point2 and all other points
-c2 <- logo_graph$plot_function(X = rowfromcov2, vertex_size = 0) +
+c2 <- logo_graph$plot_function(data = rowfromcov2, vertex_size = 0) +
   ggtitle(latex2exp::TeX("$r_{0.8}$")) +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
@@ -294,7 +295,7 @@ c2 <- logo_graph$plot_function(X = rowfromcov2, vertex_size = 0) +
   annotate("point", x = xypoints[rownumber,1], y = xypoints[rownumber,2], size = 1, color = "black") +
   annotate("text", x = xypoints[rownumber,1] - 0.8, y = xypoints[rownumber,2], label = "s[0]", parse = TRUE, size = 3, hjust = 0, color = "black")
 # Create a plot for the covariance between point3 and all other points
-c3 <- logo_graph$plot_function(X = rowfromcov3, vertex_size = 0) +
+c3 <- logo_graph$plot_function(data = rowfromcov3, vertex_size = 0) +
   ggtitle(latex2exp::TeX("$r_{1.6}$")) +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),

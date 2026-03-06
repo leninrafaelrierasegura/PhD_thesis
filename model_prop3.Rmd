@@ -365,7 +365,7 @@ op <- rSPDE::spde.matern.operators(graph = graph_copy2,
                                       theta = c(1,1,0,0),
                                       alpha = alpha)
 # Compute the covariance matrix
-est_cov_matrix <- op$covariance_mesh()
+est_cov_matrix <- covariance_mesh(op)
 # Compute the standard deviation
 est_sigma_s <- sqrt(Matrix::diag(est_cov_matrix))
 ```
@@ -380,7 +380,7 @@ op <- rSPDE::spde.matern.operators(graph = graph_copy2,
                                       theta = c(1,1,0,0),
                                       alpha = alpha)
 # Compute the covariance matrix
-est_cov_matrix <- op$covariance_mesh()
+est_cov_matrix <- covariance_mesh(op)
 # Compute the standard deviation
 est_sigma_0 <- sqrt(Matrix::diag(est_cov_matrix))
 ```
