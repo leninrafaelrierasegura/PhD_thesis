@@ -643,6 +643,9 @@ p3 <- plot_ly() |>
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
+
+combine_plotly_grid_pdf(list(p1,p2,p3), output_pdf = here::here("data_files/plotlypic/tadpole_graph_basis_functions.pdf"), ncol = 3)
+combine_plotly_pdf_single(p3, here::here("data_files/plotlypic/p3.pdf"))
 ```
 
 

@@ -334,6 +334,42 @@ combined.save(r'%s', 'PDF', resolution=%d)
 # combine_plotly_pdf(p1, p2, output_pdf = "my_plots.pdf")
 ```
 
+```{r}
+library(plotly)
+library(reticulate)
+
+combine_plotly_pdf_single <- function(p, output_pdf = "single_plot.pdf", 
+                                      width = 1400, height = 1000, scale = 2, 
+                                      resolution = 300) {
+  py_config()  # Check Python configuration
+  
+  # Temporary PNG path
+  tmp_png <- tempfile(fileext = ".png")
+  
+  # Save the Plotly plot as PNG
+  plotly::save_image(p, tmp_png, width = width, height = height, scale = scale)
+  
+  # Python code: open PNG, convert to RGB, save as PDF
+  py_run_string(sprintf("
+from PIL import Image
+
+img = Image.open(r'%s')
+img_rgb = img.convert('RGB')
+img_rgb.save(r'%s', 'PDF', resolution=%d)
+", tmp_png, output_pdf, resolution))
+  
+  # Clean up temporary PNG
+  file.remove(tmp_png)
+  
+  message("PDF saved to: ", normalizePath(output_pdf))
+}
+# # Example plot
+# p1 <- plot_ly(z = ~volcano, type = "surface") %>% layout(title = "Single Plot")
+# 
+# # Save as PDF
+# combine_plotly_pdf_single(p1, output_pdf = "single_plot.pdf")
+```
+
 
 # References
 
