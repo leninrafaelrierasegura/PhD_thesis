@@ -57,7 +57,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = TRUE,       
+  eval = FALSE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -583,7 +583,9 @@ notes3 <- list(annotations = list(
                      font = list(color = "rgb(0,0,200)", size = gfsize),
                      arrowcolor = "rgba(0,0,0,0)")))
 
-p3 <- plot_ly() |> 
+p3 <- plot_ly(
+  #width = 1500, height = 2000
+         ) |> 
   config(mathjax = 'cdn') |>
   add_trace(x = rep(x, times = graph$nV), 
             y = rep(y, times = graph$nV), 
@@ -644,8 +646,8 @@ p3 <- plot_ly() |>
          font = list(family = "Palatino"))
 save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
 
-combine_plotly_grid_pdf(list(p1,p2,p3), output_pdf = here::here("data_files/plotlypic/tadpole_graph_basis_functions.pdf"), ncol = 3)
-combine_plotly_pdf_single(p3, here::here("data_files/plotlypic/p3.pdf"))
+# combine_plotly_grid_pdf(list(p1,p2,p3), output_pdf = here::here("data_files/plotlypic/tadpole_graph_basis_functions.pdf"), ncol = 3)
+# combine_plotly_pdf_single(p3, here::here("data_files/plotlypic/p3.pdf"))
 ```
 
 

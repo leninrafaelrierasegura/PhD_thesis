@@ -107,6 +107,19 @@ plotting.order <- function(v, graph){
 
 
 ## -----------------------------------------------------------------------------
+# Original camera
+eye <- list(x = 5, y = 3, z = 4)
+center <- list(x = (1+2/pi)/2, y = 0, z = 0)
+
+# Fraction to move toward center (zoom in)
+f <- 0  # 50% closer
+
+new_eye <- list(
+  x = eye$x + f * (center$x - eye$x),
+  y = eye$y + f * (center$y - eye$y),
+  z = eye$z + f * (center$z - eye$z)
+)
+
 tadpole.layout <- function(x_range, y_range, z_range){
   return(list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = x_range),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
@@ -114,12 +127,19 @@ tadpole.layout <- function(x_range, y_range, z_range){
               aspectratio = list(x = 2*(1+2/pi), 
                                  y = 2*(2/pi), 
                                  z = 1*(2/pi)),
-              camera = list(eye = list(x = 5, 
-                                       y = 3, 
-                                       z = 4),
-                            center = list(x = (1+2/pi)/2, 
-                                          y = 0, 
-                                          z = 0))))
+              camera = list(eye = list(x = 5, y = 3, z = 4),
+                            center = list(x = (1+2/pi)/2, y = 0, z = 0))))
+}
+
+tadpole.layout.with.zoom <- function(x_range, y_range, z_range){
+  return(list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = x_range),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
+              aspectratio = list(x = 2*(1+2/pi), 
+                                 y = 2*(2/pi), 
+                                 z = 1*(2/pi)),
+              camera = list(eye = new_eye,
+                            center = center)))
 }
 
 
@@ -313,6 +333,7 @@ img_rgb.save(r'%s', 'PDF', resolution=%d)
   
   message("PDF saved to: ", normalizePath(output_pdf))
 }
+# combine_plotly_pdf_single(p3, output_pdf = "single_plot.pdf")
 # # Example plot
 # p1 <- plot_ly(z = ~volcano, type = "surface") %>% layout(title = "Single Plot")
 # 
