@@ -94,9 +94,19 @@ library(ggplot2)
 library(here)
 
 library(slackr)
-source(here::here("keys.R"))
+source("keys.R")
 slackr_setup(token = token) # token comes from keys.R
 ```
+
+
+```{r}
+capture.output(
+  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+  file = here::here("old/purl_log.txt")
+)
+source(here::here("functionality1.R"))
+```
+
 
 ```{r, eval = FALSE}
 
@@ -150,7 +160,7 @@ p1 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
   
   # Horizontal segments
   geom_segment(aes(x = left, xend = right, y = y, yend = y),
-               linewidth = 1) +
+               linewidth = 2) +
   
   # Endpoints
   geom_point(data = endpoints_all,
@@ -162,11 +172,7 @@ p1 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
     values = c("m0" = "#FF6666",   # a medium red/pink
                "m1" = "#6699FF",   # a medium blue
                "ceil" = "black"),
-    labels = c(
-      expression(m[0](alpha) == floor(alpha/2 - 1/4)),
-      expression(m[1](alpha) == floor(alpha/2 - 3/4)),
-      expression(m[2](alpha) == ceiling(alpha) - 3)
-    )
+    labels = c("$m_0(\\alpha) = \\left\\lfloor \\frac{\\alpha}{2} - \\frac{1}{4} \\right\\rfloor$", "$m_1(\\alpha) = \\left\\lfloor \\frac{\\alpha}{2} - \\frac{3}{4} \\right\\rfloor$", "$m_2(\\alpha) = \\lceil \\alpha \\rceil - 3$")
   ) +
   
   # Manual linetypes
@@ -176,7 +182,7 @@ p1 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
   
   # Labels
   labs(
-    x = expression(alpha),
+    x = "$\\alpha$",
     y = "",
     #y = expression(m[i](alpha)),
     color = "Function"
@@ -202,9 +208,6 @@ p1 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
     axis.text.x  = element_text(size = 13, angle = 90, vjust = 0.5),
     axis.text.y  = element_text(size = 13)
   )
-
-
-
 ```
 
 
@@ -267,7 +270,7 @@ y_breaks <- seq(floor(min(intervals_all$y)),
 p2 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
   
   geom_segment(aes(x = left, xend = right, y = y, yend = y),
-               linewidth = 1) +
+               linewidth = 2) +
   
   geom_point(data = endpoints_all,
              aes(x = x, y = y),
@@ -279,11 +282,7 @@ p2 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
       "2m0-2" = "#33AA33",
       "2m1-1" = "#AA33AA"
     ),
-    labels = c(
-      expression(m[2](alpha) == ceiling(alpha) - 3),
-      expression(2*m[0](alpha) - 2),
-      expression(2*m[1](alpha) - 1)
-    )
+    labels = c("$m_2(\\alpha) = \\lceil \\alpha \\rceil - 3$", "$2m_0(\\alpha)-2$", "$2m_1(\\alpha)-1$")
   ) +
   
   scale_linetype_manual(
@@ -293,7 +292,7 @@ p2 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
   ) +
   
   labs(
-    x = expression(alpha),
+    x = "$\\alpha$",
     #y = expression(m[i](alpha)),
     y = "",
     color = "Function"
@@ -326,13 +325,14 @@ p2 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
 ```{r, eval = FALSE}
 library(patchwork)
 mplots_all <- p1 + p2 + plot_layout(ncol = 2)
-mplots_all
-ggplot2::ggsave(here::here("data_files/mplots.png"), width = 16, height = 5, plot = mplots_all, dpi = 300)
+# ggplot2::ggsave(here::here("data_files/mplots.png"), width = 16, height = 5, plot = mplots_all, dpi = 300)
+myggsave(mplots_all, width = 16, height = 5)
 ```
 
 
-```{r, eval = TRUE, fig.width = 16, fig.height = 5, fig.cap = captioner("Comparison of $m_0(\\alpha) = \\left\\lfloor \\frac{\\alpha}{2} - \\frac{1}{4} \\right\\rfloor$, $m_1(\\alpha) = \\left\\lfloor \\frac{\\alpha}{2} - \\frac{3}{4} \\right\\rfloor$, and $m_2(\\alpha) = \\lceil \\alpha \\rceil - 3$ (left) and comparison of $m_2(\\alpha)$, $2m_0(\\alpha)-2$, and $2m_1(\\alpha)-1$ (right) as functions of $\\alpha$.")}
-knitr::include_graphics(here::here("data_files/mplots.png"))
+```{r, eval = TRUE, out.width="1600px", out.height="500px", fig.cap = captioner("Comparison of $m_0(\\alpha) = \\left\\lfloor \\frac{\\alpha}{2} - \\frac{1}{4} \\right\\rfloor$, $m_1(\\alpha) = \\left\\lfloor \\frac{\\alpha}{2} - \\frac{3}{4} \\right\\rfloor$, and $m_2(\\alpha) = \\lceil \\alpha \\rceil - 3$ (left) and comparison of $m_2(\\alpha)$, $2m_0(\\alpha)-2$, and $2m_1(\\alpha)-1$ (right) as functions of $\\alpha$.")}
+#knitr::include_graphics(here::here("data_files/mplots.png"))
+knitr::include_graphics(here::here("data_files/tikzpic/mplots_all.pdf"))
 ```
 
 

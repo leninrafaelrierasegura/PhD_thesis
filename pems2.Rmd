@@ -713,8 +713,41 @@ ls_df <- data.frame(
 ```
 
 
-Below we plot the cross-validation results.
+Save some of the objects to be used in the next vignette.
 
+```{r, eval = FALSE}
+# Save the results
+list_to_save <- list(mean_and_mode_params_statnu0.5 = mean_and_mode_params_statnu0.5,
+                     mean_and_mode_params_nonstatnu0.5 = mean_and_mode_params_nonstatnu0.5,
+                     mean_and_mode_params_statnu1.5 = mean_and_mode_params_statnu1.5,
+                     mean_and_mode_params_nonstatnu1.5 = mean_and_mode_params_nonstatnu1.5, 
+                     mean_and_mode_params_statnuest = mean_and_mode_params_statnuest,
+                     mean_and_mode_params_nonstatnuest = mean_and_mode_params_nonstatnuest, 
+                     mse_df = mse_df, 
+                     ls_df = ls_df, 
+                     B.tau = B.tau, 
+                     B.kappa = B.kappa, 
+                     graph = graph)
+save(list_to_save, file = here("data_files/pems_repl2_results.RData"))
+```
+
+
+```{r, eval = TRUE}
+load(here::here("data_files/pems_repl2_results.RData"))
+mean_and_mode_params_statnu0.5 <- list_to_save$mean_and_mode_params_statnu0.5
+mean_and_mode_params_nonstatnu0.5 <- list_to_save$mean_and_mode_params_nonstatnu0.5
+mean_and_mode_params_statnu1.5 <- list_to_save$mean_and_mode_params_statnu1.5
+mean_and_mode_params_nonstatnu1.5 <- list_to_save$mean_and_mode_params_nonstatnu1.5
+mean_and_mode_params_statnuest <- list_to_save$mean_and_mode_params_statnuest
+mean_and_mode_params_nonstatnuest <- list_to_save$mean_and_mode_params_nonstatnuest
+mse_df <- list_to_save$mse_df
+ls_df <- list_to_save$ls_df
+
+distance = seq(from = 0, to = 10, by = 0.1)
+```
+
+
+Below we plot the cross-validation results.
 
 
 ```{r, eval = FALSE}
@@ -760,96 +793,76 @@ linetype_mapping <- c(
 
 # Plot MSE
 mse_plot <- ggplot(mse_long, aes(x = distance, y = MSE, color = nu, linetype = nu)) +
-  geom_line(linewidth = 1) +
-  labs(y = "MSE", x = "Distance in km") +
-  scale_color_manual(values = color_mapping, labels = label_mapping, name = expression(alpha)) +
-  scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = expression(alpha)) +
+  geom_line(linewidth = 2) +
+  labs(y = "MSE", x = "$\\mbox{Geodesic distance } R\\mbox{ }(\\mbox{km})$") +
+  scale_color_manual(values = color_mapping, labels = label_mapping, name = "$\\alpha$") +
+  scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = "$\\alpha$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"))
 
 # Plot negative log-score
 ls_plot <- ggplot(ls_long, aes(x = distance, y = LogScore, color = nu, linetype = nu)) +
-  geom_line(linewidth = 1) +
-  labs(y = "Negative Log-Score", x = "Distance in km") +
-  scale_color_manual(values = color_mapping, labels = label_mapping, name = expression(alpha)) +
-  scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = expression(alpha)) +
+  geom_line(linewidth = 2) +
+  labs(y = "Negative Log-Score", x = "$\\mbox{Geodesic distance } R\\mbox{ }(\\mbox{km})$") +
+  scale_color_manual(values = color_mapping, labels = label_mapping, name = "$\\alpha$") +
+  scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = "$\\alpha$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"))
 
 # Combine plots with a shared legend at the top in a single line
-combined_plot <- mse_plot + ls_plot + 
+combined_plot_pems <- mse_plot + ls_plot + 
   plot_layout(guides = 'collect') & 
   theme(legend.position = 'right') & 
   guides(color = guide_legend(ncol = 1), linetype = guide_legend(nrow = 1))
 
 # Save combined plot
-ggsave(here("data_files/crossval_pems.png"), plot = combined_plot, width = 9.22, height = 4.01, dpi = 500)
+# ggsave(here("data_files/crossval_pems.png"), plot = combined_plot_pems, width = 9.22, height = 4.01, dpi = 500)
+myggsave(combined_plot_pems, width = 9.22, height = 4.01)
 ```
 
 
-```{r, eval = TRUE, fig.dim = c(9.22,4.01), fig.cap = captioner("MSE and negative Log-Score as functions of distance (in km) for the stationary (dotdash line, $\\boldsymbol{\\cdot-\\cdot}$) and non-stationary (solid line, $\\boldsymbol{-\\!\\!\\!-\\!\\!\\!-}$)  cases with $\\nu = 0.5$, $\\nu = 1.5$, and $\\nu$ estimated (est).")}
-knitr::include_graphics(here("data_files/crossval_pems.png"))
+
+```{r, eval = TRUE, out.width="922px", out.height="401px", fig.cap = captioner("MSE and negative Log-Score as functions of distance (in km) for the stationary (dotdash line, $\\boldsymbol{\\cdot-\\cdot}$) and non-stationary (solid line, $\\boldsymbol{-\\!\\!\\!-\\!\\!\\!-}$)  cases with $\\nu = 0.5$, $\\nu = 1.5$, and $\\nu$ estimated (est).")}
+knitr::include_graphics(here("data_files/tikzpic/combined_plot_pems.pdf"))
 ```
 
-Save some of the objects to be used in the next vignette.
-
-```{r, eval = FALSE}
-# Save the results
-list_to_save <- list(mean_and_mode_params_statnu0.5 = mean_and_mode_params_statnu0.5,
-                     mean_and_mode_params_nonstatnu0.5 = mean_and_mode_params_nonstatnu0.5,
-                     mean_and_mode_params_statnu1.5 = mean_and_mode_params_statnu1.5,
-                     mean_and_mode_params_nonstatnu1.5 = mean_and_mode_params_nonstatnu1.5, 
-                     mean_and_mode_params_statnuest = mean_and_mode_params_statnuest,
-                     mean_and_mode_params_nonstatnuest = mean_and_mode_params_nonstatnuest, 
-                     mse_df = mse_df, 
-                     ls_df = ls_df, 
-                     B.tau = B.tau, 
-                     B.kappa = B.kappa, 
-                     graph = graph)
-save(list_to_save, file = here("data_files/pems_repl2_results.RData"))
-```
-
-
-```{r, eval = TRUE}
-load(here::here("data_files/pems_repl2_results.RData"))
-```
 
 # Estimated values
 
 ### Estimated parameters for the stationary model with $\nu = 0.5$
 
 ```{r, eval = TRUE}
-list_to_save$mean_and_mode_params_statnu0.5
+mean_and_mode_params_statnu0.5
 ```
 
 ### Estimated parameters for the non-stationary model with $\nu = 0.5$
 
 ```{r, eval = TRUE}
-list_to_save$mean_and_mode_params_nonstatnu0.5
+mean_and_mode_params_nonstatnu0.5
 ```
 
 ### Estimated parameters for the stationary model with $\nu = 1.5$
 
 ```{r, eval = TRUE}
-list_to_save$mean_and_mode_params_statnu1.5
+mean_and_mode_params_statnu1.5
 ```
 
 ### Estimated parameters for the non-stationary model with $\nu = 1.5$
 
 ```{r, eval = TRUE}
-list_to_save$mean_and_mode_params_nonstatnu1.5
+mean_and_mode_params_nonstatnu1.5
 ```
 
 ### Estimated parameters for the stationary model with $\nu$ estimated
 
 ```{r, eval = TRUE}
-list_to_save$mean_and_mode_params_statnuest
+mean_and_mode_params_statnuest
 ```
 
 ### Estimated parameters for the non-stationary model with $\nu$ estimated
 
 ```{r, eval = TRUE}
-list_to_save$mean_and_mode_params_nonstatnuest
+mean_and_mode_params_nonstatnuest
 ```
 
 # References

@@ -495,19 +495,19 @@ linetype_mapping <- c(
 
 # Plot MSE
 mse_plot <- ggplot(mse_long, aes(x = distance, y = MSE, color = nu, linetype = nu)) +
-  geom_line(linewidth = 1) +
-  labs(y = "MSE", x = "Distance") +
-  scale_color_manual(values = color_mapping, labels = label_mapping, name = expression(alpha)) +
-  scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = expression(alpha)) +
+  geom_line(linewidth = 2) +
+  labs(y = "MSE", x = "$\\mbox{Geodesic distance } R$") +
+  scale_color_manual(values = color_mapping, labels = label_mapping, name = "$\\alpha$") +
+  scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = "$\\alpha$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"))
 
 # Plot negative log-score
 ls_plot <- ggplot(ls_long, aes(x = distance, y = LogScore, color = nu, linetype = nu)) +
-  geom_line(linewidth = 1) +
-  labs(y = "Negative Log-Score", x = "Distance") +
-  scale_color_manual(values = color_mapping, labels = label_mapping, name = expression(alpha)) +
-  scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = expression(alpha)) +
+  geom_line(linewidth = 2) +
+  labs(y = "Negative Log-Score", x = "$\\mbox{Geodesic distance } R$") +
+  scale_color_manual(values = color_mapping, labels = label_mapping, name = "$\\alpha$") +
+  scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = "$\\alpha$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"))
 
@@ -519,12 +519,12 @@ combined_plot <- (mse_plot + ls_plot +
 
 
 # Save combined plot
-ggsave(here::here("data_files/cv_sim.png"), plot = combined_plot, width = 9.22, height = 4.01, dpi = 500)
-
+# ggsave(here::here("data_files/cv_sim.png"), plot = combined_plot, width = 9.22, height = 4.01, dpi = 500)
+myggsave(combined_plot, width = 9.22, height = 4.01)
 ```
 
-```{r, eval = TRUE, fig.dim = c(9.22,4.01), fig.cap = captioner("MSE and negative Log-Score as functions of distance.")}
-knitr::include_graphics(here::here("data_files/cv_sim.png"))
+```{r, eval = TRUE, out.width="922px", out.height="401px", fig.cap = captioner("MSE and negative Log-Score as functions of distance.")}
+knitr::include_graphics(here::here("data_files/tikzpic/combined_plot.pdf"))
 ```
 
 # References
