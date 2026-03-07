@@ -33,6 +33,10 @@ navbar:
           href: num_error.html
         - text: "Section 2.7"
           href: conv_rates.html
+        - text: "Section 2.8"
+          href: pems1.html
+        - text: "Section 2.9"
+          href: pems2.html
     - text: "Chapter 3"
       menu:
         - text: "Section 3.1"

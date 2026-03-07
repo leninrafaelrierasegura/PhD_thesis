@@ -101,6 +101,20 @@ with open("combined_side_by_side.pdf", "wb") as f:
 
 
 
+library(plotly)
+library(htmlwidgets)
+library(webshot2)  # lightweight, no sudo needed
+library(rsvg)
+
+# Your Plotly plot
+
+p2 <- plot_ly(z = ~volcano + 10, type = "surface") %>% layout(title = "Plot 2")
+
+# Save as self-contained HTML
+htmlwidgets::saveWidget(p2, "temp_plot.html", selfcontained = TRUE)
+
+# Take SVG screenshot with webshot2
+webshot2::webshot("temp_plot.html", "temp_plot.svg", vwidth = 800, vheight = 600)
 
 
 

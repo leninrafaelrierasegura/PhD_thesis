@@ -529,7 +529,7 @@ which is a star-shaped set with center at $v$ and rays made of the segments cont
         0,&\text{ otherwise},
     \end{cases}
 \end{equation*}
-where $x_v^e$ is either $x_0^e$ or $x_{n_e}^e$ depending on the edge direction and its parameterization. See (@Arioli2018AFinite) for more. Figure 3 below provides an illustration of the system of basis functions $\{\varphi_j^e, \phi_v\}$ together with the set $\Ncal_v$.
+where $x_v^e$ is either $x_0^e$ or $x_{n_e}^e$ depending on the edge direction and its parameterization. See [@Arioli2018AFinite] for more. Figure 3 below provides an illustration of the system of basis functions $\{\varphi_j^e, \phi_v\}$ together with the set $\Ncal_v$.
 
 
 ```{r}
@@ -642,6 +642,8 @@ p3 <- plot_ly(
   layout(font = list(family = "Palatino"),
          scene = c(tadpole.layout(x_range, y_range, z_range), notes3),
          margin = list(l = 0, r = 0, b = 0, t = 0),
+  paper_bgcolor = "white",  # the overall canvas background
+  plot_bgcolor  = "white",   # the area inside axes
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
@@ -649,6 +651,7 @@ save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
 # combine_plotly_grid_pdf(list(p1,p2,p3), output_pdf = here::here("data_files/plotlypic/tadpole_graph_basis_functions.pdf"), ncol = 3)
 # combine_plotly_pdf_single(p3, here::here("data_files/plotlypic/p3.pdf"))
 ```
+
 
 
 # Plots part 1
