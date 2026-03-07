@@ -37,6 +37,10 @@ navbar:
           href: pems1.html
         - text: "Section 2.9"
           href: pems2.html
+        - text: "Section 2.10"
+          href: sim_study.html
+        - text: "Section 2.11"
+          href: mplots.html
     - text: "Chapter 3"
       menu:
         - text: "Section 3.1"
