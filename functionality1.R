@@ -159,3 +159,127 @@ myggsave <- function(plot, width = 9.22, height = 7.05) {
   message("PDF saved at: ", file.path(dir_to_save, paste0(obj_name, ".pdf")))
 }
 
+
+## -----------------------------------------------------------------------------
+
+library(plotly)
+library(reticulate)
+library(jsonlite)
+library(glue)
+
+combine_plotly_grid_pdf <- function(plots, output_pdf = "combined_grid.pdf", 
+                                    ncol = 2, width = 1400, height = 1000, scale = 2, 
+                                    resolution = 300, spacing = 50) {
+  py_config() # Check Python configuration
+  if (!is.list(plots) || length(plots) < 2) {
+    stop("plots must be a list of at least two plotly objects")
+  }
+  
+  # Temporary PNG files
+  tmp_files <- sapply(seq_along(plots), function(i) tempfile(fileext = ".png"))
+  
+  # Save all plots as PNGs
+  for (i in seq_along(plots)) {
+    plotly::save_image(plots[[i]], tmp_files[i], width = width, height = height, scale = scale)
+  }
+  
+  # Convert temporary files to JSON array for Python
+  py_tmp_files <- toJSON(tmp_files, auto_unbox = TRUE)
+  
+  # Python code using glue (variables directly substituted)
+  py_code <- glue("
+from PIL import Image
+import math
+
+files = {py_tmp_files}
+images = [Image.open(f) for f in files]
+
+ncol = {ncol}
+nrow = math.ceil(len(images)/ncol)
+spacing = {spacing}
+
+cell_width = max(img.width for img in images)
+cell_height = max(img.height for img in images)
+
+combined_width = cell_width * ncol + spacing * (ncol - 1)
+combined_height = cell_height * nrow + spacing * (nrow - 1)
+
+combined = Image.new('RGB', (combined_width, combined_height), (255, 255, 255))
+
+for idx, img in enumerate(images):
+    row = idx // ncol
+    col = idx % ncol
+    x = col * (cell_width + spacing)
+    y = row * (cell_height + spacing)
+    combined.paste(img, (x, y))
+
+combined.save(r'{output_pdf}', 'PDF', resolution={resolution})
+  ")
+  
+  # Run Python code
+  py_run_string(py_code)
+  
+  # Clean up temporary files
+  file.remove(tmp_files)
+  
+  message("Combined PDF saved to: ", output_pdf)
+}
+
+# p1 <- plot_ly(z = ~volcano, type = "surface") %>% layout(title = "Plot 1")
+# p2 <- plot_ly(z = ~volcano + 5, type = "surface") %>% layout(title = "Plot 2")
+# p3 <- plot_ly(z = ~volcano + 10, type = "surface") %>% layout(title = "Plot 3")
+# p4 <- plot_ly(z = ~volcano + 15, type = "surface") %>% layout(title = "Plot 4")
+# 
+# combine_plotly_grid_pdf(list(p1, p2, p3, p4), output_pdf = "plots_2x2.pdf", ncol = 4)
+
+
+## -----------------------------------------------------------------------------
+library(plotly)
+library(reticulate)
+
+
+combine_plotly_pdf <- function(p1, p2, output_pdf = "combined_side_by_side.pdf", 
+                               width = 1400, height = 1000, scale = 2, resolution = 300,
+                               spacing = 50) {
+  py_config() # Check Python configuration
+  # Temporary PNG paths
+  tmp1 <- tempfile(fileext = ".png")
+  tmp2 <- tempfile(fileext = ".png")
+  
+  # Save the plotly plots as PNGs
+  plotly::save_image(p1, tmp1, width = width, height = height, scale = scale)
+  plotly::save_image(p2, tmp2, width = width, height = height, scale = scale)
+  
+  # Python code to combine PNGs side by side
+  py_run_string(sprintf("
+from PIL import Image
+
+img1 = Image.open(r'%s')
+img2 = Image.open(r'%s')
+
+# Compute dimensions
+combined_width = img1.width + img2.width + %d
+combined_height = max(img1.height, img2.height)
+
+combined = Image.new('RGB', (combined_width, combined_height), (255, 255, 255))
+combined.paste(img1, (0, 0))
+combined.paste(img2, (img1.width + %d, 0))
+
+# Save as PDF
+combined.save(r'%s', 'PDF', resolution=%d)
+", tmp1, tmp2, spacing, spacing, output_pdf, resolution))
+  
+  # Remove temporary PNGs
+  file.remove(tmp1, tmp2)
+  
+  message("Combined PDF saved to: ", output_pdf)
+}
+
+
+# # Create example 3D plotly plots
+# p1 <- plot_ly(z = ~volcano, type = "surface") %>% layout(title = "Plot 1")
+# p2 <- plot_ly(z = ~volcano + 10, type = "surface") %>% layout(title = "Plot 2")
+# 
+# # Combine into one PDF
+# combine_plotly_pdf(p1, p2, output_pdf = "my_plots.pdf")
+

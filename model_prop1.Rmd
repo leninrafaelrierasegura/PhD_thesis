@@ -507,7 +507,7 @@ save(p_A, file = here("data_files/3d_cov_plots_diff_loc.RData"))
 
 
 ```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Example of covariance functions $\\varrho^\\alpha(s_i,\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
-load(here("data_files/3d_cov_plots_diff_loc.RData"))
+load(here::here("data_files/3d_cov_plots_diff_loc.RData"))
 p_A
 ```
 
