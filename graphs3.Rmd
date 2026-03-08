@@ -1242,6 +1242,28 @@ so that the second derivative does not change sign under a flip. See Figure 7. T
 
 
 
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
+load(here::here("data_files/pf.Rdata"))
+pf
+```
+
+:::
+
+::: {}
+
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{e_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+load(here::here("data_files/pf3.Rdata"))
+pf3
+```
+
+:::
+
+::::
 
 # References
 
