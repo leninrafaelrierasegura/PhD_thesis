@@ -17,6 +17,8 @@ navbar:
           href: graphs2.html
         - text: "Section 1.3"
           href: graphs3.html
+        - text: "Section 1.4"
+          href: graphs4.html
     - text: "Chapter 2"
       menu:
         - text: "Section 2.1"

@@ -1,0 +1,425 @@
+---
+title: "Star graphs"
+date: "Last modified: `r format(Sys.time(), '%d-%m-%Y.')`"
+output:
+  html_document:
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    highlight: pygments
+    theme: flatly
+    code_folding: hide # class.source = "fold-hide" to hide code and add a button to show it
+    df_print: paged
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    fig_caption: true
+    code_download: true
+    css: visual.css
+always_allow_html: true
+bibliography: 
+  - references.bib
+  - grateful-refs.bib
+header-includes:
+  - \newcommand{\ar}{\mathbb{R}}
+  - \newcommand{\llav}[1]{\left\{#1\right\}}
+  - \newcommand{\pare}[1]{\left(#1\right)}
+  - \newcommand{\Ncal}{\mathcal{N}}
+  - \newcommand{\Vcal}{\mathcal{V}}
+  - \newcommand{\Ecal}{\mathcal{E}}
+  - \newcommand{\Wcal}{\mathcal{W}}
+  - \newcommand{\almosteverywhere}{\mathrm{a.e.}\;}
+---
+
+Go back to the [Contents](about.html) page.
+
+<div style="color: #2c3e50; text-align: right;">
+********  
+<strong>Press Show to reveal the code chunks.</strong>  
+
+********
+</div>
+
+
+```{r}
+# Create a clipboard button on the rendered HTML page
+source(here::here("clipboard.R")); clipboard
+# Set seed for reproducibility
+set.seed(1982) 
+# Set global options for all code chunks
+knitr::opts_chunk$set(
+  # Disable messages printed by R code chunks
+  message = FALSE,    
+  # Disable warnings printed by R code chunks
+  warning = FALSE,    
+  # Show R code within code chunks in output
+  echo = TRUE,        
+  # Include both R code and its results in output
+  include = TRUE,     
+  # Evaluate R code chunks
+  eval = FALSE,       
+  # Enable caching of R code chunks for faster rendering
+  cache = FALSE,      
+  # Align figures in the center of the output
+  fig.align = "center",
+  # Enable retina display for high-resolution figures
+  retina = 2,
+  # Show errors in the output instead of stopping rendering
+  error = TRUE,
+  # Do not collapse code and output into a single block
+  collapse = FALSE
+)
+# Start the figure counter
+fig_count <- 0
+# Define the captioner function
+captioner <- function(caption) {
+  fig_count <<- fig_count + 1
+  paste0("Figure ", fig_count, ": ", caption)
+}
+
+```
+
+```{r, eval = TRUE}
+library(MetricGraph)
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(viridis)
+library(plotly)
+library(patchwork)
+library(slackr)
+source("keys.R")
+slackr_setup(token = token) # token comes from keys.R
+```
+
+
+```{r}
+capture.output(
+  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+  file = here::here("old/purl_log.txt")
+)
+source(here::here("functionality1.R"))
+```
+
+```{r}
+edges_roots_of_unity <- function(n, length = 10) {
+  x_coords <- cos(2 * pi * (0:(n-1)) / n)
+  y_coords <- sin(2 * pi * (0:(n-1)) / n)
+  return(lapply(1:n, function(i) {rbind(c(0, 0), c(length*x_coords[i], length*y_coords[i]))}))
+}
+```
+
+
+```{r}
+my_length <- 2
+sizeref <- 0.3
+
+x_eye <- 3#8
+y_eye <- -1#-2
+z_eye <- 5#3
+```
+
+
+```{r}
+gets.starplotly <- function(n, my_length, sizeref, x_eye, y_eye, z_eye, gsw, gfsize, colaxnn) {
+edges <-edges_roots_of_unity(n, length = my_length)
+graph <- metric_graph$new(edges = edges)
+# sizeref already defined
+n_edges <- length(edges)
+
+# Compute midpoints and directions
+midpoints <- lapply(edges, function(e) {
+  list(
+    x = (e[2,1] + e[1,1])/2,
+    y = (e[2,2] + e[1,2])/2,
+    z = 0
+  )
+})
+
+directions <- lapply(edges, function(e) {
+  list(
+    dx = e[2,1] - e[1,1],
+    dy = e[2,2] - e[1,2],
+    dz = 0
+  )
+})
+
+# Start with base graph
+star_graph <- graph$plot(vertex_size = gsw, edge_width = gsw, type = "plotly") |>
+  config(mathjax = 'cdn')
+
+# Add cones for all edges
+for(i in seq_len(n_edges)) {
+  star_graph <- star_graph |>
+    add_trace(
+      type = "cone",
+      x = midpoints[[i]]$y,  # swapped coords to match your convention
+      y = midpoints[[i]]$x,
+      z = midpoints[[i]]$z,
+      u = directions[[i]]$dy,
+      v = directions[[i]]$dx,
+      w = directions[[i]]$dz,
+      sizemode = "absolute",
+      sizeref = sizeref,
+      showscale = FALSE,
+      showlegend = FALSE,
+      colorscale = list(c(0,1), c("red","red")),
+      cmin = 0,
+      cmax = 1
+    )
+}
+
+# Add vertex and edge annotations programmatically
+annotations_list <- list()
+
+# vertex annotations
+for(i in seq_len(n_edges)) {
+  annotations_list[[i+1]] <- list(
+    x = edges[[i]][2,2], y = edges[[i]][2,1], z = 0,
+    text = TeX(paste0("v_", i)),
+    textangle = 0, ax = 0, ay = 35,
+    font = list(color = "black", size = gfsize),
+    arrowcolor = "rgba(0,0,0,0)"
+  )
+}
+
+# central vertex
+annotations_list[[1]] <- list(
+  x = 0, y = 0, z = 0,
+  text = TeX("v"),
+  textangle = 0, ax = 0, ay = 35,
+  font = list(color = "black", size = gfsize),
+  arrowcolor = "rgba(0,0,0,0)"
+)
+
+# edge midpoints
+for(i in seq_len(n_edges)) {
+  annotations_list[[n_edges+1 + i]] <- list(
+    x = midpoints[[i]]$y, y = midpoints[[i]]$x, z = midpoints[[i]]$z,
+    text = TeX(paste0("e_", i)),
+    textangle = 0, ax = 0, ay = 35,
+    font = list(color = "black", size = gfsize),
+    arrowcolor = "rgba(0,0,0,0)"
+  )
+}
+
+# Apply layout
+star_graph <- star_graph |> plotly::layout(
+  font = list(family = "Palatino"),
+  scene = list(
+    xaxis = list(title = list(text = "x", font = list(color = colaxnn)), tickfont = list(color = colaxnn)),
+    yaxis = list(title = list(text = "y", font = list(color = colaxnn)), tickfont = list(color = colaxnn)),
+    zaxis = list(title = list(text = "z", font = list(color = colaxnn)), tickfont = list(color = colaxnn)),
+    aspectratio = list(x = 2, y = 2, z = 2),
+    camera = list(eye = list(x = x_eye, y = y_eye, z = z_eye), center = list(x = 0, y = 0, z = 0)),
+    annotations = annotations_list
+  )
+)
+return(star_graph)
+}
+```
+
+
+```{r}
+n <- 3
+star3graph <- gets.starplotly(n = n, 
+                my_length = my_length,
+                sizeref = sizeref,
+                x_eye = x_eye, 
+                y_eye = y_eye,
+                z_eye = z_eye,
+                gsw = gsw,
+                gfsize = gfsize,
+                colaxnn = colaxnn)
+
+n <- 7
+star7graph <- gets.starplotly(n = n, 
+                my_length = my_length,
+                sizeref = sizeref,
+                x_eye = x_eye, 
+                y_eye = y_eye,
+                z_eye = z_eye,
+                gsw = gsw,
+                gfsize = gfsize,
+                colaxnn = colaxnn)
+
+
+save(star3graph, file = here::here("data_files/star3graph.Rdata"))
+save(star7graph, file = here::here("data_files/star7graph.Rdata"))
+```
+
+
+
+
+```{r}
+n <- 2
+edges <-edges_roots_of_unity(n, length = my_length)
+edges[[1]] <- rbind(c(0, 0), c(my_length, 0))
+edges[[2]] <- rbind(c(0, 0), c(-my_length, 0))
+graph <- metric_graph$new(edges = edges)
+
+e1_ini_x <- edges[[1]][1,1]; e1_ini_y <- edges[[1]][1,2]; e1_ini_z <- 0
+e1_fin_x <- edges[[1]][2,1]; e1_fin_y <- edges[[1]][2,2]; e1_fin_z <- 0
+
+# Midpoint
+xm1 <- (e1_fin_x + e1_ini_x)/2
+ym1 <- (e1_fin_y + e1_ini_y)/2
+zm1 <- (e1_fin_z + e1_ini_z)/2
+
+# Direction vector
+dx1 <- e1_fin_x - e1_ini_x
+dy1 <- e1_fin_y - e1_ini_y
+dz1 <- e1_fin_z - e1_ini_z
+
+
+e4_ini_x <- 0; e4_ini_y <- 0; e4_ini_z <- 0
+e4_fin_x <- -my_length; e4_fin_y <- 0; e4_fin_z <- 0
+
+# Midpoint
+xm4 <- (e4_fin_x + e4_ini_x)/2
+ym4 <- (e4_fin_y + e4_ini_y)/2
+zm4 <- (e4_fin_z + e4_ini_z)/2
+
+# Direction vector
+dx4 <- e4_fin_x - e4_ini_x
+dy4 <- e4_fin_y - e4_ini_y
+dz4 <- e4_fin_z - e4_ini_z
+```
+
+
+
+```{r}
+star2graph <- graph$plot(vertex_size = gsw, edge_width = gsw, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym4,
+  y = xm4,
+  z = zm4,
+  u = dy4,
+  v = dx4,
+  w = dz4,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym4, y = xm4, z = zm4,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+save(star2graph, file = here::here("data_files/star2graph.Rdata"))
+```
+
+
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Star graph with $n=2$ edges.")}
+load(here::here("data_files/star2graph.Rdata"))
+star2graph
+```
+
+
+
+:::
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Star graph with $n=3$ edges.")}
+load(here::here("data_files/star3graph.Rdata"))
+star3graph
+```
+
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Star graph with $n=7$ edges.")}
+load(here::here("data_files/star7graph.Rdata"))
+star7graph
+```
+
+
+:::
+
+
+::::
+
+
+
+# References
+
+```{r, eval =TRUE}
+grateful::cite_packages(output = "paragraph", out.dir = ".")
+```
+

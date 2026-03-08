@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Star graphs</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/clipboard-2.0.6/clipboard.min.js"></script>
+<link href="site_libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+<script src="site_libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+<script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa-solid fa-clipboard\" style=\"color: #00008B\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.11.0/plotly.js"></script>
+<script src="site_libs/mathjax-2.7.5/cdn.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="visual.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PhD thesis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="functionality1.html">Functionality</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Chapter 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="graphs1.html">Section 1.1</a>
+    </li>
+    <li>
+      <a href="graphs2.html">Section 1.2</a>
+    </li>
+    <li>
+      <a href="graphs3.html">Section 1.3</a>
+    </li>
+    <li>
+      <a href="graphs4.html">Section 1.4</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Chapter 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="model_prop1.html">Section 2.1</a>
+    </li>
+    <li>
+      <a href="model_prop2.html">Section 2.2</a>
+    </li>
+    <li>
+      <a href="model_prop3.html">Section 2.3</a>
+    </li>
+    <li>
+      <a href="model_prop4.html">Section 2.4</a>
+    </li>
+    <li>
+      <a href="approximation.html">Section 2.5</a>
+    </li>
+    <li>
+      <a href="num_error.html">Section 2.6</a>
+    </li>
+    <li>
+      <a href="conv_rates.html">Section 2.7</a>
+    </li>
+    <li>
+      <a href="pems1.html">Section 2.8</a>
+    </li>
+    <li>
+      <a href="pems2.html">Section 2.9</a>
+    </li>
+    <li>
+      <a href="sim_study.html">Section 2.10</a>
+    </li>
+    <li>
+      <a href="mplots.html">Section 2.11</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Chapter 3
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Section 3.1</a>
+    </li>
+    <li>
+      <a href="index.html">Section 3.2</a>
+    </li>
+    <li>
+      <a href="index.html">Section 3.3</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://arxiv.org/abs/0000.00000">
+    <span class="fa fa-file-pdf"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/leninrafaelrierasegura/PhD_thesis">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Star graphs</h1>
+<h4 class="date">Last modified: 08-03-2026.</h4>
+
+</div>
+
+
+<p>Go back to the <a href="about.html">Contents</a> page.</p>
+<div style="color: #2c3e50; text-align: right;">
+<hr />
+<p><strong>Press Show to reveal the code chunks.</strong></p>
+<hr />
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Create a clipboard button on the rendered HTML page</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;clipboard.R&quot;</span>)); clipboard</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1982</span>) </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Set global options for all code chunks</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="co"># Disable messages printed by R code chunks</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">message =</span> <span class="cn">FALSE</span>,    </span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="co"># Disable warnings printed by R code chunks</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">warning =</span> <span class="cn">FALSE</span>,    </span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="co"># Show R code within code chunks in output</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="at">echo =</span> <span class="cn">TRUE</span>,        </span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="co"># Include both R code and its results in output</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="at">include =</span> <span class="cn">TRUE</span>,     </span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  <span class="co"># Evaluate R code chunks</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>  <span class="at">eval =</span> <span class="cn">FALSE</span>,       </span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>  <span class="co"># Enable caching of R code chunks for faster rendering</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>  <span class="at">cache =</span> <span class="cn">FALSE</span>,      </span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="co"># Align figures in the center of the output</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="at">fig.align =</span> <span class="st">&quot;center&quot;</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="co"># Enable retina display for high-resolution figures</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  <span class="at">retina =</span> <span class="dv">2</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="co"># Show errors in the output instead of stopping rendering</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  <span class="at">error =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>  <span class="co"># Do not collapse code and output into a single block</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>)</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co"># Start the figure counter</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>fig_count <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co"># Define the captioner function</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>captioner <span class="ot">&lt;-</span> <span class="cf">function</span>(caption) {</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>  fig_count <span class="ot">&lt;&lt;-</span> fig_count <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">&quot;Figure &quot;</span>, fig_count, <span class="st">&quot;: &quot;</span>, caption)</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(MetricGraph)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">library</span>(slackr)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;keys.R&quot;</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="fu">slackr_setup</span>(<span class="at">token =</span> token) <span class="co"># token comes from keys.R</span></span></code></pre></div>
+<pre><code>## [1] &quot;Successfully connected to Slack&quot;</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">capture.output</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">purl</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;functionality1.Rmd&quot;</span>), <span class="at">output =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;functionality1.R&quot;</span>)),</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;old/purl_log.txt&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;functionality1.R&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>edges_roots_of_unity <span class="ot">&lt;-</span> <span class="cf">function</span>(n, <span class="at">length =</span> <span class="dv">10</span>) {</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> <span class="fu">cos</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> (<span class="dv">0</span><span class="sc">:</span>(n<span class="dv">-1</span>)) <span class="sc">/</span> n)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> (<span class="dv">0</span><span class="sc">:</span>(n<span class="dv">-1</span>)) <span class="sc">/</span> n)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="cf">function</span>(i) {<span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="fu">c</span>(length<span class="sc">*</span>x_coords[i], length<span class="sc">*</span>y_coords[i]))}))</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>my_length <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>sizeref <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>x_eye <span class="ot">&lt;-</span> <span class="dv">3</span><span class="co">#8</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>y_eye <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span><span class="co">#-2</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>z_eye <span class="ot">&lt;-</span> <span class="dv">5</span><span class="co">#3</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>gets.starplotly <span class="ot">&lt;-</span> <span class="cf">function</span>(n, my_length, sizeref, x_eye, y_eye, z_eye, gsw, gfsize, colaxnn) {</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>edges <span class="ot">&lt;-</span><span class="fu">edges_roots_of_unity</span>(n, <span class="at">length =</span> my_length)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>graph <span class="ot">&lt;-</span> metric_graph<span class="sc">$</span><span class="fu">new</span>(<span class="at">edges =</span> edges)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># sizeref already defined</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>n_edges <span class="ot">&lt;-</span> <span class="fu">length</span>(edges)</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># Compute midpoints and directions</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>midpoints <span class="ot">&lt;-</span> <span class="fu">lapply</span>(edges, <span class="cf">function</span>(e) {</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    <span class="at">x =</span> (e[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">+</span> e[<span class="dv">1</span>,<span class="dv">1</span>])<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>    <span class="at">y =</span> (e[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">+</span> e[<span class="dv">1</span>,<span class="dv">2</span>])<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>    <span class="at">z =</span> <span class="dv">0</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  )</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>})</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>directions <span class="ot">&lt;-</span> <span class="fu">lapply</span>(edges, <span class="cf">function</span>(e) {</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>    <span class="at">dx =</span> e[<span class="dv">2</span>,<span class="dv">1</span>] <span class="sc">-</span> e[<span class="dv">1</span>,<span class="dv">1</span>],</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>    <span class="at">dy =</span> e[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">-</span> e[<span class="dv">1</span>,<span class="dv">2</span>],</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>    <span class="at">dz =</span> <span class="dv">0</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>  )</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>})</span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co"># Start with base graph</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>star_graph <span class="ot">&lt;-</span> graph<span class="sc">$</span><span class="fu">plot</span>(<span class="at">vertex_size =</span> gsw, <span class="at">edge_width =</span> gsw, <span class="at">type =</span> <span class="st">&quot;plotly&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>  <span class="fu">config</span>(<span class="at">mathjax =</span> <span class="st">&#39;cdn&#39;</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co"># Add cones for all edges</span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(n_edges)) {</span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>  star_graph <span class="ot">&lt;-</span> star_graph <span class="sc">|&gt;</span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>    <span class="fu">add_trace</span>(</span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a>      <span class="at">type =</span> <span class="st">&quot;cone&quot;</span>,</span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a>      <span class="at">x =</span> midpoints[[i]]<span class="sc">$</span>y,  <span class="co"># swapped coords to match your convention</span></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a>      <span class="at">y =</span> midpoints[[i]]<span class="sc">$</span>x,</span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>      <span class="at">z =</span> midpoints[[i]]<span class="sc">$</span>z,</span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a>      <span class="at">u =</span> directions[[i]]<span class="sc">$</span>dy,</span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a>      <span class="at">v =</span> directions[[i]]<span class="sc">$</span>dx,</span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a>      <span class="at">w =</span> directions[[i]]<span class="sc">$</span>dz,</span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a>      <span class="at">sizemode =</span> <span class="st">&quot;absolute&quot;</span>,</span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a>      <span class="at">sizeref =</span> sizeref,</span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a>      <span class="at">showscale =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a>      <span class="at">showlegend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a>      <span class="at">colorscale =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;red&quot;</span>)),</span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a>      <span class="at">cmin =</span> <span class="dv">0</span>,</span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a>      <span class="at">cmax =</span> <span class="dv">1</span></span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a>    )</span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a>}</span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a><span class="co"># Add vertex and edge annotations programmatically</span></span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a>annotations_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a><span class="co"># vertex annotations</span></span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(n_edges)) {</span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a>  annotations_list[[i<span class="sc">+</span><span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a>    <span class="at">x =</span> edges[[i]][<span class="dv">2</span>,<span class="dv">2</span>], <span class="at">y =</span> edges[[i]][<span class="dv">2</span>,<span class="dv">1</span>], <span class="at">z =</span> <span class="dv">0</span>,</span>
+<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">TeX</span>(<span class="fu">paste0</span>(<span class="st">&quot;v_&quot;</span>, i)),</span>
+<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a>    <span class="at">textangle =</span> <span class="dv">0</span>, <span class="at">ax =</span> <span class="dv">0</span>, <span class="at">ay =</span> <span class="dv">35</span>,</span>
+<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a>    <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> gfsize),</span>
+<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a>    <span class="at">arrowcolor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span></span>
+<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a>  )</span>
+<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a>}</span>
+<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a></span>
+<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a><span class="co"># central vertex</span></span>
+<span id="cb8-64"><a href="#cb8-64" tabindex="-1"></a>annotations_list[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-65"><a href="#cb8-65" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">z =</span> <span class="dv">0</span>,</span>
+<span id="cb8-66"><a href="#cb8-66" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">TeX</span>(<span class="st">&quot;v&quot;</span>),</span>
+<span id="cb8-67"><a href="#cb8-67" tabindex="-1"></a>  <span class="at">textangle =</span> <span class="dv">0</span>, <span class="at">ax =</span> <span class="dv">0</span>, <span class="at">ay =</span> <span class="dv">35</span>,</span>
+<span id="cb8-68"><a href="#cb8-68" tabindex="-1"></a>  <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> gfsize),</span>
+<span id="cb8-69"><a href="#cb8-69" tabindex="-1"></a>  <span class="at">arrowcolor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span></span>
+<span id="cb8-70"><a href="#cb8-70" tabindex="-1"></a>)</span>
+<span id="cb8-71"><a href="#cb8-71" tabindex="-1"></a></span>
+<span id="cb8-72"><a href="#cb8-72" tabindex="-1"></a><span class="co"># edge midpoints</span></span>
+<span id="cb8-73"><a href="#cb8-73" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(n_edges)) {</span>
+<span id="cb8-74"><a href="#cb8-74" tabindex="-1"></a>  annotations_list[[n_edges<span class="sc">+</span><span class="dv">1</span> <span class="sc">+</span> i]] <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-75"><a href="#cb8-75" tabindex="-1"></a>    <span class="at">x =</span> midpoints[[i]]<span class="sc">$</span>y, <span class="at">y =</span> midpoints[[i]]<span class="sc">$</span>x, <span class="at">z =</span> midpoints[[i]]<span class="sc">$</span>z,</span>
+<span id="cb8-76"><a href="#cb8-76" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">TeX</span>(<span class="fu">paste0</span>(<span class="st">&quot;e_&quot;</span>, i)),</span>
+<span id="cb8-77"><a href="#cb8-77" tabindex="-1"></a>    <span class="at">textangle =</span> <span class="dv">0</span>, <span class="at">ax =</span> <span class="dv">0</span>, <span class="at">ay =</span> <span class="dv">35</span>,</span>
+<span id="cb8-78"><a href="#cb8-78" tabindex="-1"></a>    <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> gfsize),</span>
+<span id="cb8-79"><a href="#cb8-79" tabindex="-1"></a>    <span class="at">arrowcolor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span></span>
+<span id="cb8-80"><a href="#cb8-80" tabindex="-1"></a>  )</span>
+<span id="cb8-81"><a href="#cb8-81" tabindex="-1"></a>}</span>
+<span id="cb8-82"><a href="#cb8-82" tabindex="-1"></a></span>
+<span id="cb8-83"><a href="#cb8-83" tabindex="-1"></a><span class="co"># Apply layout</span></span>
+<span id="cb8-84"><a href="#cb8-84" tabindex="-1"></a>star_graph <span class="ot">&lt;-</span> star_graph <span class="sc">|&gt;</span> plotly<span class="sc">::</span><span class="fu">layout</span>(</span>
+<span id="cb8-85"><a href="#cb8-85" tabindex="-1"></a>  <span class="at">font =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">&quot;Palatino&quot;</span>),</span>
+<span id="cb8-86"><a href="#cb8-86" tabindex="-1"></a>  <span class="at">scene =</span> <span class="fu">list</span>(</span>
+<span id="cb8-87"><a href="#cb8-87" tabindex="-1"></a>    <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">&quot;x&quot;</span>, <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)), <span class="at">tickfont =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),</span>
+<span id="cb8-88"><a href="#cb8-88" tabindex="-1"></a>    <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">&quot;y&quot;</span>, <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)), <span class="at">tickfont =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),</span>
+<span id="cb8-89"><a href="#cb8-89" tabindex="-1"></a>    <span class="at">zaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">&quot;z&quot;</span>, <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)), <span class="at">tickfont =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),</span>
+<span id="cb8-90"><a href="#cb8-90" tabindex="-1"></a>    <span class="at">aspectratio =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="dv">2</span>, <span class="at">z =</span> <span class="dv">2</span>),</span>
+<span id="cb8-91"><a href="#cb8-91" tabindex="-1"></a>    <span class="at">camera =</span> <span class="fu">list</span>(<span class="at">eye =</span> <span class="fu">list</span>(<span class="at">x =</span> x_eye, <span class="at">y =</span> y_eye, <span class="at">z =</span> z_eye), <span class="at">center =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">z =</span> <span class="dv">0</span>)),</span>
+<span id="cb8-92"><a href="#cb8-92" tabindex="-1"></a>    <span class="at">annotations =</span> annotations_list</span>
+<span id="cb8-93"><a href="#cb8-93" tabindex="-1"></a>  )</span>
+<span id="cb8-94"><a href="#cb8-94" tabindex="-1"></a>)</span>
+<span id="cb8-95"><a href="#cb8-95" tabindex="-1"></a><span class="fu">return</span>(star_graph)</span>
+<span id="cb8-96"><a href="#cb8-96" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>star3graph <span class="ot">&lt;-</span> <span class="fu">gets.starplotly</span>(<span class="at">n =</span> n, </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                <span class="at">my_length =</span> my_length,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>                <span class="at">sizeref =</span> sizeref,</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>                <span class="at">x_eye =</span> x_eye, </span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>                <span class="at">y_eye =</span> y_eye,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>                <span class="at">z_eye =</span> z_eye,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>                <span class="at">gsw =</span> gsw,</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>                <span class="at">gfsize =</span> gfsize,</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>                <span class="at">colaxnn =</span> colaxnn)</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>star7graph <span class="ot">&lt;-</span> <span class="fu">gets.starplotly</span>(<span class="at">n =</span> n, </span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>                <span class="at">my_length =</span> my_length,</span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>                <span class="at">sizeref =</span> sizeref,</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>                <span class="at">x_eye =</span> x_eye, </span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>                <span class="at">y_eye =</span> y_eye,</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>                <span class="at">z_eye =</span> z_eye,</span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a>                <span class="at">gsw =</span> gsw,</span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a>                <span class="at">gfsize =</span> gfsize,</span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a>                <span class="at">colaxnn =</span> colaxnn)</span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="fu">save</span>(star3graph, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data_files/star3graph.Rdata&quot;</span>))</span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="fu">save</span>(star7graph, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data_files/star7graph.Rdata&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>edges <span class="ot">&lt;-</span><span class="fu">edges_roots_of_unity</span>(n, <span class="at">length =</span> my_length)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>edges[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="fu">c</span>(my_length, <span class="dv">0</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>edges[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="fu">c</span>(<span class="sc">-</span>my_length, <span class="dv">0</span>))</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>graph <span class="ot">&lt;-</span> metric_graph<span class="sc">$</span><span class="fu">new</span>(<span class="at">edges =</span> edges)</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>e1_ini_x <span class="ot">&lt;-</span> edges[[<span class="dv">1</span>]][<span class="dv">1</span>,<span class="dv">1</span>]; e1_ini_y <span class="ot">&lt;-</span> edges[[<span class="dv">1</span>]][<span class="dv">1</span>,<span class="dv">2</span>]; e1_ini_z <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>e1_fin_x <span class="ot">&lt;-</span> edges[[<span class="dv">1</span>]][<span class="dv">2</span>,<span class="dv">1</span>]; e1_fin_y <span class="ot">&lt;-</span> edges[[<span class="dv">1</span>]][<span class="dv">2</span>,<span class="dv">2</span>]; e1_fin_z <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co"># Midpoint</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>xm1 <span class="ot">&lt;-</span> (e1_fin_x <span class="sc">+</span> e1_ini_x)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>ym1 <span class="ot">&lt;-</span> (e1_fin_y <span class="sc">+</span> e1_ini_y)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>zm1 <span class="ot">&lt;-</span> (e1_fin_z <span class="sc">+</span> e1_ini_z)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co"># Direction vector</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>dx1 <span class="ot">&lt;-</span> e1_fin_x <span class="sc">-</span> e1_ini_x</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>dy1 <span class="ot">&lt;-</span> e1_fin_y <span class="sc">-</span> e1_ini_y</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a>dz1 <span class="ot">&lt;-</span> e1_fin_z <span class="sc">-</span> e1_ini_z</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>e4_ini_x <span class="ot">&lt;-</span> <span class="dv">0</span>; e4_ini_y <span class="ot">&lt;-</span> <span class="dv">0</span>; e4_ini_z <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>e4_fin_x <span class="ot">&lt;-</span> <span class="sc">-</span>my_length; e4_fin_y <span class="ot">&lt;-</span> <span class="dv">0</span>; e4_fin_z <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co"># Midpoint</span></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>xm4 <span class="ot">&lt;-</span> (e4_fin_x <span class="sc">+</span> e4_ini_x)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>ym4 <span class="ot">&lt;-</span> (e4_fin_y <span class="sc">+</span> e4_ini_y)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a>zm4 <span class="ot">&lt;-</span> (e4_fin_z <span class="sc">+</span> e4_ini_z)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co"># Direction vector</span></span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a>dx4 <span class="ot">&lt;-</span> e4_fin_x <span class="sc">-</span> e4_ini_x</span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a>dy4 <span class="ot">&lt;-</span> e4_fin_y <span class="sc">-</span> e4_ini_y</span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a>dz4 <span class="ot">&lt;-</span> e4_fin_z <span class="sc">-</span> e4_ini_z</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>star2graph <span class="ot">&lt;-</span> graph<span class="sc">$</span><span class="fu">plot</span>(<span class="at">vertex_size =</span> gsw, <span class="at">edge_width =</span> gsw, <span class="at">type =</span> <span class="st">&quot;plotly&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="fu">config</span>(<span class="at">mathjax =</span> <span class="st">&#39;cdn&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="fu">add_trace</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;cone&quot;</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="at">x =</span> ym1,</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  <span class="at">y =</span> xm1,</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  <span class="at">z =</span> zm1,</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>  <span class="at">u =</span> dy1,</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>  <span class="at">v =</span> dx1,</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>  <span class="at">w =</span> dz1,</span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>  <span class="at">sizemode =</span> <span class="st">&quot;absolute&quot;</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>  <span class="at">sizeref =</span> sizeref,</span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>  <span class="at">showscale =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>  <span class="at">showlegend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>  <span class="at">colorscale =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;red&quot;</span>)),</span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a>  <span class="at">cmin =</span> <span class="dv">0</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a>  <span class="at">cmax =</span> <span class="dv">1</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a>  <span class="fu">add_trace</span>(</span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;cone&quot;</span>,</span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a>  <span class="at">x =</span> ym4,</span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a>  <span class="at">y =</span> xm4,</span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a>  <span class="at">z =</span> zm4,</span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a>  <span class="at">u =</span> dy4,</span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a>  <span class="at">v =</span> dx4,</span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a>  <span class="at">w =</span> dz4,</span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a>  <span class="at">sizemode =</span> <span class="st">&quot;absolute&quot;</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a>  <span class="at">sizeref =</span> sizeref,</span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a>  <span class="at">showscale =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a>  <span class="at">showlegend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a>  <span class="at">colorscale =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;red&quot;</span>)),</span>
+<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a>  <span class="at">cmin =</span> <span class="dv">0</span>,</span>
+<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a>  <span class="at">cmax =</span> <span class="dv">1</span></span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a>  plotly<span class="sc">::</span><span class="fu">layout</span>(<span class="at">font =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">&quot;Palatino&quot;</span>),</span>
+<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a>                 <span class="at">scene =</span> <span class="fu">list</span>(<span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">&quot;x&quot;</span>, <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),  <span class="at">tickfont =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),</span>
+<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a>              <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">&quot;y&quot;</span>, <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),  <span class="at">tickfont =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),</span>
+<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a>              <span class="at">zaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">&quot;z&quot;</span>, <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),  <span class="at">tickfont =</span> <span class="fu">list</span>(<span class="at">color =</span> colaxnn)),</span>
+<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a>                   <span class="at">aspectratio =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="dv">2</span>, </span>
+<span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a>                                 <span class="at">y =</span> <span class="dv">2</span>, </span>
+<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a>                                 <span class="at">z =</span> <span class="dv">2</span>),</span>
+<span id="cb11-42"><a href="#cb11-42" tabindex="-1"></a>                   <span class="at">camera =</span> <span class="fu">list</span>(<span class="at">eye =</span> <span class="fu">list</span>(<span class="at">x =</span> x_eye, </span>
+<span id="cb11-43"><a href="#cb11-43" tabindex="-1"></a>                                       <span class="at">y =</span> y_eye, </span>
+<span id="cb11-44"><a href="#cb11-44" tabindex="-1"></a>                                       <span class="at">z =</span> z_eye),</span>
+<span id="cb11-45"><a href="#cb11-45" tabindex="-1"></a>                            <span class="at">center =</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="dv">0</span>, </span>
+<span id="cb11-46"><a href="#cb11-46" tabindex="-1"></a>                                          <span class="at">y =</span> <span class="dv">0</span>, </span>
+<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a>                                          <span class="at">z =</span> <span class="dv">0</span>)),</span>
+<span id="cb11-48"><a href="#cb11-48" tabindex="-1"></a>              <span class="at">annotations =</span> <span class="fu">list</span>(</span>
+<span id="cb11-49"><a href="#cb11-49" tabindex="-1"></a>                     </span>
+<span id="cb11-50"><a href="#cb11-50" tabindex="-1"></a>             <span class="fu">list</span>(</span>
+<span id="cb11-51"><a href="#cb11-51" tabindex="-1"></a>               <span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">z =</span> <span class="dv">0</span>,</span>
+<span id="cb11-52"><a href="#cb11-52" tabindex="-1"></a>               <span class="at">text =</span> <span class="fu">TeX</span>(<span class="st">&quot;v&quot;</span>),</span>
+<span id="cb11-53"><a href="#cb11-53" tabindex="-1"></a>               <span class="at">textangle =</span> <span class="dv">0</span>, <span class="at">ax =</span> <span class="dv">0</span>, <span class="at">ay =</span> <span class="dv">35</span>,</span>
+<span id="cb11-54"><a href="#cb11-54" tabindex="-1"></a>               <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> gfsize),</span>
+<span id="cb11-55"><a href="#cb11-55" tabindex="-1"></a>               <span class="at">arrowcolor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span>),</span>
+<span id="cb11-56"><a href="#cb11-56" tabindex="-1"></a>             <span class="fu">list</span>(</span>
+<span id="cb11-57"><a href="#cb11-57" tabindex="-1"></a>               <span class="at">x =</span> e1_fin_y, <span class="at">y =</span> e1_fin_x, <span class="at">z =</span> e1_fin_z,</span>
+<span id="cb11-58"><a href="#cb11-58" tabindex="-1"></a>               <span class="at">text =</span> <span class="fu">TeX</span>(<span class="st">&quot;v_1&quot;</span>),</span>
+<span id="cb11-59"><a href="#cb11-59" tabindex="-1"></a>               <span class="at">textangle =</span> <span class="dv">0</span>, <span class="at">ax =</span> <span class="dv">0</span>, <span class="at">ay =</span> <span class="dv">35</span>,</span>
+<span id="cb11-60"><a href="#cb11-60" tabindex="-1"></a>               <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> gfsize),</span>
+<span id="cb11-61"><a href="#cb11-61" tabindex="-1"></a>               <span class="at">arrowcolor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span>),</span>
+<span id="cb11-62"><a href="#cb11-62" tabindex="-1"></a>             <span class="fu">list</span>(</span>
+<span id="cb11-63"><a href="#cb11-63" tabindex="-1"></a>               <span class="at">x =</span> e4_fin_y, <span class="at">y =</span> e4_fin_x, <span class="at">z =</span> e4_fin_z,</span>
+<span id="cb11-64"><a href="#cb11-64" tabindex="-1"></a>               <span class="at">text =</span> <span class="fu">TeX</span>(<span class="st">&quot;v_2&quot;</span>),</span>
+<span id="cb11-65"><a href="#cb11-65" tabindex="-1"></a>               <span class="at">textangle =</span> <span class="dv">0</span>, <span class="at">ax =</span> <span class="dv">0</span>, <span class="at">ay =</span> <span class="dv">35</span>,</span>
+<span id="cb11-66"><a href="#cb11-66" tabindex="-1"></a>               <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> gfsize),</span>
+<span id="cb11-67"><a href="#cb11-67" tabindex="-1"></a>               <span class="at">arrowcolor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span>),</span>
+<span id="cb11-68"><a href="#cb11-68" tabindex="-1"></a>             <span class="fu">list</span>(</span>
+<span id="cb11-69"><a href="#cb11-69" tabindex="-1"></a>               <span class="at">x =</span> ym1, <span class="at">y =</span> xm1, <span class="at">z =</span> zm1,</span>
+<span id="cb11-70"><a href="#cb11-70" tabindex="-1"></a>               <span class="at">text =</span> <span class="fu">TeX</span>(<span class="st">&quot;e_1&quot;</span>),</span>
+<span id="cb11-71"><a href="#cb11-71" tabindex="-1"></a>               <span class="at">textangle =</span> <span class="dv">0</span>, <span class="at">ax =</span> <span class="dv">0</span>, <span class="at">ay =</span> <span class="dv">35</span>,</span>
+<span id="cb11-72"><a href="#cb11-72" tabindex="-1"></a>               <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> gfsize),</span>
+<span id="cb11-73"><a href="#cb11-73" tabindex="-1"></a>               <span class="at">arrowcolor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span>),</span>
+<span id="cb11-74"><a href="#cb11-74" tabindex="-1"></a>             <span class="fu">list</span>(</span>
+<span id="cb11-75"><a href="#cb11-75" tabindex="-1"></a>               <span class="at">x =</span> ym4, <span class="at">y =</span> xm4, <span class="at">z =</span> zm4,</span>
+<span id="cb11-76"><a href="#cb11-76" tabindex="-1"></a>               <span class="at">text =</span> <span class="fu">TeX</span>(<span class="st">&quot;e_2&quot;</span>),</span>
+<span id="cb11-77"><a href="#cb11-77" tabindex="-1"></a>               <span class="at">textangle =</span> <span class="dv">0</span>, <span class="at">ax =</span> <span class="dv">0</span>, <span class="at">ay =</span> <span class="dv">35</span>,</span>
+<span id="cb11-78"><a href="#cb11-78" tabindex="-1"></a>               <span class="at">font =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> gfsize),</span>
+<span id="cb11-79"><a href="#cb11-79" tabindex="-1"></a>               <span class="at">arrowcolor =</span> <span class="st">&quot;rgba(0,0,0,0)&quot;</span>))</span>
+<span id="cb11-80"><a href="#cb11-80" tabindex="-1"></a>                 ))</span>
+<span id="cb11-81"><a href="#cb11-81" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="#cb11-82" tabindex="-1"></a><span class="fu">save</span>(star2graph, <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data_files/star2graph.Rdata&quot;</span>))</span></code></pre></div>
+<div
+style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;">
+<div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data_files/star2graph.Rdata&quot;</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>star2graph</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-dc0e6eb8e89f3b6d606d" style="width:100%;height:672px;"></div>
+<script type="application/json" data-for="htmlwidget-dc0e6eb8e89f3b6d606d">{"x":{"visdat":{"29539c1d89ca12":["function () ","plotlyVisDat"],"29539cde7cead":["function () ","data"],"29539c75ea5c1b":["function () ","data"]},"cur_data":"29539c75ea5c1b","attrs":{"29539cde7cead":{"x":{},"y":{},"z":{},"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"mode":"lines","type":"scatter3d","line":{"width":{},"color":"black"},"split":{},"showlegend":false,"inherit":true},"29539c75ea5c1b":{"x":{},"y":{},"z":{},"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","marker":{"size":7,"color":"black"},"inherit":true},"29539c75ea5c1b.1":{"x":0,"y":1,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":0,"v":2,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c75ea5c1b.2":{"x":0,"y":-1,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":0,"v":-2,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"autorange":"reversed","title":{"text":"x","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"yaxis":{"title":{"text":"y","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"zaxis":{"title":{"text":"z","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"aspectratio":{"x":2,"y":2,"z":2},"camera":{"eye":{"x":3,"y":-1,"z":5},"center":{"x":0,"y":0,"z":0}},"annotations":[{"x":0,"y":0,"z":0,"text":"$v$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0,"y":2,"z":0,"text":"$v_1$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0,"y":-2,"z":0,"text":"$v_2$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0,"y":1,"z":0,"text":"$e_1$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0,"y":-1,"z":0,"text":"$e_2$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"}]},"font":{"family":"Palatino"},"xaxis":{"title":[]},"yaxis":{"title":[]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,0],"y":[0,2],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"1","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[0,0],"y":[0,-2],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"2","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[0,0,0],"y":[0,2,-2],"z":[0,0,0],"type":"scatter3d","mode":"markers","marker":{"color":"black","size":7,"line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[0],"y":[1],"z":[0],"type":"cone","u":[0],"v":[2],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[0],"y":[-1],"z":[0],"type":"cone","u":[0],"v":[-2],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 1: Star graph with <span class="math inline">\(n=2\)</span>
+edges.
+</p>
+</div>
+</div>
+<div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data_files/star3graph.Rdata&quot;</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>star3graph</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-1d846025fdc015c4b5f9" style="width:100%;height:672px;"></div>
+<script type="application/json" data-for="htmlwidget-1d846025fdc015c4b5f9">{"x":{"visdat":{"29539c31de75ff":["function () ","plotlyVisDat"],"29539c231dabe0":["function () ","data"],"29539c4471cea1":["function () ","data"]},"cur_data":"29539c4471cea1","attrs":{"29539c231dabe0":{"x":{},"y":{},"z":{},"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"mode":"lines","type":"scatter3d","line":{"width":{},"color":"black"},"split":{},"showlegend":false,"inherit":true},"29539c4471cea1":{"x":{},"y":{},"z":{},"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","marker":{"size":7,"color":"black"},"inherit":true},"29539c4471cea1.1":{"x":0,"y":1,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":0,"v":2,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c4471cea1.2":{"x":0.86602540378443871,"y":-0.49999999999999978,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":1.7320508075688774,"v":-0.99999999999999956,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c4471cea1.3":{"x":-0.86602540378443837,"y":-0.50000000000000044,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":-1.7320508075688767,"v":-1.0000000000000009,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"autorange":"reversed","title":{"text":"x","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"yaxis":{"title":{"text":"y","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"zaxis":{"title":{"text":"z","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"aspectratio":{"x":2,"y":2,"z":2},"camera":{"eye":{"x":3,"y":-1,"z":5},"center":{"x":0,"y":0,"z":0}},"annotations":[{"x":0,"y":0,"z":0,"text":"$v$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0,"y":2,"z":0,"text":"$v_1$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":1.7320508075688774,"y":-0.99999999999999956,"z":0,"text":"$v_2$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":-1.7320508075688767,"y":-1.0000000000000009,"z":0,"text":"$v_3$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0,"y":1,"z":0,"text":"$e_1$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0.86602540378443871,"y":-0.49999999999999978,"z":0,"text":"$e_2$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":-0.86602540378443837,"y":-0.50000000000000044,"z":0,"text":"$e_3$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"}]},"font":{"family":"Palatino"},"xaxis":{"title":[]},"yaxis":{"title":[]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,0],"y":[0,2],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"1","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[0,1.7320508075688774],"y":[0,-0.99999999999999956],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"2","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[0,-1.7320508075688767],"y":[0,-1.0000000000000009],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"3","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[0,0,1.7320508075688781,-1.732050807568877],"y":[0,2,-1,-1.0000000000000011],"z":[0,0,0,0],"type":"scatter3d","mode":"markers","marker":{"color":"black","size":7,"line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[0],"y":[1],"z":[0],"type":"cone","u":[0],"v":[2],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[0.86602540378443871],"y":[-0.49999999999999978],"z":[0],"type":"cone","u":[1.7320508075688774],"v":[-0.99999999999999956],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[-0.86602540378443837],"y":[-0.50000000000000044],"z":[0],"type":"cone","u":[-1.7320508075688767],"v":[-1.0000000000000009],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 2: Star graph with <span class="math inline">\(n=3\)</span>
+edges.
+</p>
+</div>
+</div>
+<div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data_files/star7graph.Rdata&quot;</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>star7graph</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-a645eadd5e938ff8d853" style="width:100%;height:672px;"></div>
+<script type="application/json" data-for="htmlwidget-a645eadd5e938ff8d853">{"x":{"visdat":{"29539c13047689":["function () ","plotlyVisDat"],"29539c1c880dcd":["function () ","data"],"29539c7bab394":["function () ","data"]},"cur_data":"29539c7bab394","attrs":{"29539c1c880dcd":{"x":{},"y":{},"z":{},"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"mode":"lines","type":"scatter3d","line":{"width":{},"color":"black"},"split":{},"showlegend":false,"inherit":true},"29539c7bab394":{"x":{},"y":{},"z":{},"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","marker":{"size":7,"color":"black"},"inherit":true},"29539c7bab394.1":{"x":0,"y":1,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":0,"v":2,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c7bab394.2":{"x":0.7818314824680298,"y":0.62348980185873359,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":1.5636629649360596,"v":1.2469796037174672,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c7bab394.3":{"x":0.97492791218182362,"y":-0.22252093395631434,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":1.9498558243636472,"v":-0.44504186791262867,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c7bab394.4":{"x":0.43388373911755823,"y":-0.90096886790241903,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":0.86776747823511646,"v":-1.8019377358048381,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c7bab394.5":{"x":-0.43388373911755801,"y":-0.90096886790241915,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":-0.86776747823511602,"v":-1.8019377358048383,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c7bab394.6":{"x":-0.97492791218182362,"y":-0.22252093395631459,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":-1.9498558243636472,"v":-0.44504186791262917,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true},"29539c7bab394.7":{"x":-0.78183148246802991,"y":0.62348980185873337,"z":0,"X":null,"X_loc":null,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"cone","u":-1.5636629649360598,"v":1.2469796037174667,"w":0,"sizemode":"absolute","sizeref":0.29999999999999999,"showscale":false,"showlegend":false,"colorscale":[[0,1],["red","red"]],"cmin":0,"cmax":1,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"autorange":"reversed","title":{"text":"x","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"yaxis":{"title":{"text":"y","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"zaxis":{"title":{"text":"z","font":{"color":"gray"}},"tickfont":{"color":"gray"}},"aspectratio":{"x":2,"y":2,"z":2},"camera":{"eye":{"x":3,"y":-1,"z":5},"center":{"x":0,"y":0,"z":0}},"annotations":[{"x":0,"y":0,"z":0,"text":"$v$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0,"y":2,"z":0,"text":"$v_1$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":1.5636629649360596,"y":1.2469796037174672,"z":0,"text":"$v_2$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":1.9498558243636472,"y":-0.44504186791262867,"z":0,"text":"$v_3$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0.86776747823511646,"y":-1.8019377358048381,"z":0,"text":"$v_4$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":-0.86776747823511602,"y":-1.8019377358048383,"z":0,"text":"$v_5$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":-1.9498558243636472,"y":-0.44504186791262917,"z":0,"text":"$v_6$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":-1.5636629649360598,"y":1.2469796037174667,"z":0,"text":"$v_7$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0,"y":1,"z":0,"text":"$e_1$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0.7818314824680298,"y":0.62348980185873359,"z":0,"text":"$e_2$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0.97492791218182362,"y":-0.22252093395631434,"z":0,"text":"$e_3$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":0.43388373911755823,"y":-0.90096886790241903,"z":0,"text":"$e_4$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":-0.43388373911755801,"y":-0.90096886790241915,"z":0,"text":"$e_5$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":-0.97492791218182362,"y":-0.22252093395631459,"z":0,"text":"$e_6$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"},{"x":-0.78183148246802991,"y":0.62348980185873337,"z":0,"text":"$e_7$","textangle":0,"ax":0,"ay":35,"font":{"color":"black","size":16},"arrowcolor":"rgba(0,0,0,0)"}]},"font":{"family":"Palatino"},"xaxis":{"title":[]},"yaxis":{"title":[]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,0],"y":[0,2],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"1","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[0,1.5636629649360596],"y":[0,1.2469796037174672],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"2","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[0,1.9498558243636472],"y":[0,-0.44504186791262867],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"3","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[0,0.86776747823511646],"y":[0,-1.8019377358048381],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"4","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[0,-0.86776747823511602],"y":[0,-1.8019377358048383],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"5","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"frame":null},{"x":[0,-1.9498558243636472],"y":[0,-0.44504186791262917],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"6","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"frame":null},{"x":[0,-1.5636629649360598],"y":[0,1.2469796037174667],"z":[0,0],"mode":"lines","type":"scatter3d","line":{"color":"black","width":7},"showlegend":false,"name":"7","marker":{"color":"rgba(227,119,194,1)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,1)"},"error_x":{"color":"rgba(227,119,194,1)"},"frame":null},{"x":[0,0,1.5636629649360601,1.949855824363647,0.86776747823511602,-0.86776747823511602,-1.949855824363647,-1.5636629649360601],"y":[0,2,1.246979603717467,-0.44504186791262901,-1.8019377358048381,-1.8019377358048381,-0.44504186791262901,1.246979603717467],"z":[0,0,0,0,0,0,0,0],"type":"scatter3d","mode":"markers","marker":{"color":"black","size":7,"line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,1)"},"error_x":{"color":"rgba(127,127,127,1)"},"line":{"color":"rgba(127,127,127,1)"},"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[0],"y":[1],"z":[0],"type":"cone","u":[0],"v":[2],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[0.7818314824680298],"y":[0.62348980185873359],"z":[0],"type":"cone","u":[1.5636629649360596],"v":[1.2469796037174672],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[0.97492791218182362],"y":[-0.22252093395631434],"z":[0],"type":"cone","u":[1.9498558243636472],"v":[-0.44504186791262867],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[0.43388373911755823],"y":[-0.90096886790241903],"z":[0],"type":"cone","u":[0.86776747823511646],"v":[-1.8019377358048381],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[-0.43388373911755801],"y":[-0.90096886790241915],"z":[0],"type":"cone","u":[-0.86776747823511602],"v":[-1.8019377358048383],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[-0.97492791218182362],"y":[-0.22252093395631459],"z":[0],"type":"cone","u":[-1.9498558243636472],"v":[-0.44504186791262917],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null},{"colorbar":{"title":"z<br />z","ticklen":2},"colorscale":[[0,"red"],[1,"red"]],"showscale":false,"x":[-0.78183148246802991],"y":[0.62348980185873337],"z":[0],"type":"cone","u":[-1.5636629649360598],"v":[1.2469796037174667],"w":[0],"sizemode":"absolute","sizeref":0.29999999999999999,"showlegend":false,"cmin":0,"cmax":1,"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 3: Star graph with <span class="math inline">\(n=7\)</span>
+edges.
+</p>
+</div>
+</div>
+</div>
+<div id="references" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> References</h1>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>grateful<span class="sc">::</span><span class="fu">cite_packages</span>(<span class="at">output =</span> <span class="st">&quot;paragraph&quot;</span>, <span class="at">out.dir =</span> <span class="st">&quot;.&quot;</span>)</span></code></pre></div>
+<p>We used R version 4.5.2 <span class="citation">(R Core Team
+2025a)</span> and the following R packages: cowplot v. 1.2.0 <span
+class="citation">(Wilke 2025)</span>, ggmap v. 4.0.2 <span
+class="citation">(Kahle and Wickham 2013)</span>, ggpubr v. 0.6.3 <span
+class="citation">(Kassambara 2026)</span>, ggtext v. 0.1.2 <span
+class="citation">(Wilke and Wiernik 2022)</span>, glue v. 1.8.0 <span
+class="citation">(Hester and Bryan 2024)</span>, grid v. 4.5.2 <span
+class="citation">(R Core Team 2025b)</span>, here v. 1.0.1 <span
+class="citation">(Müller 2020)</span>, htmltools v. 0.5.8.1 <span
+class="citation">(Cheng et al. 2024)</span>, INLA v. 25.11.22 <span
+class="citation">(Rue, Martino, and Chopin 2009; Lindgren, Rue, and
+Lindström 2011; Martins et al. 2013; Lindgren and Rue 2015; De Coninck
+et al. 2016; Rue et al. 2017; Verbosio et al. 2017; Bakka et al. 2018;
+Kourounis, Fuchs, and Schenk 2018)</span>, inlabru v. 2.13.0 <span
+class="citation">(Yuan et al. 2017; Bachl et al. 2019)</span>, knitr v.
+1.50 <span class="citation">(Xie 2014, 2015, 2025)</span>, latex2exp v.
+0.9.8 <span class="citation">(Meschiari 2026)</span>, Matrix v. 1.7.3
+<span class="citation">(Bates, Maechler, and Jagan 2025)</span>,
+MetricGraph v. 1.5.0.9000 <span class="citation">(Bolin, Simas, and
+Wallin 2023a, 2023b, 2024, 2025; Bolin et al. 2024)</span>,
+OpenStreetMap v. 0.4.1 <span class="citation">(Fellows and Stotz
+2025)</span>, patchwork v. 1.3.1 <span class="citation">(Pedersen
+2025)</span>, plotly v. 4.11.0 <span class="citation">(Sievert
+2020)</span>, plotrix v. 3.8.14 <span class="citation">(J 2006)</span>,
+renv v. 1.1.7 <span class="citation">(Ushey and Wickham 2026)</span>,
+reshape2 v. 1.4.4 <span class="citation">(Wickham 2007)</span>,
+reticulate v. 1.44.1 <span class="citation">(Ushey, Allaire, and Tang
+2025)</span>, rmarkdown v. 2.30 <span class="citation">(Xie, Allaire,
+and Grolemund 2018; Xie, Dervieux, and Riederer 2020; Allaire et al.
+2025)</span>, rSPDE v. 2.5.2.9000 <span class="citation">(Bolin and
+Kirchner 2020; Bolin and Simas 2023; Bolin, Simas, and Xiong
+2024)</span>, scales v. 1.4.0 <span class="citation">(Wickham, Pedersen,
+and Seidel 2025)</span>, sf v. 1.1.0 <span class="citation">(E. Pebesma
+2018; E. Pebesma and Bivand 2023)</span>, slackr v. 3.4.0 <span
+class="citation">(Kaye et al. 2025)</span>, sp v. 2.2.1 <span
+class="citation">(E. J. Pebesma and Bivand 2005; Bivand, Pebesma, and
+Gomez-Rubio 2013)</span>, tidyverse v. 2.0.0 <span
+class="citation">(Wickham et al. 2019)</span>, tikzDevice v. 0.12.6
+<span class="citation">(Sharpsteen and Bracken 2023)</span>, viridis v.
+0.6.5 <span class="citation">(Garnier et al. 2024)</span>, xaringanExtra
+v. 0.8.0 <span class="citation">(Aden-Buie and Warkentin
+2024)</span>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+<div id="ref-xaringanExtra" class="csl-entry">
+Aden-Buie, Garrick, and Matthew T. Warkentin. 2024. <em><span
+class="nocase">xaringanExtra</span>: Extras and Extensions for
+<span>“<span class="nocase">xaringan</span>”</span> Slides</em>. <a
+href="https://doi.org/10.32614/CRAN.package.xaringanExtra">https://doi.org/10.32614/CRAN.package.xaringanExtra</a>.
+</div>
+<div id="ref-rmarkdown2025" class="csl-entry">
+Allaire, JJ, Yihui Xie, Christophe Dervieux, Jonathan McPherson, Javier
+Luraschi, Kevin Ushey, Aron Atkins, et al. 2025. <em><span
+class="nocase">rmarkdown</span>: Dynamic Documents for r</em>. <a
+href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown</a>.
+</div>
+<div id="ref-inlabru2019" class="csl-entry">
+Bachl, Fabian E., Finn Lindgren, David L. Borchers, and Janine B.
+Illian. 2019. <span>“<span class="nocase">inlabru</span>: An
+<span>R</span> Package for <span>Bayesian</span> Spatial Modelling from
+Ecological Survey Data.”</span> <em>Methods in Ecology and
+Evolution</em> 10: 760–66. <a
+href="https://doi.org/10.1111/2041-210X.13168">https://doi.org/10.1111/2041-210X.13168</a>.
+</div>
+<div id="ref-INLA2018f" class="csl-entry">
+Bakka, Haakon, Håvard Rue, Geir-Arne Fuglstad, Andrea I. Riebler, David
+Bolin, Janine Illian, Elias Krainski, Daniel P. Simpson, and Finn K.
+Lindgren. 2018. <span>“Spatial Modelling with <span>INLA</span>:
+<span>A</span> Review.”</span> <em>WIRES (Invited Extended Review)</em>
+xx (Feb): xx–. <a
+href="http://arxiv.org/abs/1802.06350">http://arxiv.org/abs/1802.06350</a>.
+</div>
+<div id="ref-Matrix" class="csl-entry">
+Bates, Douglas, Martin Maechler, and Mikael Jagan. 2025.
+<em><span>Matrix</span>: Sparse and Dense Matrix Classes and
+Methods</em>. <a
+href="https://doi.org/10.32614/CRAN.package.Matrix">https://doi.org/10.32614/CRAN.package.Matrix</a>.
+</div>
+<div id="ref-sp2013" class="csl-entry">
+Bivand, Roger S., Edzer Pebesma, and Virgilio Gomez-Rubio. 2013.
+<em>Applied Spatial Data Analysis with <span>R</span>, Second
+Edition</em>. Springer, NY. <a
+href="https://asdar-book.org/">https://asdar-book.org/</a>.
+</div>
+<div id="ref-rSPDE2020" class="csl-entry">
+Bolin, David, and Kristin Kirchner. 2020. <span>“The Rational
+<span>SPDE</span> Approach for <span>Gaussian</span> Random Fields with
+General Smoothness.”</span> <em>Journal of Computational and Graphical
+Statistics</em> 29 (2): 274–85. <a
+href="https://doi.org/10.1080/10618600.2019.1665537">https://doi.org/10.1080/10618600.2019.1665537</a>.
+</div>
+<div id="ref-MetricGraph2024c" class="csl-entry">
+Bolin, David, Mihály Kovács, Vivek Kumar, and Alexandre B. Simas. 2024.
+<span>“Regularity and Numerical Approximation of Fractional Elliptic
+Differential Equations on Compact Metric Graphs.”</span> <em>Mathematics
+of Computation</em> 93 (349): 2439–72. <a
+href="https://doi.org/10.1090/mcom/3929">https://doi.org/10.1090/mcom/3929</a>.
+</div>
+<div id="ref-rSPDE2023" class="csl-entry">
+Bolin, David, and Alexandre B. Simas. 2023. <em><span
+class="nocase">rSPDE</span>: Rational Approximations of Fractional
+Stochastic Partial Differential Equations</em>. <a
+href="https://CRAN.R-project.org/package=rSPDE">https://CRAN.R-project.org/package=rSPDE</a>.
+</div>
+<div id="ref-MetricGraph2023a" class="csl-entry">
+Bolin, David, Alexandre B. Simas, and Jonas Wallin. 2023a.
+<em><span>MetricGraph</span>: Random Fields on Metric Graphs</em>. <a
+href="https://CRAN.R-project.org/package=MetricGraph">https://CRAN.R-project.org/package=MetricGraph</a>.
+</div>
+<div id="ref-MetricGraph2023e" class="csl-entry">
+———. 2023b. <span>“Statistical Inference for Gaussian Whittle-Matérn
+Fields on Metric Graphs.”</span> <em>arXiv Preprint
+arXiv:2304.10372</em>. <a
+href="https://doi.org/10.48550/arXiv.2304.10372">https://doi.org/10.48550/arXiv.2304.10372</a>.
+</div>
+<div id="ref-MetricGraph2024b" class="csl-entry">
+———. 2024. <span>“Gaussian Whittle-Matérn Fields on Metric
+Graphs.”</span> <em>Bernoulli</em> 30 (2): 1611–39. <a
+href="https://doi.org/10.3150/23-BEJ1647">https://doi.org/10.3150/23-BEJ1647</a>.
+</div>
+<div id="ref-MetricGraph2025d" class="csl-entry">
+———. 2025. <span>“Markov Properties of Gaussian Random Fields on Compact
+Metric Graphs.”</span> <em>Bernoulli</em>. <a
+href="https://doi.org/10.48550/arXiv.2304.03190">https://doi.org/10.48550/arXiv.2304.03190</a>.
+</div>
+<div id="ref-rSPDE2024" class="csl-entry">
+Bolin, David, Alexandre B. Simas, and Zhen Xiong. 2024.
+<span>“Covariance-Based Rational Approximations of Fractional SPDEs for
+Computationally Efficient Bayesian Inference.”</span> <em>Journal of
+Computational and Graphical Statistics</em> 33 (1): 64–74. <a
+href="https://doi.org/10.1080/10618600.2023.2231051">https://doi.org/10.1080/10618600.2023.2231051</a>.
+</div>
+<div id="ref-htmltools" class="csl-entry">
+Cheng, Joe, Carson Sievert, Barret Schloerke, Winston Chang, Yihui Xie,
+and Jeff Allen. 2024. <em><span class="nocase">htmltools</span>: Tools
+for HTML</em>. <a
+href="https://github.com/rstudio/htmltools">https://github.com/rstudio/htmltools</a>.
+</div>
+<div id="ref-INLA2016g" class="csl-entry">
+De Coninck, Arne, Bernard De Baets, Drosos Kourounis, Fabio Verbosio,
+Olaf Schenk, Steven Maenhout, and Jan Fostier. 2016.
+<span>“<span>Needles</span>: Toward Large-Scale Genomic Prediction with
+Marker-by-Environment Interaction.”</span> <em>Genetics</em> 203 (1):
+543–55. <a
+href="https://doi.org/10.1534/genetics.115.179887">https://doi.org/10.1534/genetics.115.179887</a>.
+</div>
+<div id="ref-OpenStreetMap" class="csl-entry">
+Fellows, Ian, and Jan-Peter Stotz. 2025. <em><span>OpenStreetMap</span>:
+Access to Open Street Map Raster Images</em>. <a
+href="https://doi.org/10.32614/CRAN.package.OpenStreetMap">https://doi.org/10.32614/CRAN.package.OpenStreetMap</a>.
+</div>
+<div id="ref-viridis" class="csl-entry">
+Garnier, Simon, Ross, Noam, Rudis, Robert, Camargo, et al. 2024.
+<em><span class="nocase">viridis(Lite)</span> - Colorblind-Friendly
+Color Maps for r</em>. <a
+href="https://doi.org/10.5281/zenodo.4679423">https://doi.org/10.5281/zenodo.4679423</a>.
+</div>
+<div id="ref-glue" class="csl-entry">
+Hester, Jim, and Jennifer Bryan. 2024. <em><span
+class="nocase">glue</span>: Interpreted String Literals</em>. <a
+href="https://glue.tidyverse.org/">https://glue.tidyverse.org/</a>.
+</div>
+<div id="ref-plotrix" class="csl-entry">
+J, Lemon. 2006. <span>“<span>Plotrix</span>: A Package in the Red Light
+District of r.”</span> <em>R-News</em> 6 (4): 8–12.
+</div>
+<div id="ref-ggmap" class="csl-entry">
+Kahle, David, and Hadley Wickham. 2013. <span>“<span
+class="nocase">ggmap</span>: Spatial Visualization with Ggplot2.”</span>
+<em>The R Journal</em> 5 (1): 144–61. <a
+href="https://journal.r-project.org/archive/2013-1/kahle-wickham.pdf">https://journal.r-project.org/archive/2013-1/kahle-wickham.pdf</a>.
+</div>
+<div id="ref-ggpubr" class="csl-entry">
+Kassambara, Alboukadel. 2026. <em><span class="nocase">ggpubr</span>:
+<span>“<span class="nocase">ggplot2</span>”</span> Based Publication
+Ready Plots</em>. <a
+href="https://doi.org/10.32614/CRAN.package.ggpubr">https://doi.org/10.32614/CRAN.package.ggpubr</a>.
+</div>
+<div id="ref-slackr" class="csl-entry">
+Kaye, Matt, Bob Rudis, Andrie de Vries, and Jonathan Sidi. 2025.
+<em><span class="nocase">slackr</span>: Send Messages, Images, r Objects
+and Files to <span>“<span>Slack</span>”</span> Channels/Users</em>. <a
+href="https://github.com/mrkaye97/slackr">https://github.com/mrkaye97/slackr</a>.
+</div>
+<div id="ref-INLA2018i" class="csl-entry">
+Kourounis, D., A. Fuchs, and O. Schenk. 2018. <span>“Towards the Next
+Generation of Multiperiod Optimal Power Flow Solvers.”</span> <em>IEEE
+Transactions on Power Systems</em> PP (99): 1–10. <a
+href="https://doi.org/10.1109/TPWRS.2017.2789187">https://doi.org/10.1109/TPWRS.2017.2789187</a>.
+</div>
+<div id="ref-INLA2015d" class="csl-entry">
+Lindgren, Finn, and Håvard Rue. 2015. <span>“Bayesian Spatial Modelling
+with <span>R</span>-<span>INLA</span>.”</span> <em>Journal of
+Statistical Software</em> 63 (19): 1–25. <a
+href="http://www.jstatsoft.org/v63/i19/">http://www.jstatsoft.org/v63/i19/</a>.
+</div>
+<div id="ref-INLA2011c" class="csl-entry">
+Lindgren, Finn, Håvard Rue, and Johan Lindström. 2011. <span>“An
+Explicit Link Between <span>Gaussian</span> Fields and
+<span>Gaussian</span> <span>Markov</span> Random Fields: The Stochastic
+Partial Differential Equation Approach (with Discussion).”</span>
+<em>Journal of the Royal Statistical Society B</em> 73 (4): 423–98.
+</div>
+<div id="ref-INLA2013b" class="csl-entry">
+Martins, Thiago G., Daniel Simpson, Finn Lindgren, and Håvard Rue. 2013.
+<span>“Bayesian Computing with <span>INLA</span>: <span>N</span>ew
+Features.”</span> <em>Computational Statistics and Data Analysis</em>
+67: 68–83.
+</div>
+<div id="ref-latex2exp" class="csl-entry">
+Meschiari, Stefano. 2026. <em>Latex2exp: Use LaTeX Expressions in
+Plots</em>. <a
+href="https://doi.org/10.32614/CRAN.package.latex2exp">https://doi.org/10.32614/CRAN.package.latex2exp</a>.
+</div>
+<div id="ref-here" class="csl-entry">
+Müller, Kirill. 2020. <em><span class="nocase">here</span>: A Simpler
+Way to Find Your Files</em>. <a
+href="https://doi.org/10.32614/CRAN.package.here">https://doi.org/10.32614/CRAN.package.here</a>.
+</div>
+<div id="ref-sf2018" class="csl-entry">
+Pebesma, Edzer. 2018. <span>“<span class="nocase">Simple Features for R:
+Standardized Support for Spatial Vector Data</span>.”</span>
+<em><span>The R Journal</span></em> 10 (1): 439–46. <a
+href="https://doi.org/10.32614/RJ-2018-009">https://doi.org/10.32614/RJ-2018-009</a>.
+</div>
+<div id="ref-sp2005" class="csl-entry">
+Pebesma, Edzer J., and Roger Bivand. 2005. <span>“Classes and Methods
+for Spatial Data in <span>R</span>.”</span> <em>R News</em> 5 (2): 9–13.
+<a
+href="https://CRAN.R-project.org/doc/Rnews/">https://CRAN.R-project.org/doc/Rnews/</a>.
+</div>
+<div id="ref-sf2023" class="csl-entry">
+Pebesma, Edzer, and Roger Bivand. 2023. <em><span class="nocase">Spatial
+Data Science: With applications in R</span></em>. <span>Chapman and
+Hall/CRC</span>. <a
+href="https://doi.org/10.1201/9780429459016">https://doi.org/10.1201/9780429459016</a>.
+</div>
+<div id="ref-patchwork" class="csl-entry">
+Pedersen, Thomas Lin. 2025. <em><span class="nocase">patchwork</span>:
+The Composer of Plots</em>. <a
+href="https://doi.org/10.32614/CRAN.package.patchwork">https://doi.org/10.32614/CRAN.package.patchwork</a>.
+</div>
+<div id="ref-base" class="csl-entry">
+R Core Team. 2025a. <em><span>R</span>: A Language and Environment for
+Statistical Computing</em>. Vienna, Austria: R Foundation for
+Statistical Computing. <a
+href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-grid" class="csl-entry">
+———. 2025b. <em><span>R</span>: A Language and Environment for
+Statistical Computing</em>. Vienna, Austria: R Foundation for
+Statistical Computing. <a
+href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-INLA2009a" class="csl-entry">
+Rue, Håvard, Sara Martino, and Nicholas Chopin. 2009. <span>“Approximate
+<span>Bayesian</span> Inference for Latent <span>Gaussian</span> Models
+Using Integrated Nested <span>Laplace</span> Approximations (with
+Discussion).”</span> <em>Journal of the Royal Statistical Society B</em>
+71: 319–92.
+</div>
+<div id="ref-INLA2017e" class="csl-entry">
+Rue, Håvard, Andrea I. Riebler, Sigrunn H. Sørbye, Janine B. Illian,
+Daniel P. Simpson, and Finn K. Lindgren. 2017. <span>“Bayesian Computing
+with <span>INLA</span>: <span>A</span> Review.”</span> <em>Annual
+Reviews of Statistics and Its Applications</em> 4 (March): 395–421. <a
+href="http://arxiv.org/abs/1604.00860">http://arxiv.org/abs/1604.00860</a>.
+</div>
+<div id="ref-tikzDevice" class="csl-entry">
+Sharpsteen, Charlie, and Cameron Bracken. 2023. <em><span
+class="nocase">tikzDevice</span>: R Graphics Output in LaTeX
+Format</em>. <a
+href="https://doi.org/10.32614/CRAN.package.tikzDevice">https://doi.org/10.32614/CRAN.package.tikzDevice</a>.
+</div>
+<div id="ref-plotly" class="csl-entry">
+Sievert, Carson. 2020. <em>Interactive Web-Based Data Visualization with
+r, Plotly, and Shiny</em>. Chapman; Hall/CRC. <a
+href="https://plotly-r.com">https://plotly-r.com</a>.
+</div>
+<div id="ref-reticulate" class="csl-entry">
+Ushey, Kevin, JJ Allaire, and Yuan Tang. 2025. <em><span
+class="nocase">reticulate</span>: Interface to
+<span>“<span>Python</span>”</span></em>. <a
+href="https://doi.org/10.32614/CRAN.package.reticulate">https://doi.org/10.32614/CRAN.package.reticulate</a>.
+</div>
+<div id="ref-renv" class="csl-entry">
+Ushey, Kevin, and Hadley Wickham. 2026. <em><span
+class="nocase">renv</span>: Project Environments</em>. <a
+href="https://doi.org/10.32614/CRAN.package.renv">https://doi.org/10.32614/CRAN.package.renv</a>.
+</div>
+<div id="ref-INLA2017h" class="csl-entry">
+Verbosio, Fabio, Arne De Coninck, Drosos Kourounis, and Olaf Schenk.
+2017. <span>“Enhancing the Scalability of Selected Inversion
+Factorization Algorithms in Genomic Prediction.”</span> <em>Journal of
+Computational Science</em> 22 (Supplement C): 99–108. <a
+href="https://doi.org/10.1016/j.jocs.2017.08.013">https://doi.org/10.1016/j.jocs.2017.08.013</a>.
+</div>
+<div id="ref-reshape2" class="csl-entry">
+Wickham, Hadley. 2007. <span>“Reshaping Data with the <span
+class="nocase">reshape</span> Package.”</span> <em>Journal of
+Statistical Software</em> 21 (12): 1–20. <a
+href="http://www.jstatsoft.org/v21/i12/">http://www.jstatsoft.org/v21/i12/</a>.
+</div>
+<div id="ref-tidyverse" class="csl-entry">
+Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy
+D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019.
+<span>“Welcome to the <span class="nocase">tidyverse</span>.”</span>
+<em>Journal of Open Source Software</em> 4 (43): 1686. <a
+href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+</div>
+<div id="ref-scales" class="csl-entry">
+Wickham, Hadley, Thomas Lin Pedersen, and Dana Seidel. 2025. <em><span
+class="nocase">scales</span>: Scale Functions for Visualization</em>. <a
+href="https://scales.r-lib.org">https://scales.r-lib.org</a>.
+</div>
+<div id="ref-cowplot" class="csl-entry">
+Wilke, Claus O. 2025. <em><span class="nocase">cowplot</span>:
+Streamlined Plot Theme and Plot Annotations for <span>“<span
+class="nocase">ggplot2</span>”</span></em>. <a
+href="https://doi.org/10.32614/CRAN.package.cowplot">https://doi.org/10.32614/CRAN.package.cowplot</a>.
+</div>
+<div id="ref-ggtext" class="csl-entry">
+Wilke, Claus O., and Brenton M. Wiernik. 2022. <em><span
+class="nocase">ggtext</span>: Improved Text Rendering Support for
+<span>“<span class="nocase">ggplot2</span>”</span></em>. <a
+href="https://doi.org/10.32614/CRAN.package.ggtext">https://doi.org/10.32614/CRAN.package.ggtext</a>.
+</div>
+<div id="ref-knitr2014" class="csl-entry">
+Xie, Yihui. 2014. <span>“<span class="nocase">knitr</span>: A
+Comprehensive Tool for Reproducible Research in <span>R</span>.”</span>
+In <em>Implementing Reproducible Computational Research</em>, edited by
+Victoria Stodden, Friedrich Leisch, and Roger D. Peng. Chapman;
+Hall/CRC.
+</div>
+<div id="ref-knitr2015" class="csl-entry">
+———. 2015. <em>Dynamic Documents with <span>R</span> and Knitr</em>. 2nd
+ed. Boca Raton, Florida: Chapman; Hall/CRC. <a
+href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.
+</div>
+<div id="ref-knitr2025" class="csl-entry">
+———. 2025. <em><span class="nocase">knitr</span>: A General-Purpose
+Package for Dynamic Report Generation in <span>R</span></em>. <a
+href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.
+</div>
+<div id="ref-rmarkdown2018" class="csl-entry">
+Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown:
+The Definitive Guide</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a
+href="https://bookdown.org/yihui/rmarkdown">https://bookdown.org/yihui/rmarkdown</a>.
+</div>
+<div id="ref-rmarkdown2020" class="csl-entry">
+Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R
+Markdown Cookbook</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a
+href="https://bookdown.org/yihui/rmarkdown-cookbook">https://bookdown.org/yihui/rmarkdown-cookbook</a>.
+</div>
+<div id="ref-inlabru2017" class="csl-entry">
+Yuan, Yuan, Bachl, Fabian E., Lindgren, Finn, Borchers, et al. 2017.
+<span>“Point Process Models for Spatio-Temporal Distance Sampling Data
+from a Large-Scale Survey of Blue Whales.”</span> <em>Ann. Appl.
+Stat.</em> 11 (4): 2270–97. <a
+href="https://doi.org/10.1214/17-AOAS1078">https://doi.org/10.1214/17-AOAS1078</a>.
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3RhciBncmFwaHMiCmRhdGU6ICJMYXN0IG1vZGlmaWVkOiBgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVkLSVtLSVZLicpYCIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICBtYXRoamF4OiAiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L25wbS9tYXRoamF4QDMvZXM1L3RleC1tbWwtY2h0bWwuanMiCiAgICBoaWdobGlnaHQ6IHB5Z21lbnRzCiAgICB0aGVtZTogZmxhdGx5CiAgICBjb2RlX2ZvbGRpbmc6IGhpZGUgIyBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIiB0byBoaWRlIGNvZGUgYW5kIGFkZCBhIGJ1dHRvbiB0byBzaG93IGl0CiAgICBkZl9wcmludDogcGFnZWQKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OgogICAgICBjb2xsYXBzZWQ6IHRydWUKICAgICAgc21vb3RoX3Njcm9sbDogdHJ1ZQogICAgbnVtYmVyX3NlY3Rpb25zOiB0cnVlCiAgICBmaWdfY2FwdGlvbjogdHJ1ZQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY3NzOiB2aXN1YWwuY3NzCmFsd2F5c19hbGxvd19odG1sOiB0cnVlCmJpYmxpb2dyYXBoeTogCiAgLSByZWZlcmVuY2VzLmJpYgogIC0gZ3JhdGVmdWwtcmVmcy5iaWIKaGVhZGVyLWluY2x1ZGVzOgogIC0gXG5ld2NvbW1hbmR7XGFyfXtcbWF0aGJie1J9fQogIC0gXG5ld2NvbW1hbmR7XGxsYXZ9WzFde1xsZWZ0XHsjMVxyaWdodFx9fQogIC0gXG5ld2NvbW1hbmR7XHBhcmV9WzFde1xsZWZ0KCMxXHJpZ2h0KX0KICAtIFxuZXdjb21tYW5ke1xOY2FsfXtcbWF0aGNhbHtOfX0KICAtIFxuZXdjb21tYW5ke1xWY2FsfXtcbWF0aGNhbHtWfX0KICAtIFxuZXdjb21tYW5ke1xFY2FsfXtcbWF0aGNhbHtFfX0KICAtIFxuZXdjb21tYW5ke1xXY2FsfXtcbWF0aGNhbHtXfX0KICAtIFxuZXdjb21tYW5ke1xhbG1vc3RldmVyeXdoZXJlfXtcbWF0aHJte2EuZS59XDt9Ci0tLQoKR28gYmFjayB0byB0aGUgW0NvbnRlbnRzXShhYm91dC5odG1sKSBwYWdlLgoKPGRpdiBzdHlsZT0iY29sb3I6ICMyYzNlNTA7IHRleHQtYWxpZ246IHJpZ2h0OyI+CioqKioqKioqICAKPHN0cm9uZz5QcmVzcyBTaG93IHRvIHJldmVhbCB0aGUgY29kZSBjaHVua3MuPC9zdHJvbmc+ICAKCioqKioqKioqCjwvZGl2PgoKCmBgYHtyfQojIENyZWF0ZSBhIGNsaXBib2FyZCBidXR0b24gb24gdGhlIHJlbmRlcmVkIEhUTUwgcGFnZQpzb3VyY2UoaGVyZTo6aGVyZSgiY2xpcGJvYXJkLlIiKSk7IGNsaXBib2FyZAojIFNldCBzZWVkIGZvciByZXByb2R1Y2liaWxpdHkKc2V0LnNlZWQoMTk4MikgCiMgU2V0IGdsb2JhbCBvcHRpb25zIGZvciBhbGwgY29kZSBjaHVua3MKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogICMgRGlzYWJsZSBtZXNzYWdlcyBwcmludGVkIGJ5IFIgY29kZSBjaHVua3MKICBtZXNzYWdlID0gRkFMU0UsICAgIAogICMgRGlzYWJsZSB3YXJuaW5ncyBwcmludGVkIGJ5IFIgY29kZSBjaHVua3MKICB3YXJuaW5nID0gRkFMU0UsICAgIAogICMgU2hvdyBSIGNvZGUgd2l0aGluIGNvZGUgY2h1bmtzIGluIG91dHB1dAogIGVjaG8gPSBUUlVFLCAgICAgICAgCiAgIyBJbmNsdWRlIGJvdGggUiBjb2RlIGFuZCBpdHMgcmVzdWx0cyBpbiBvdXRwdXQKICBpbmNsdWRlID0gVFJVRSwgICAgIAogICMgRXZhbHVhdGUgUiBjb2RlIGNodW5rcwogIGV2YWwgPSBGQUxTRSwgICAgICAgCiAgIyBFbmFibGUgY2FjaGluZyBvZiBSIGNvZGUgY2h1bmtzIGZvciBmYXN0ZXIgcmVuZGVyaW5nCiAgY2FjaGUgPSBGQUxTRSwgICAgICAKICAjIEFsaWduIGZpZ3VyZXMgaW4gdGhlIGNlbnRlciBvZiB0aGUgb3V0cHV0CiAgZmlnLmFsaWduID0gImNlbnRlciIsCiAgIyBFbmFibGUgcmV0aW5hIGRpc3BsYXkgZm9yIGhpZ2gtcmVzb2x1dGlvbiBmaWd1cmVzCiAgcmV0aW5hID0gMiwKICAjIFNob3cgZXJyb3JzIGluIHRoZSBvdXRwdXQgaW5zdGVhZCBvZiBzdG9wcGluZyByZW5kZXJpbmcKICBlcnJvciA9IFRSVUUsCiAgIyBEbyBub3QgY29sbGFwc2UgY29kZSBhbmQgb3V0cHV0IGludG8gYSBzaW5nbGUgYmxvY2sKICBjb2xsYXBzZSA9IEZBTFNFCikKIyBTdGFydCB0aGUgZmlndXJlIGNvdW50ZXIKZmlnX2NvdW50IDwtIDAKIyBEZWZpbmUgdGhlIGNhcHRpb25lciBmdW5jdGlvbgpjYXB0aW9uZXIgPC0gZnVuY3Rpb24oY2FwdGlvbikgewogIGZpZ19jb3VudCA8PC0gZmlnX2NvdW50ICsgMQogIHBhc3RlMCgiRmlndXJlICIsIGZpZ19jb3VudCwgIjogIiwgY2FwdGlvbikKfQoKYGBgCgpgYGB7ciwgZXZhbCA9IFRSVUV9CmxpYnJhcnkoTWV0cmljR3JhcGgpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShyZXNoYXBlMikKbGlicmFyeShkcGx5cikKbGlicmFyeSh2aXJpZGlzKQpsaWJyYXJ5KHBsb3RseSkKbGlicmFyeShwYXRjaHdvcmspCmxpYnJhcnkoc2xhY2tyKQpzb3VyY2UoImtleXMuUiIpCnNsYWNrcl9zZXR1cCh0b2tlbiA9IHRva2VuKSAjIHRva2VuIGNvbWVzIGZyb20ga2V5cy5SCmBgYAoKCmBgYHtyfQpjYXB0dXJlLm91dHB1dCgKICBrbml0cjo6cHVybChoZXJlOjpoZXJlKCJmdW5jdGlvbmFsaXR5MS5SbWQiKSwgb3V0cHV0ID0gaGVyZTo6aGVyZSgiZnVuY3Rpb25hbGl0eTEuUiIpKSwKICBmaWxlID0gaGVyZTo6aGVyZSgib2xkL3B1cmxfbG9nLnR4dCIpCikKc291cmNlKGhlcmU6OmhlcmUoImZ1bmN0aW9uYWxpdHkxLlIiKSkKYGBgCgpgYGB7cn0KZWRnZXNfcm9vdHNfb2ZfdW5pdHkgPC0gZnVuY3Rpb24obiwgbGVuZ3RoID0gMTApIHsKICB4X2Nvb3JkcyA8LSBjb3MoMiAqIHBpICogKDA6KG4tMSkpIC8gbikKICB5X2Nvb3JkcyA8LSBzaW4oMiAqIHBpICogKDA6KG4tMSkpIC8gbikKICByZXR1cm4obGFwcGx5KDE6biwgZnVuY3Rpb24oaSkge3JiaW5kKGMoMCwgMCksIGMobGVuZ3RoKnhfY29vcmRzW2ldLCBsZW5ndGgqeV9jb29yZHNbaV0pKX0pKQp9CmBgYAoKCmBgYHtyfQpteV9sZW5ndGggPC0gMgpzaXplcmVmIDwtIDAuMwoKeF9leWUgPC0gMyM4CnlfZXllIDwtIC0xIy0yCnpfZXllIDwtIDUjMwpgYGAKCgpgYGB7cn0KZ2V0cy5zdGFycGxvdGx5IDwtIGZ1bmN0aW9uKG4sIG15X2xlbmd0aCwgc2l6ZXJlZiwgeF9leWUsIHlfZXllLCB6X2V5ZSwgZ3N3LCBnZnNpemUsIGNvbGF4bm4pIHsKZWRnZXMgPC1lZGdlc19yb290c19vZl91bml0eShuLCBsZW5ndGggPSBteV9sZW5ndGgpCmdyYXBoIDwtIG1ldHJpY19ncmFwaCRuZXcoZWRnZXMgPSBlZGdlcykKIyBzaXplcmVmIGFscmVhZHkgZGVmaW5lZApuX2VkZ2VzIDwtIGxlbmd0aChlZGdlcykKCiMgQ29tcHV0ZSBtaWRwb2ludHMgYW5kIGRpcmVjdGlvbnMKbWlkcG9pbnRzIDwtIGxhcHBseShlZGdlcywgZnVuY3Rpb24oZSkgewogIGxpc3QoCiAgICB4ID0gKGVbMiwxXSArIGVbMSwxXSkvMiwKICAgIHkgPSAoZVsyLDJdICsgZVsxLDJdKS8yLAogICAgeiA9IDAKICApCn0pCgpkaXJlY3Rpb25zIDwtIGxhcHBseShlZGdlcywgZnVuY3Rpb24oZSkgewogIGxpc3QoCiAgICBkeCA9IGVbMiwxXSAtIGVbMSwxXSwKICAgIGR5ID0gZVsyLDJdIC0gZVsxLDJdLAogICAgZHogPSAwCiAgKQp9KQoKIyBTdGFydCB3aXRoIGJhc2UgZ3JhcGgKc3Rhcl9ncmFwaCA8LSBncmFwaCRwbG90KHZlcnRleF9zaXplID0gZ3N3LCBlZGdlX3dpZHRoID0gZ3N3LCB0eXBlID0gInBsb3RseSIpIHw+CiAgY29uZmlnKG1hdGhqYXggPSAnY2RuJykKCiMgQWRkIGNvbmVzIGZvciBhbGwgZWRnZXMKZm9yKGkgaW4gc2VxX2xlbihuX2VkZ2VzKSkgewogIHN0YXJfZ3JhcGggPC0gc3Rhcl9ncmFwaCB8PgogICAgYWRkX3RyYWNlKAogICAgICB0eXBlID0gImNvbmUiLAogICAgICB4ID0gbWlkcG9pbnRzW1tpXV0keSwgICMgc3dhcHBlZCBjb29yZHMgdG8gbWF0Y2ggeW91ciBjb252ZW50aW9uCiAgICAgIHkgPSBtaWRwb2ludHNbW2ldXSR4LAogICAgICB6ID0gbWlkcG9pbnRzW1tpXV0keiwKICAgICAgdSA9IGRpcmVjdGlvbnNbW2ldXSRkeSwKICAgICAgdiA9IGRpcmVjdGlvbnNbW2ldXSRkeCwKICAgICAgdyA9IGRpcmVjdGlvbnNbW2ldXSRkeiwKICAgICAgc2l6ZW1vZGUgPSAiYWJzb2x1dGUiLAogICAgICBzaXplcmVmID0gc2l6ZXJlZiwKICAgICAgc2hvd3NjYWxlID0gRkFMU0UsCiAgICAgIHNob3dsZWdlbmQgPSBGQUxTRSwKICAgICAgY29sb3JzY2FsZSA9IGxpc3QoYygwLDEpLCBjKCJyZWQiLCJyZWQiKSksCiAgICAgIGNtaW4gPSAwLAogICAgICBjbWF4ID0gMQogICAgKQp9CgojIEFkZCB2ZXJ0ZXggYW5kIGVkZ2UgYW5ub3RhdGlvbnMgcHJvZ3JhbW1hdGljYWxseQphbm5vdGF0aW9uc19saXN0IDwtIGxpc3QoKQoKIyB2ZXJ0ZXggYW5ub3RhdGlvbnMKZm9yKGkgaW4gc2VxX2xlbihuX2VkZ2VzKSkgewogIGFubm90YXRpb25zX2xpc3RbW2krMV1dIDwtIGxpc3QoCiAgICB4ID0gZWRnZXNbW2ldXVsyLDJdLCB5ID0gZWRnZXNbW2ldXVsyLDFdLCB6ID0gMCwKICAgIHRleHQgPSBUZVgocGFzdGUwKCJ2XyIsIGkpKSwKICAgIHRleHRhbmdsZSA9IDAsIGF4ID0gMCwgYXkgPSAzNSwKICAgIGZvbnQgPSBsaXN0KGNvbG9yID0gImJsYWNrIiwgc2l6ZSA9IGdmc2l6ZSksCiAgICBhcnJvd2NvbG9yID0gInJnYmEoMCwwLDAsMCkiCiAgKQp9CgojIGNlbnRyYWwgdmVydGV4CmFubm90YXRpb25zX2xpc3RbWzFdXSA8LSBsaXN0KAogIHggPSAwLCB5ID0gMCwgeiA9IDAsCiAgdGV4dCA9IFRlWCgidiIpLAogIHRleHRhbmdsZSA9IDAsIGF4ID0gMCwgYXkgPSAzNSwKICBmb250ID0gbGlzdChjb2xvciA9ICJibGFjayIsIHNpemUgPSBnZnNpemUpLAogIGFycm93Y29sb3IgPSAicmdiYSgwLDAsMCwwKSIKKQoKIyBlZGdlIG1pZHBvaW50cwpmb3IoaSBpbiBzZXFfbGVuKG5fZWRnZXMpKSB7CiAgYW5ub3RhdGlvbnNfbGlzdFtbbl9lZGdlcysxICsgaV1dIDwtIGxpc3QoCiAgICB4ID0gbWlkcG9pbnRzW1tpXV0keSwgeSA9IG1pZHBvaW50c1tbaV1dJHgsIHogPSBtaWRwb2ludHNbW2ldXSR6LAogICAgdGV4dCA9IFRlWChwYXN0ZTAoImVfIiwgaSkpLAogICAgdGV4dGFuZ2xlID0gMCwgYXggPSAwLCBheSA9IDM1LAogICAgZm9udCA9IGxpc3QoY29sb3IgPSAiYmxhY2siLCBzaXplID0gZ2ZzaXplKSwKICAgIGFycm93Y29sb3IgPSAicmdiYSgwLDAsMCwwKSIKICApCn0KCiMgQXBwbHkgbGF5b3V0CnN0YXJfZ3JhcGggPC0gc3Rhcl9ncmFwaCB8PiBwbG90bHk6OmxheW91dCgKICBmb250ID0gbGlzdChmYW1pbHkgPSAiUGFsYXRpbm8iKSwKICBzY2VuZSA9IGxpc3QoCiAgICB4YXhpcyA9IGxpc3QodGl0bGUgPSBsaXN0KHRleHQgPSAieCIsIGZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubikpLCB0aWNrZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSksCiAgICB5YXhpcyA9IGxpc3QodGl0bGUgPSBsaXN0KHRleHQgPSAieSIsIGZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubikpLCB0aWNrZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSksCiAgICB6YXhpcyA9IGxpc3QodGl0bGUgPSBsaXN0KHRleHQgPSAieiIsIGZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubikpLCB0aWNrZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSksCiAgICBhc3BlY3RyYXRpbyA9IGxpc3QoeCA9IDIsIHkgPSAyLCB6ID0gMiksCiAgICBjYW1lcmEgPSBsaXN0KGV5ZSA9IGxpc3QoeCA9IHhfZXllLCB5ID0geV9leWUsIHogPSB6X2V5ZSksIGNlbnRlciA9IGxpc3QoeCA9IDAsIHkgPSAwLCB6ID0gMCkpLAogICAgYW5ub3RhdGlvbnMgPSBhbm5vdGF0aW9uc19saXN0CiAgKQopCnJldHVybihzdGFyX2dyYXBoKQp9CmBgYAoKCmBgYHtyfQpuIDwtIDMKc3RhcjNncmFwaCA8LSBnZXRzLnN0YXJwbG90bHkobiA9IG4sIAogICAgICAgICAgICAgICAgbXlfbGVuZ3RoID0gbXlfbGVuZ3RoLAogICAgICAgICAgICAgICAgc2l6ZXJlZiA9IHNpemVyZWYsCiAgICAgICAgICAgICAgICB4X2V5ZSA9IHhfZXllLCAKICAgICAgICAgICAgICAgIHlfZXllID0geV9leWUsCiAgICAgICAgICAgICAgICB6X2V5ZSA9IHpfZXllLAogICAgICAgICAgICAgICAgZ3N3ID0gZ3N3LAogICAgICAgICAgICAgICAgZ2ZzaXplID0gZ2ZzaXplLAogICAgICAgICAgICAgICAgY29sYXhubiA9IGNvbGF4bm4pCgpuIDwtIDcKc3RhcjdncmFwaCA8LSBnZXRzLnN0YXJwbG90bHkobiA9IG4sIAogICAgICAgICAgICAgICAgbXlfbGVuZ3RoID0gbXlfbGVuZ3RoLAogICAgICAgICAgICAgICAgc2l6ZXJlZiA9IHNpemVyZWYsCiAgICAgICAgICAgICAgICB4X2V5ZSA9IHhfZXllLCAKICAgICAgICAgICAgICAgIHlfZXllID0geV9leWUsCiAgICAgICAgICAgICAgICB6X2V5ZSA9IHpfZXllLAogICAgICAgICAgICAgICAgZ3N3ID0gZ3N3LAogICAgICAgICAgICAgICAgZ2ZzaXplID0gZ2ZzaXplLAogICAgICAgICAgICAgICAgY29sYXhubiA9IGNvbGF4bm4pCgoKc2F2ZShzdGFyM2dyYXBoLCBmaWxlID0gaGVyZTo6aGVyZSgiZGF0YV9maWxlcy9zdGFyM2dyYXBoLlJkYXRhIikpCnNhdmUoc3RhcjdncmFwaCwgZmlsZSA9IGhlcmU6OmhlcmUoImRhdGFfZmlsZXMvc3RhcjdncmFwaC5SZGF0YSIpKQpgYGAKCgoKCmBgYHtyfQpuIDwtIDIKZWRnZXMgPC1lZGdlc19yb290c19vZl91bml0eShuLCBsZW5ndGggPSBteV9sZW5ndGgpCmVkZ2VzW1sxXV0gPC0gcmJpbmQoYygwLCAwKSwgYyhteV9sZW5ndGgsIDApKQplZGdlc1tbMl1dIDwtIHJiaW5kKGMoMCwgMCksIGMoLW15X2xlbmd0aCwgMCkpCmdyYXBoIDwtIG1ldHJpY19ncmFwaCRuZXcoZWRnZXMgPSBlZGdlcykKCmUxX2luaV94IDwtIGVkZ2VzW1sxXV1bMSwxXTsgZTFfaW5pX3kgPC0gZWRnZXNbWzFdXVsxLDJdOyBlMV9pbmlfeiA8LSAwCmUxX2Zpbl94IDwtIGVkZ2VzW1sxXV1bMiwxXTsgZTFfZmluX3kgPC0gZWRnZXNbWzFdXVsyLDJdOyBlMV9maW5feiA8LSAwCgojIE1pZHBvaW50CnhtMSA8LSAoZTFfZmluX3ggKyBlMV9pbmlfeCkvMgp5bTEgPC0gKGUxX2Zpbl95ICsgZTFfaW5pX3kpLzIKem0xIDwtIChlMV9maW5feiArIGUxX2luaV96KS8yCgojIERpcmVjdGlvbiB2ZWN0b3IKZHgxIDwtIGUxX2Zpbl94IC0gZTFfaW5pX3gKZHkxIDwtIGUxX2Zpbl95IC0gZTFfaW5pX3kKZHoxIDwtIGUxX2Zpbl96IC0gZTFfaW5pX3oKCgplNF9pbmlfeCA8LSAwOyBlNF9pbmlfeSA8LSAwOyBlNF9pbmlfeiA8LSAwCmU0X2Zpbl94IDwtIC1teV9sZW5ndGg7IGU0X2Zpbl95IDwtIDA7IGU0X2Zpbl96IDwtIDAKCiMgTWlkcG9pbnQKeG00IDwtIChlNF9maW5feCArIGU0X2luaV94KS8yCnltNCA8LSAoZTRfZmluX3kgKyBlNF9pbmlfeSkvMgp6bTQgPC0gKGU0X2Zpbl96ICsgZTRfaW5pX3opLzIKCiMgRGlyZWN0aW9uIHZlY3RvcgpkeDQgPC0gZTRfZmluX3ggLSBlNF9pbmlfeApkeTQgPC0gZTRfZmluX3kgLSBlNF9pbmlfeQpkejQgPC0gZTRfZmluX3ogLSBlNF9pbmlfegpgYGAKCgoKYGBge3J9CnN0YXIyZ3JhcGggPC0gZ3JhcGgkcGxvdCh2ZXJ0ZXhfc2l6ZSA9IGdzdywgZWRnZV93aWR0aCA9IGdzdywgdHlwZSA9ICJwbG90bHkiKSB8PiAKICBjb25maWcobWF0aGpheCA9ICdjZG4nKSB8PgogIGFkZF90cmFjZSgKICB0eXBlID0gImNvbmUiLAogIHggPSB5bTEsCiAgeSA9IHhtMSwKICB6ID0gem0xLAogIHUgPSBkeTEsCiAgdiA9IGR4MSwKICB3ID0gZHoxLAogIHNpemVtb2RlID0gImFic29sdXRlIiwKICBzaXplcmVmID0gc2l6ZXJlZiwKICBzaG93c2NhbGUgPSBGQUxTRSwKICBzaG93bGVnZW5kID0gRkFMU0UsCiAgY29sb3JzY2FsZSA9IGxpc3QoYygwLCAxKSwgYygicmVkIiwgInJlZCIpKSwKICBjbWluID0gMCwKICBjbWF4ID0gMQopIHw+CiAgYWRkX3RyYWNlKAogIHR5cGUgPSAiY29uZSIsCiAgeCA9IHltNCwKICB5ID0geG00LAogIHogPSB6bTQsCiAgdSA9IGR5NCwKICB2ID0gZHg0LAogIHcgPSBkejQsCiAgc2l6ZW1vZGUgPSAiYWJzb2x1dGUiLAogIHNpemVyZWYgPSBzaXplcmVmLAogIHNob3dzY2FsZSA9IEZBTFNFLAogIHNob3dsZWdlbmQgPSBGQUxTRSwKICBjb2xvcnNjYWxlID0gbGlzdChjKDAsIDEpLCBjKCJyZWQiLCAicmVkIikpLAogIGNtaW4gPSAwLAogIGNtYXggPSAxCikgfD4KICBwbG90bHk6OmxheW91dChmb250ID0gbGlzdChmYW1pbHkgPSAiUGFsYXRpbm8iKSwKICAgICAgICAgICAgICAgICBzY2VuZSA9IGxpc3QoeGF4aXMgPSBsaXN0KHRpdGxlID0gbGlzdCh0ZXh0ID0gIngiLCBmb250ID0gbGlzdChjb2xvciA9IGNvbGF4bm4pKSwgIHRpY2tmb250ID0gbGlzdChjb2xvciA9IGNvbGF4bm4pKSwKICAgICAgICAgICAgICB5YXhpcyA9IGxpc3QodGl0bGUgPSBsaXN0KHRleHQgPSAieSIsIGZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubikpLCAgdGlja2ZvbnQgPSBsaXN0KGNvbG9yID0gY29sYXhubikpLAogICAgICAgICAgICAgIHpheGlzID0gbGlzdCh0aXRsZSA9IGxpc3QodGV4dCA9ICJ6IiwgZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSksICB0aWNrZm9udCA9IGxpc3QoY29sb3IgPSBjb2xheG5uKSksCiAgICAgICAgICAgICAgICAgICBhc3BlY3RyYXRpbyA9IGxpc3QoeCA9IDIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0gMiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHogPSAyKSwKICAgICAgICAgICAgICAgICAgIGNhbWVyYSA9IGxpc3QoZXllID0gbGlzdCh4ID0geF9leWUsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0geV9leWUsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB6ID0gel9leWUpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgY2VudGVyID0gbGlzdCh4ID0gMCwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHkgPSAwLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeiA9IDApKSwKICAgICAgICAgICAgICBhbm5vdGF0aW9ucyA9IGxpc3QoCiAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgbGlzdCgKICAgICAgICAgICAgICAgeCA9IDAsIHkgPSAwLCB6ID0gMCwKICAgICAgICAgICAgICAgdGV4dCA9IFRlWCgidiIpLAogICAgICAgICAgICAgICB0ZXh0YW5nbGUgPSAwLCBheCA9IDAsIGF5ID0gMzUsCiAgICAgICAgICAgICAgIGZvbnQgPSBsaXN0KGNvbG9yID0gImJsYWNrIiwgc2l6ZSA9IGdmc2l6ZSksCiAgICAgICAgICAgICAgIGFycm93Y29sb3IgPSAicmdiYSgwLDAsMCwwKSIpLAogICAgICAgICAgICAgbGlzdCgKICAgICAgICAgICAgICAgeCA9IGUxX2Zpbl95LCB5ID0gZTFfZmluX3gsIHogPSBlMV9maW5feiwKICAgICAgICAgICAgICAgdGV4dCA9IFRlWCgidl8xIiksCiAgICAgICAgICAgICAgIHRleHRhbmdsZSA9IDAsIGF4ID0gMCwgYXkgPSAzNSwKICAgICAgICAgICAgICAgZm9udCA9IGxpc3QoY29sb3IgPSAiYmxhY2siLCBzaXplID0gZ2ZzaXplKSwKICAgICAgICAgICAgICAgYXJyb3djb2xvciA9ICJyZ2JhKDAsMCwwLDApIiksCiAgICAgICAgICAgICBsaXN0KAogICAgICAgICAgICAgICB4ID0gZTRfZmluX3ksIHkgPSBlNF9maW5feCwgeiA9IGU0X2Zpbl96LAogICAgICAgICAgICAgICB0ZXh0ID0gVGVYKCJ2XzIiKSwKICAgICAgICAgICAgICAgdGV4dGFuZ2xlID0gMCwgYXggPSAwLCBheSA9IDM1LAogICAgICAgICAgICAgICBmb250ID0gbGlzdChjb2xvciA9ICJibGFjayIsIHNpemUgPSBnZnNpemUpLAogICAgICAgICAgICAgICBhcnJvd2NvbG9yID0gInJnYmEoMCwwLDAsMCkiKSwKICAgICAgICAgICAgIGxpc3QoCiAgICAgICAgICAgICAgIHggPSB5bTEsIHkgPSB4bTEsIHogPSB6bTEsCiAgICAgICAgICAgICAgIHRleHQgPSBUZVgoImVfMSIpLAogICAgICAgICAgICAgICB0ZXh0YW5nbGUgPSAwLCBheCA9IDAsIGF5ID0gMzUsCiAgICAgICAgICAgICAgIGZvbnQgPSBsaXN0KGNvbG9yID0gImJsYWNrIiwgc2l6ZSA9IGdmc2l6ZSksCiAgICAgICAgICAgICAgIGFycm93Y29sb3IgPSAicmdiYSgwLDAsMCwwKSIpLAogICAgICAgICAgICAgbGlzdCgKICAgICAgICAgICAgICAgeCA9IHltNCwgeSA9IHhtNCwgeiA9IHptNCwKICAgICAgICAgICAgICAgdGV4dCA9IFRlWCgiZV8yIiksCiAgICAgICAgICAgICAgIHRleHRhbmdsZSA9IDAsIGF4ID0gMCwgYXkgPSAzNSwKICAgICAgICAgICAgICAgZm9udCA9IGxpc3QoY29sb3IgPSAiYmxhY2siLCBzaXplID0gZ2ZzaXplKSwKICAgICAgICAgICAgICAgYXJyb3djb2xvciA9ICJyZ2JhKDAsMCwwLDApIikpCiAgICAgICAgICAgICAgICAgKSkKCnNhdmUoc3RhcjJncmFwaCwgZmlsZSA9IGhlcmU6OmhlcmUoImRhdGFfZmlsZXMvc3RhcjJncmFwaC5SZGF0YSIpKQpgYGAKCgoKOjo6OiB7c3R5bGU9ImRpc3BsYXk6IGdyaWQ7IGdyaWQtdGVtcGxhdGUtY29sdW1uczogNDg1cHggNDg1cHggNDg1cHggNDg1cHg7IGdyaWQtY29sdW1uLWdhcDogMHB4OyJ9CgoKOjo6IHt9CgpgYGB7ciwgZXZhbCA9VFJVRSwgZmlnLmhlaWdodCA9IDcsIG91dC53aWR0aCA9ICIxMDAlIiwgZmlnLmNhcCA9IGNhcHRpb25lcigiU3RhciBncmFwaCB3aXRoICRuPTIkIGVkZ2VzLiIpfQpsb2FkKGhlcmU6OmhlcmUoImRhdGFfZmlsZXMvc3RhcjJncmFwaC5SZGF0YSIpKQpzdGFyMmdyYXBoCmBgYAoKCgo6OjoKCgo6Ojoge30KCgpgYGB7ciwgZXZhbCA9VFJVRSwgZmlnLmhlaWdodCA9IDcsIG91dC53aWR0aCA9ICIxMDAlIiwgZmlnLmNhcCA9IGNhcHRpb25lcigiU3RhciBncmFwaCB3aXRoICRuPTMkIGVkZ2VzLiIpfQpsb2FkKGhlcmU6OmhlcmUoImRhdGFfZmlsZXMvc3RhcjNncmFwaC5SZGF0YSIpKQpzdGFyM2dyYXBoCmBgYAoKCgo6OjoKCjo6OiB7fQoKYGBge3IsIGV2YWwgPVRSVUUsIGZpZy5oZWlnaHQgPSA3LCBvdXQud2lkdGggPSAiMTAwJSIsIGZpZy5jYXAgPSBjYXB0aW9uZXIoIlN0YXIgZ3JhcGggd2l0aCAkbj03JCBlZGdlcy4iKX0KbG9hZChoZXJlOjpoZXJlKCJkYXRhX2ZpbGVzL3N0YXI3Z3JhcGguUmRhdGEiKSkKc3RhcjdncmFwaApgYGAKCgo6OjoKCgo6Ojo6CgoKCiMgUmVmZXJlbmNlcwoKYGBge3IsIGV2YWwgPVRSVUV9CmdyYXRlZnVsOjpjaXRlX3BhY2thZ2VzKG91dHB1dCA9ICJwYXJhZ3JhcGgiLCBvdXQuZGlyID0gIi4iKQpgYGAKCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("graphs4.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
