@@ -120,7 +120,57 @@ source(here::here("functionality1.R"))
 Below we plot the interval graph $\Gamma_I = (\mathcal{V}, \mathcal{E})$ with $\mathcal{V} = \{v_1, v_2\}$ and $\mathcal{E} = \{e_1\}$, where $e_1$ is the edge connecting $v_1$ and $v_2$. 
 
 ```{r}
-n <- 3#333
+e1_ini_x <- 0; e1_ini_y <- 0; e1_ini_z <- 0
+e1_fin_x <- 1; e1_fin_y <- 0; e1_fin_z <- 0
+
+# Midpoint
+xm1 <- (e1_fin_x + e1_ini_x)/2
+ym1 <- (e1_fin_y + e1_ini_y)/2
+zm1 <- (e1_fin_z + e1_ini_z)/2
+
+# Direction vector
+dx1 <- e1_fin_x - e1_ini_x
+dy1 <- e1_fin_y - e1_ini_y
+dz1 <- e1_fin_z - e1_ini_z
+
+
+e2_ini_x <- 0; e2_ini_y <- 1; e2_ini_z <- 0
+e2_fin_x <- 0; e2_fin_y <- 0; e2_fin_z <- 0
+
+# Midpoint
+xm2 <- (e2_fin_x + e2_ini_x)/2
+ym2 <- (e2_fin_y + e2_ini_y)/2
+zm2 <- (e2_fin_z + e2_ini_z)/2
+
+# Direction vector
+dx2 <- e2_fin_x - e2_ini_x
+dy2 <- e2_fin_y - e2_ini_y
+dz2 <- e2_fin_z - e2_ini_z
+
+# for the circle
+r <- 1/pi
+cx <- 1 + r
+cy <- 0
+
+# parameter value where the cone will be placed
+t0 <- 0
+
+# position on the curve
+x0 <- cx + r*cos(t0)
+y0 <- cy + r*sin(t0)
+z0 <- 0
+
+# tangent vector (derivative)
+dx <- -r*sin(t0)
+dy <-  r*cos(t0)
+dz <- 0
+
+sizeref <- 0.1
+```
+
+
+```{r}
+n <- 60#333
 graph <- gets.graph.interval(n = n)
 
 notes_int <- list(annotations = list(
@@ -160,17 +210,182 @@ p11 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
                            edge_width = gsw, 
                            line_color = "black")|>
   config(mathjax = 'cdn') |>
+    add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
   layout(font = list(family = "Palatino"),
          scene =  c(notes_int, layout_int),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
+
+
+
+p2int <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
+                           vertex_size = gsw,
+                           type = "plotly", 
+                           line_width = gsw, 
+                           edge_width = gsw, 
+                           line_color = "black")|>
+  config(mathjax = 'cdn') |>
+    add_trace(
+  type = "cone",
+  x = xm2,
+  y = ym2,
+  z = zm2,
+  u = dx2,
+  v = dy2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  layout(font = list(family = "Palatino"),
+         scene =  c(notes_int, layout_int),
+         margin = list(l = 0, r = 0, b = 0, t = 0),
+         showlegend = FALSE,
+         font = list(family = "Palatino"))
+
+
+notes_int_dir <- list(annotations = list(
+             list(
+               x = 0, y = 1, z = 1,
+               text = TeX("\\partial_{e_1}f(v_2) = -f'_{e_1}(\\ell_{e_1})"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 1,
+               text = TeX("\\partial_{e_1}f(v_1) = f'_{e_1}(0)"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 0.5, z = 0,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)")))
+
+
+p_int_dir_der <- graph$plot_function(cos(2*pi*graph$mesh$V[,1]), 
+                           vertex_size = gsw,
+                           type = "plotly", 
+                           line_width = gsw, 
+                           edge_width = gsw, 
+                           line_color = "red")|>
+  config(mathjax = 'cdn') |>
+# arrow shaft
+add_trace(
+  type = "scatter3d",
+  mode = "lines",
+  x = c(0, 0),
+  y = c(1, 0.75),   # base point + vector
+  z = c(1, 1),
+  line = list(color = "#0000C8", width = 6),
+  showlegend = FALSE
+) |>
+# arrow tip
+add_trace(
+  type = "cone",
+  x = 0,
+  y = 0.75,
+  z = 1,
+  u = dx2,   # smaller than vector for tip size
+  v = dy2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("#0000C8", "#0000C8")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "scatter3d",
+  mode = "lines",
+  x = c(0, 0),
+  y = c(0, 0.25),   # base point + vector
+  z = c(1, 1),
+  line = list(color = "#0000C8", width = 6),
+  showlegend = FALSE
+) |>
+    add_trace(
+  type = "cone",
+  x = 0,
+  y = 0.25,
+  z = 1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("#0000C8", "#0000C8")),
+  cmin = 0,
+  cmax = 1
+) |>
+      add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  layout(font = list(family = "Palatino"),
+         scene =  c(notes_int_dir, layout_int, list(aspectratio = list(x = 1, y = 1, z = 1))),
+         margin = list(l = 0, r = 0, b = 0, t = 0),
+         showlegend = FALSE,
+         font = list(family = "Palatino"))
+
 save(p11, file = here::here("data_files/interval_graph.Rdata"))
+save(p2int, file = here::here("data_files/interval_graph_flip_edge.Rdata"))
+save(p_int_dir_der, file = here::here("data_files/interval_graph_derivative.Rdata"))
 ```
 
 ## Circle graph
 
-Below we plot the circle graph $\Gamma_C = (\mathcal{V}, \mathcal{E})$ with $\mathcal{V} = \{v_1\}$ and $\mathcal{E} = \{e_1\}$, where $e_1$ is the edge connecting $v_1$ to itself.
+Below we plot the circle graph $\Gamma_C = (\mathcal{V}, \mathcal{E})$ with $\mathcal{V} = \{v_2\}$ and $\mathcal{E} = \{e_2\}$, where $e_2$ is the edge connecting $v_2$ to itself.
 
 ```{r}
 n <- 6#666
@@ -179,13 +394,13 @@ graph <- gets.graph.circle(n = n)
 notes_cir <- list(annotations = list(
              list(
                x = 0, y = 1, z = 0,
-               text = TeX("v_1"),
+               text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 1 + 2/pi, z = 0,
-               text = TeX("e_1"),
+               text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)")))
@@ -198,6 +413,22 @@ p22 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
                            edge_width = gsw, 
                            line_color = "black") %>% 
   config(mathjax = 'cdn') %>% 
+  add_trace(
+    type = "cone",
+    x = y0,
+    y = x0,
+    z = z0,
+    u = dy,
+    v = dx,
+    w = dz,
+    sizemode = "absolute",
+    sizeref = sizeref,
+    showscale = FALSE,
+    showlegend = FALSE,
+    colorscale = list(c(0,1), c("green","green")),
+    cmin = 0,
+    cmax = 1
+  ) |>
   layout(font = list(family = "Palatino"),
          scene =  c(notes_cir, layout_int),
          margin = list(l = 0, r = 0, b = 0, t = 0),
@@ -247,6 +478,38 @@ p33 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
                            edge_width = gsw, 
                            line_color = "black") |>
   config(mathjax = 'cdn') |>
+      add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+    type = "cone",
+    x = y0,
+    y = x0,
+    z = z0,
+    u = dy,
+    v = dx,
+    w = dz,
+    sizemode = "absolute",
+    sizeref = sizeref,
+    showscale = FALSE,
+    showlegend = FALSE,
+    colorscale = list(c(0,1), c("green","green")),
+    cmin = 0,
+    cmax = 1
+  ) |>
   layout(font = list(family = "Palatino"),
          scene =  c(notes_tad_1, layout_int),
          margin = list(l = 0, r = 0, b = 0, t = 0),
@@ -734,6 +997,46 @@ p3
 
 :::
 
+
+::::
+
+
+# Plots part 3
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
+load(here::here("data_files/interval_graph.Rdata"))
+p11
+```
+
+:::
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
+load(here::here("data_files/interval_graph_flip_edge.Rdata"))
+p2int
+```
+
+
+:::
+
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
+load(here::here("data_files/interval_graph_derivative.Rdata"))
+p_int_dir_der
+```
+
+
+:::
 
 ::::
 
