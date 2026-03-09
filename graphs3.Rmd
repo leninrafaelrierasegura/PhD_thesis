@@ -246,6 +246,8 @@ df_list <- list(dfe1, dfe2)
 ddf_list <- list(ddfe1, ddfe2)
 dddf_list <- list(dddfe1, dddfe2)
 
+f_list_aux <- f_list
+
 f <- apply_edge_functions_fast(graph, f_list)
 df <- apply_edge_functions_fast(graph, df_list)
 ddf <- apply_edge_functions_fast(graph, ddf_list)
@@ -770,6 +772,8 @@ f <- my_apply_edge_functions(graph, f_list, ell1, ell2, h)
 df <- my_apply_edge_functions(graph, df_list, ell1, ell2, h)
 ddf <- my_apply_edge_functions(graph, ddf_list, ell1, ell2, h)
 dddf <- my_apply_edge_functions(graph, dddf_list, ell1, ell2, h)
+
+f_aux <- my_apply_edge_functions(graph, f_list_aux, ell1, ell2, h)
 ```
 
 
@@ -1241,6 +1245,111 @@ so that the second derivative does not change sign under a flip. See Figure 7. T
 \end{equation}
 
 
+# Additional plots
+
+```{r}
+DF <- f_aux$DF
+pf_aux <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("\\hat{f}"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+save(pf_aux, file = here::here("data_files/pf_aux.Rdata"))
+
+```
+
 
 :::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
@@ -1250,6 +1359,15 @@ so that the second derivative does not change sign under a flip. See Figure 7. T
 ```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
 load(here::here("data_files/pf.Rdata"))
 pf
+```
+
+:::
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
+load(here::here("data_files/pf_aux.Rdata"))
+pf_aux
 ```
 
 :::
