@@ -877,7 +877,7 @@ pf3 <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
-               text = TeX("e_2"),
+               text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
@@ -975,7 +975,7 @@ pdf3 <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
-               text = TeX("e_2"),
+               text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
@@ -1073,7 +1073,7 @@ pddf3 <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
-               text = TeX("e_2"),
+               text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
@@ -1171,7 +1171,7 @@ pdddf3 <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
-               text = TeX("e_2"),
+               text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
@@ -1346,7 +1346,7 @@ pf_aux <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
-               text = TeX("e_2"),
+               text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
@@ -1443,7 +1443,7 @@ pdf_aux <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
-               text = TeX("e_2"),
+               text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
@@ -1541,7 +1541,7 @@ pddf_aux <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
-               text = TeX("e_2"),
+               text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
@@ -1639,7 +1639,7 @@ pdddf_aux <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
-               text = TeX("e_2"),
+               text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
