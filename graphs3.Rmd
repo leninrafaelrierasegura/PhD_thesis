@@ -247,6 +247,9 @@ ddf_list <- list(ddfe1, ddfe2)
 dddf_list <- list(dddfe1, dddfe2)
 
 f_list_aux <- f_list
+df_list_aux <- df_list
+ddf_list_aux <- ddf_list
+dddf_list_aux <- dddf_list
 
 f <- apply_edge_functions_fast(graph, f_list)
 df <- apply_edge_functions_fast(graph, df_list)
@@ -774,6 +777,9 @@ ddf <- my_apply_edge_functions(graph, ddf_list, ell1, ell2, h)
 dddf <- my_apply_edge_functions(graph, dddf_list, ell1, ell2, h)
 
 f_aux <- my_apply_edge_functions(graph, f_list_aux, ell1, ell2, h)
+df_aux <- my_apply_edge_functions(graph, df_list_aux, ell1, ell2, h)
+ddf_aux <- my_apply_edge_functions(graph, ddf_list_aux, ell1, ell2, h)
+dddf_aux <- my_apply_edge_functions(graph, dddf_list_aux, ell1, ell2, h)
 ```
 
 
@@ -1190,7 +1196,7 @@ save(pdddf3, file = here::here("data_files/pdddf3.Rdata"))
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{e_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
 load(here::here("data_files/pf3.Rdata"))
 pf3
 ```
@@ -1200,7 +1206,7 @@ pf3
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_1}(\\tau) = 4\\tau^3$ and $g'_{e_2}(\\tau) = 4(\\tau-(\\ell_1+\\ell_2))^3$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_1}(\\tau) = 4\\tau^3$ and $g'_{\\hat{e}_2}(\\tau) = 4(\\tau-(\\ell_1+\\ell_2))^3$.")}
 load(here::here("data_files/pdf3.Rdata"))
 pdf3
 ```
@@ -1210,7 +1216,7 @@ pdf3
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_1}(\\tau) = 12\\tau^2$ and $g''_{e_2}(\\tau) = 12(\\tau-(\\ell_1+\\ell_2))^2$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_1}(\\tau) = 12\\tau^2$ and $g''_{\\hat{e}_2}(\\tau) = 12(\\tau-(\\ell_1+\\ell_2))^2$.")}
 load(here::here("data_files/pddf3.Rdata"))
 pddf3
 ```
@@ -1220,7 +1226,7 @@ pddf3
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_1}(\\tau) = 24\\tau$ and $g'''_{e_2}(\\tau) = 24(\\tau-(\\ell_1+\\ell_2))$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_1}(\\tau) = 24\\tau$ and $g'''_{\\hat{e}_2}(\\tau) = 24(\\tau-(\\ell_1+\\ell_2))$.")}
 load(here::here("data_files/pdddf3.Rdata"))
 pdddf3
 ```
@@ -1345,8 +1351,306 @@ pf_aux <- p_base |>
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
+DF <- df_aux$DF
+pdf_aux <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("\\hat{f}'"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+DF <- ddf_aux$DF
+pddf_aux <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("\\hat{f}''"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+DF <- dddf_aux$DF
+pdddf_aux <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("\\hat{f}'''"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+
 
 save(pf_aux, file = here::here("data_files/pf_aux.Rdata"))
+save(pdf_aux, file = here::here("data_files/pdf_aux.Rdata"))
+save(pddf_aux, file = here::here("data_files/pddf_aux.Rdata"))
+save(pdddf_aux, file = here::here("data_files/pdddf_aux.Rdata"))
 
 ```
 
@@ -1365,7 +1669,7 @@ pf
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
 load(here::here("data_files/pf_aux.Rdata"))
 pf_aux
 ```
@@ -1374,7 +1678,7 @@ pf_aux
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{e_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
 load(here::here("data_files/pf3.Rdata"))
 pf3
 ```
@@ -1382,6 +1686,56 @@ pf3
 :::
 
 ::::
+
+
+# For $\hat{f}$
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
+load(here::here("data_files/pf_aux.Rdata"))
+pf_aux
+```
+
+:::
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{\\hat{e}_2}(t) = 4(t+\\ell_1)^3$.")}
+load(here::here("data_files/pdf_aux.Rdata"))
+pdf_aux
+```
+
+:::
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{\\hat{e}_2}(t) = 12(t+\\ell_1)^2$.")}
+load(here::here("data_files/pddf_aux.Rdata"))
+pddf_aux
+```
+
+:::
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{\\hat{e}_2}(t) = 24(t+\\ell_1)$.")}
+load(here::here("data_files/pdddf_aux.Rdata"))
+pdddf_aux
+```
+
+
+:::
+
+::::
+
+
 
 # References
 
