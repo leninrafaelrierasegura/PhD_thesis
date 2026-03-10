@@ -378,10 +378,240 @@ add_trace(
          showlegend = FALSE,
          font = list(family = "Palatino"))
 
+
+p_int_dir_der_exp <- graph$plot_function(exp(graph$mesh$V[,1]), 
+                           vertex_size = gsw,
+                           type = "plotly", 
+                           line_width = gsw, 
+                           edge_width = gsw, 
+                           line_color = "red")|>
+  config(mathjax = 'cdn') |>
+# arrow shaff
+  add_trace(
+  type = "scatter3d",
+  mode = "lines",
+  x = c(0, 0),
+  y = c(0, 0.25),   # base point + vector
+  z = c(1, 1.25),
+  line = list(color = "#0000C8", width = 6),
+  showlegend = FALSE
+) |>
+    add_trace(
+  type = "cone",
+  x = 0,
+  y = 0.25,
+  z = 1.25,
+  u = 0,
+  v = 0.25,
+  w = 0.25,
+  sizemode = "absolute",
+  sizeref = sizeref*1.5,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("#0000C8", "#0000C8")),
+  cmin = 0,
+  cmax = 1
+) |>
+# arrow shaff
+  add_trace(
+  type = "scatter3d",
+  mode = "lines",
+  x = c(0, 0),
+  y = c(1, 0.75),   # base point + vector
+  z = c(exp(1), exp(1)*0.75),
+  line = list(color = "#0000C8", width = 6),
+  showlegend = FALSE
+) |>
+    add_trace(
+  type = "cone",
+  x = 0,
+  y = 0.75,
+  z = exp(1)*0.75,
+  u = 0,
+  v = -0.25,
+  w = -0.25*exp(1),
+  sizemode = "absolute",
+  sizeref = sizeref*2.2,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("#0000C8", "#0000C8")),
+  cmin = 0,
+  cmax = 1
+) |>
+      add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  layout(font = list(family = "Palatino"),
+         scene =  c(layout_int, list(aspectratio = list(x = 1, y = 1, z = 1)),
+                    list(annotations = list(
+             list(
+               x = 0, y = 1, z = exp(1),
+               text = TeX("\\partial_{e_1}f(v_2) = -f'_{e_1}(\\ell_{e_1})"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 1,
+               text = TeX("\\partial_{e_1}f(v_1) = f'_{e_1}(0)"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_1=0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2=\\ell_{e_1}"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 0.5, z = 0,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)")))),
+         margin = list(l = 0, r = 0, b = 0, t = 0),
+         showlegend = FALSE,
+         font = list(family = "Palatino"))
+
+p_int_dir_der_exp_rev <- graph$plot_function(exp(graph$mesh$V[,1]), 
+                           vertex_size = gsw,
+                           type = "plotly", 
+                           line_width = gsw, 
+                           edge_width = gsw, 
+                           line_color = "red")|>
+  config(mathjax = 'cdn') |>
+# arrow shaff
+  add_trace(
+  type = "scatter3d",
+  mode = "lines",
+  x = c(0, 0),
+  y = c(0, 0.25),   # base point + vector
+  z = c(1, 1.25),
+  line = list(color = "#0000C8", width = 6),
+  showlegend = FALSE
+) |>
+    add_trace(
+  type = "cone",
+  x = 0,
+  y = 0.25,
+  z = 1.25,
+  u = 0,
+  v = 0.25,
+  w = 0.25,
+  sizemode = "absolute",
+  sizeref = sizeref*1.5,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("#0000C8", "#0000C8")),
+  cmin = 0,
+  cmax = 1
+) |>
+# arrow shaff
+  add_trace(
+  type = "scatter3d",
+  mode = "lines",
+  x = c(0, 0),
+  y = c(1, 0.75),   # base point + vector
+  z = c(exp(1), exp(1)*0.75),
+  line = list(color = "#0000C8", width = 6),
+  showlegend = FALSE
+) |>
+    add_trace(
+  type = "cone",
+  x = 0,
+  y = 0.75,
+  z = exp(1)*0.75,
+  u = 0,
+  v = -0.25,
+  w = -0.25*exp(1),
+  sizemode = "absolute",
+  sizeref = sizeref*2.2,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("#0000C8", "#0000C8")),
+  cmin = 0,
+  cmax = 1
+) |>
+      add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = -dy1,
+  v = -dx1,
+  w = -dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  layout(font = list(family = "Palatino"),
+         scene =  c(layout_int, list(aspectratio = list(x = 1, y = 1, z = 1)),
+                    list(annotations = list(
+             list(
+               x = 0, y = 1, z = exp(1),
+               text = TeX("\\partial_{\\hat{e}_1}g(v_2) = g'_{\\hat{e}_1}(0)"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 1,
+               text = TeX("\\partial_{\\hat{e}_1}g(v_1) = -g'_{e_1}(\\ell_{e_1})"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_1 = \\ell_{e_1}"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2=0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 0.5, z = 0,
+               text = TeX("\\hat{e}_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)")))),
+         margin = list(l = 0, r = 0, b = 0, t = 0),
+         showlegend = FALSE,
+         font = list(family = "Palatino"))
+
+save(p_int_dir_der_exp_rev, file = here::here("data_files/interval_graph_derivative_exp_rev.Rdata"))
+save(p_int_dir_der_exp, file = here::here("data_files/interval_graph_derivative_exp.Rdata"))
 save(p11, file = here::here("data_files/interval_graph.Rdata"))
 save(p2int, file = here::here("data_files/interval_graph_flip_edge.Rdata"))
 save(p_int_dir_der, file = here::here("data_files/interval_graph_derivative.Rdata"))
 ```
+
+
+
 
 ## Circle graph
 
@@ -1003,7 +1233,7 @@ p3
 
 # Plots part 3
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
 
 ::: {}
@@ -1038,7 +1268,31 @@ p_int_dir_der
 
 :::
 
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
+load(here::here("data_files/interval_graph_derivative_exp.Rdata"))
+p_int_dir_der_exp
+```
+
+
+:::
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
+load(here::here("data_files/interval_graph_derivative_exp_rev.Rdata"))
+p_int_dir_der_exp_rev
+```
+
+
+:::
+
 ::::
+
+
+
 
 
 # References
