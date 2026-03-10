@@ -232,6 +232,54 @@ p11 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 
+p11new <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
+                           vertex_size = gsw,
+                           type = "plotly", 
+                           line_width = gsw, 
+                           edge_width = gsw, 
+                           line_color = "black")|>
+  config(mathjax = 'cdn') |>
+    add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  layout(font = list(family = "Palatino"),
+         scene =  c(layout_int,
+                    list(annotations = list(
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_1 = 0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2 = \\ell_{e_1}"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 0.5, z = 0,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)")))),
+         margin = list(l = 0, r = 0, b = 0, t = 0),
+         showlegend = FALSE,
+         font = list(family = "Palatino"))
+
 
 
 p2int <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
@@ -253,12 +301,31 @@ p2int <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
   sizeref = sizeref,
   showscale = FALSE,
   showlegend = FALSE,
-  colorscale = list(c(0, 1), c("green", "green")),
+  colorscale = list(c(0, 1), c("red", "red")),
   cmin = 0,
   cmax = 1
 ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(notes_int, layout_int),
+         scene =  c(layout_int,
+                    list(annotations = list(
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_1 = \\ell_{e_1}"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2 = 0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 0.5, z = 0,
+               text = TeX("\\hat{e}_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)")))),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -603,6 +670,8 @@ p_int_dir_der_exp_rev <- graph$plot_function(exp(graph$mesh$V[,1]),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 
+
+save(p11new, file = here::here("data_files/interval_graph_with_coordinates.Rdata"))
 save(p_int_dir_der_exp_rev, file = here::here("data_files/interval_graph_derivative_exp_rev.Rdata"))
 save(p_int_dir_der_exp, file = here::here("data_files/interval_graph_derivative_exp.Rdata"))
 save(p11, file = here::here("data_files/interval_graph.Rdata"))
@@ -1239,8 +1308,8 @@ p3
 ::: {}
 
 ```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
-load(here::here("data_files/interval_graph.Rdata"))
-p11
+load(here::here("data_files/interval_graph_with_coordinates.Rdata"))
+p11new
 ```
 
 :::
