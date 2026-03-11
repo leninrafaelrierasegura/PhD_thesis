@@ -218,7 +218,7 @@ apply_edge_functions_fast <- function(graph, f_list) {
 # Example of a function $f\in C(\Gamma)\cap \mathcal{K}(\Gamma)\setminus C^1(\Gamma)$
 
 
-Let us consider the $3$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v_0, v_1, v_2, v_3\}$ and $\mathcal{E} = \{e_1, e_2, e_3\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v_0$ to the outer vertex $v_i$ for $i=1,2,3$ in such a way that $v_0 = \underline{e_1} = \underline{e_2} = \underline{e_3}$. On $\Gamma$, we define the function $f = \{f_e\}_{e\in\mathcal{E}}$ via
+Let us consider the $3$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v, v_1, v_2, v_3\}$ and $\mathcal{E} = \{e_1, e_2, e_3\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v$ to the outer vertex $v_i$ for $i=1,2,3$ in such a way that $v = \underline{e_1} = \underline{e_2} = \underline{e_3}$. On $\Gamma$, we define the function $f = \{f_e\}_{e\in\mathcal{E}}$ via
 
 $$
 f_{e_1}(s) = a + b_1 s - \frac{b_1 s^3}{3\ell^2}, \quad f_{e_2}(s) = a + b_2 s - \frac{b_2 s^3}{3\ell^2}, \quad f_{e_3}(s) = a + b_3 s - \frac{b_3 s^3}{3\ell^2},
@@ -403,7 +403,7 @@ star3f <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_w
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -528,7 +528,7 @@ star3df <- graph$plot_function(X = f*0, vertex_size = gsw, line_color = "black",
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -638,7 +638,7 @@ star3ddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, li
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -748,7 +748,7 @@ star3dddf <- graph_disc$plot_function(X = dddf, vertex_size = gsw, edge_width = 
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -974,7 +974,7 @@ star3g <- graph$plot_function(X = g, vertex_size = gsw, edge_width = gsw, line_w
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -1084,7 +1084,7 @@ star3dg <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw, line
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -1194,7 +1194,7 @@ star3ddg <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = gsw, li
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -1304,7 +1304,7 @@ star3dddg <- graph$plot_function(X = dddg, vertex_size = gsw, edge_width = gsw, 
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -1402,7 +1402,7 @@ star3dddg
 # Example of a function $h\in C^1(\Gamma)\cap \mathcal{K}(\Gamma)$ where $h'$ looks discontinuous
 
 
-Let us consider the $2$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v_0, v_1, v_2\}$ and $\mathcal{E} = \{e_1, e_2\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v_0$ to the outer vertex $v_i$ for $i=1,2$ in such a way that $v_0 = \underline{e_1} = \underline{e_2}$. On $\Gamma$, we define the function $h = \{h_e\}_{e\in\mathcal{E}}$ via
+Let us consider the $2$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v, v_1, v_2\}$ and $\mathcal{E} = \{e_1, e_2\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v$ to the outer vertex $v_i$ for $i=1,2$ in such a way that $v = \underline{e_1} = \underline{e_2}$. On $\Gamma$, we define the function $h = \{h_e\}_{e\in\mathcal{E}}$ via
 
 $$
 h_{e_1}(s) = a + b_1 s - \frac{b_1 s^3}{3\ell^2}, \quad h_{e_2}(s) = a + b_2 s - \frac{b_2 s^3}{3\ell^2}.
@@ -1536,7 +1536,7 @@ star2f <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_w
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -1633,7 +1633,7 @@ star2df <- graph$plot_function(X = f*0, vertex_size = gsw, line_color = "black",
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -1715,7 +1715,7 @@ star2ddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, li
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),
@@ -1797,7 +1797,7 @@ star2dddf <- graph_disc$plot_function(X = dddf, vertex_size = gsw, edge_width = 
                      
              list(
                x = 0, y = 0, z = 0,
-               text = TeX("v_0"),
+               text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
                font = list(color = "black", size = gfsize),
                arrowcolor = "rgba(0,0,0,0)"),

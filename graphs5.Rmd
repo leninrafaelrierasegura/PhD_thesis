@@ -216,7 +216,7 @@ dy2 <- e2_fin_y - e2_ini_y
 dz2 <- e2_fin_z - e2_ini_z
 
 
-sizeref <- 0.2
+sizeref <- 0.3
 ```
 
 
@@ -692,9 +692,6 @@ zm2 <- (e2_fin_z + e2_ini_z)/2
 dx2 <- e2_fin_x - e2_ini_x
 dy2 <- e2_fin_y - e2_ini_y
 dz2 <- e2_fin_z - e2_ini_z
-
-
-sizeref <- 0.2
 ```
 
 
