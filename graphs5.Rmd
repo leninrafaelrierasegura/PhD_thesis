@@ -1,1 +1,1681 @@
- i tried but falied that is why i removed everything
+---
+title: "Kirchhoff vertex conditions"
+date: "Last modified: `r format(Sys.time(), '%d-%m-%Y.')`"
+output:
+  html_document:
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    highlight: pygments
+    theme: flatly
+    code_folding: hide # class.source = "fold-hide" to hide code and add a button to show it
+    df_print: paged
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    fig_caption: true
+    code_download: true
+    css: visual.css
+always_allow_html: true
+bibliography: 
+  - references.bib
+  - grateful-refs.bib
+header-includes:
+  - \newcommand{\ar}{\mathbb{R}}
+  - \newcommand{\llav}[1]{\left\{#1\right\}}
+  - \newcommand{\pare}[1]{\left(#1\right)}
+  - \newcommand{\Ncal}{\mathcal{N}}
+  - \newcommand{\Vcal}{\mathcal{V}}
+  - \newcommand{\Ecal}{\mathcal{E}}
+  - \newcommand{\Wcal}{\mathcal{W}}
+  - \newcommand{\almosteverywhere}{\mathrm{a.e.}\;}
+---
+
+Go back to the [Contents](about.html) page.
+
+<div style="color: #2c3e50; text-align: right;">
+********  
+<strong>Press Show to reveal the code chunks.</strong>  
+
+********
+</div>
+
+
+```{r}
+# Create a clipboard button on the rendered HTML page
+source(here::here("clipboard.R")); clipboard
+# Set seed for reproducibility
+set.seed(1982) 
+# Set global options for all code chunks
+knitr::opts_chunk$set(
+  # Disable messages printed by R code chunks
+  message = FALSE,    
+  # Disable warnings printed by R code chunks
+  warning = FALSE,    
+  # Show R code within code chunks in output
+  echo = TRUE,        
+  # Include both R code and its results in output
+  include = TRUE,     
+  # Evaluate R code chunks
+  eval = FALSE,       
+  # Enable caching of R code chunks for faster rendering
+  cache = FALSE,      
+  # Align figures in the center of the output
+  fig.align = "center",
+  # Enable retina display for high-resolution figures
+  retina = 2,
+  # Show errors in the output instead of stopping rendering
+  error = TRUE,
+  # Do not collapse code and output into a single block
+  collapse = FALSE
+)
+# Start the figure counter
+fig_count <- 0
+# Define the captioner function
+captioner <- function(caption) {
+  fig_count <<- fig_count + 1
+  paste0("Figure ", fig_count, ": ", caption)
+}
+
+```
+
+```{r, eval = TRUE}
+library(MetricGraph)
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(viridis)
+library(plotly)
+library(patchwork)
+library(slackr)
+source("keys.R")
+slackr_setup(token = token) # token comes from keys.R
+```
+
+
+```{r}
+capture.output(
+  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+  file = here::here("old/purl_log.txt")
+)
+source(here::here("functionality1.R"))
+```
+
+
+```{r}
+apply_edge_functions_fast <- function(graph, f_list) {
+  
+  if (length(f_list) != graph$nE) {
+    stop(sprintf(
+      "Number of functions (%d) must equal number of edges (%d).",
+      length(f_list), graph$nE
+    ))
+  }
+  VtE <- graph$mesh$VtE
+  edge_lengths <- graph$edge_lengths
+  
+  edge   <- VtE[,1]
+  s_norm <- VtE[,2]
+  s_true <- s_norm * edge_lengths[edge]
+
+  out <- sapply(seq_len(nrow(VtE)), function(i) f_list[[edge[i]]](s_true[i]))
+  return(out)
+}
+```
+
+
+```{r}
+my_apply_edge_functions <- function(graph, f_list, ell1, ell2, h){
+  l1_mesh <- seq(0, ell1, by = h)
+  l2_mesh <- seq(0, ell2, by = h)
+  f1 <- f_list[[1]](l1_mesh)
+  f2 <- f_list[[2]](l2_mesh)
+  l1_mesh_norm <- l1_mesh/ell1
+  l2_mesh_norm <- l2_mesh/ell2
+  PtE1 <- cbind(rep(1, length(l1_mesh)), l1_mesh_norm)
+  PtE2 <- cbind(rep(2, length(l2_mesh)), l2_mesh_norm)
+  XY1 <- graph$coordinates(PtE1)
+  XY2 <- graph$coordinates(PtE2)
+  DF1 <- data.frame(x = XY1[,1], y = XY1[,2], z = f1)
+  DF2 <- data.frame(x = XY2[,1], y = XY2[,2], z = f2)
+  DF <- rbind(DF1, rep(NA, 3), DF2)
+  return(list(DF = DF))
+}
+```
+
+
+# Example of a function $h\in C^1(\Gamma)\cap \mathcal{K}(\Gamma)$ where $h'$ looks discontinuous
+
+
+Let us consider the $2$-star graph $\Gamma = (\mathcal{V}, \mathcal{E})$, where $\mathcal{V} = \{v_0, v_1, v_2\}$ and $\mathcal{E} = \{e_1, e_2\}$. Each edge $e_i$ has common length $\ell$ and connects the central vertex $v_0$ to the outer vertex $v_i$ for $i=1,2$ in such a way that $v_0 = \underline{e_1} = \underline{e_2}$. On $\Gamma$, we define the function $h = \{h_e\}_{e\in\mathcal{E}}$ via
+
+$$
+h_{e_1}(s) = a + b_1 s - \frac{b_1 s^3}{3\ell^2}, \quad h_{e_2}(s) = a + b_2 s - \frac{b_2 s^3}{3\ell^2}.
+$$
+Clearly, $h$ is a continuous function (see Figure 9) since
+$$
+h_{e_1}(0) = h_{e_2}(s) = a.
+$$
+The derivative $h' = \{h'_e\}_{e\in\mathcal{E}}$ of $h$ on each edge is given by
+
+$$
+h_{e_1}'(s) = b_1 - \frac{b_1 s^2}{\ell^2}, \quad h_{e_2}'(s) = b_2 - \frac{b_2 s^2}{\ell^2}.
+$$
+By choosing $b_1=1$ and $b_2=-1$, we have that 
+$$
+h_{e_1}'(0)+h_{e_2}'(0) = b_1+b_2=0\quad\text{ and }\quad h_{e_1}'(\ell) =h_{e_2}'(\ell) = 0,
+$$
+so that $h$ satisfies the Kirchhoff conditions at every vertex. This means that $h'$ should be a continuous function. However, Figure 10 shows that $h'$ is discontinuous. This is actually an artefact due to the fact that the edges are not compatible oriented. For a discussion about compatible orientation, go to this [page](graphs3.html).
+
+
+```{r}
+h = 0.02
+
+x_eye <- 5#8
+y_eye <- -1#-2
+z_eye <- 2#3
+```
+
+
+```{r}
+my_length <- 2
+edges <-list()
+edges[[1]] <- rbind(c(-my_length, 0), c(0, 0))
+edges[[2]] <- rbind(c(0, 0), c(my_length, 0))
+graph <- metric_graph$new(edges = edges)
+graph$build_mesh(h = h)
+```
+
+
+
+```{r}
+e1_ini_x <- edges[[1]][1,1]; e1_ini_y <- edges[[1]][1,2]; e1_ini_z <- 0
+e1_fin_x <- edges[[1]][2,1]; e1_fin_y <- edges[[1]][2,2]; e1_fin_z <- 0
+
+# Midpoint
+xm1 <- (e1_fin_x + e1_ini_x)/2
+ym1 <- (e1_fin_y + e1_ini_y)/2
+zm1 <- (e1_fin_z + e1_ini_z)/2
+
+# Direction vector
+dx1 <- e1_fin_x - e1_ini_x
+dy1 <- e1_fin_y - e1_ini_y
+dz1 <- e1_fin_z - e1_ini_z
+
+e2_ini_x <- edges[[2]][1,1]; e2_ini_y <- edges[[2]][1,2]; e2_ini_z <- 0
+e2_fin_x <- edges[[2]][2,1]; e2_fin_y <- edges[[2]][2,2]; e2_fin_z <- 0
+
+# Midpoint
+xm2 <- (e2_fin_x + e2_ini_x)/2
+ym2 <- (e2_fin_y + e2_ini_y)/2
+zm2 <- (e2_fin_z + e2_ini_z)/2
+
+# Direction vector
+dx2 <- e2_fin_x - e2_ini_x
+dy2 <- e2_fin_y - e2_ini_y
+dz2 <- e2_fin_z - e2_ini_z
+
+
+sizeref <- 0.2
+```
+
+
+```{r}
+# General parameters
+L <- my_length             # edge length
+a <- 1             # value at central vertex
+b <- c(-1, 1)   # b1+b2+b3 must be 0
+
+f1 <- function(s) a + b[1]*(L-s) - b[1]*(L-s)^3/(3*L^2)
+f2 <- function(s) a + b[2]*s - b[2]*s^3/(3*L^2)
+
+
+df1 <- function(s) -b[1] + b[1]*(L-s)^2/L^2
+df2 <- function(s) b[2] - b[2]*s^2/L^2
+
+ddf1 <- function(s) -2*b[1]*(L-s)/L^2
+ddf2 <- function(s) -2*b[2]*s/L^2
+
+dddf1 <- function(s) 2*b[1]/L^2
+dddf2 <- function(s) -2*b[2]/L^2
+
+
+f_list <- list(f1, f2)
+df_list <- list(df1, df2)
+ddf_list <- list(ddf1, ddf2)
+dddf_list <- list(dddf1, dddf2)
+
+f_list_aux <- f_list
+df_list_aux <- df_list
+ddf_list_aux <- ddf_list
+dddf_list_aux <- dddf_list
+
+f <- apply_edge_functions_fast(graph, f_list)
+df <- apply_edge_functions_fast(graph, df_list)
+ddf <- apply_edge_functions_fast(graph, ddf_list)
+dddf <- apply_edge_functions_fast(graph, dddf_list)
+
+
+```
+
+
+
+```{r}
+phkok <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("f"), y = 0.8), 
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+pdhkok <- graph$plot_function(X = df, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("f'"), y = 0.8), 
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+pddhkok <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("f''"), y = 0.8), 
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+pdddhkok <- graph$plot_function(X = dddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
+  config(mathjax = 'cdn') |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("green", "green")),
+  cmin = 0,
+  cmax = 1
+) |>
+  plotly::layout(title = list(text = TeX("f'''"), y = 0.8), 
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+              annotations = list(
+                     
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+save(phkok, file = here::here("h_kirchhoff.RData"))
+save(pdhkok, file = here::here("dh_kirchhoff.RData"))
+save(pddhkok, file = here::here("ddh_kirchhoff.RData"))
+save(pdddhkok, file = here::here("dddh_kirchhoff.RData"))
+
+```
+
+
+For illustration purposes, Figure 11 and 12 shows $h''$ and $h'''$.
+
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+load(here::here("h_kirchhoff.RData"))
+phkok
+```
+
+
+:::
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("dh_kirchhoff.RData"))
+pdhkok
+```
+
+
+:::
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("ddh_kirchhoff.RData"))
+pddhkok
+```
+
+
+:::
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("dddh_kirchhoff.RData"))
+pdddhkok
+```
+
+
+:::
+
+
+::::
+
+
+# Flip $e_2$
+
+
+
+
+```{r}
+edges <-list()
+edges[[1]] <- rbind(c(-my_length, 0), c(0, 0))
+edges[[2]] <- rbind(c(0, 0), c(my_length, 0))[2:1,]
+
+graph <- metric_graph$new(edges = edges)
+graph$build_mesh(h = h)
+```
+
+
+
+```{r}
+e1_ini_x <- edges[[1]][1,1]; e1_ini_y <- edges[[1]][1,2]; e1_ini_z <- 0
+e1_fin_x <- edges[[1]][2,1]; e1_fin_y <- edges[[1]][2,2]; e1_fin_z <- 0
+
+# Midpoint
+xm1 <- (e1_fin_x + e1_ini_x)/2
+ym1 <- (e1_fin_y + e1_ini_y)/2
+zm1 <- (e1_fin_z + e1_ini_z)/2
+
+# Direction vector
+dx1 <- e1_fin_x - e1_ini_x
+dy1 <- e1_fin_y - e1_ini_y
+dz1 <- e1_fin_z - e1_ini_z
+
+e2_ini_x <- edges[[2]][1,1]; e2_ini_y <- edges[[2]][1,2]; e2_ini_z <- 0
+e2_fin_x <- edges[[2]][2,1]; e2_fin_y <- edges[[2]][2,2]; e2_fin_z <- 0
+
+# Midpoint
+xm2 <- (e2_fin_x + e2_ini_x)/2
+ym2 <- (e2_fin_y + e2_ini_y)/2
+zm2 <- (e2_fin_z + e2_ini_z)/2
+
+# Direction vector
+dx2 <- e2_fin_x - e2_ini_x
+dy2 <- e2_fin_y - e2_ini_y
+dz2 <- e2_fin_z - e2_ini_z
+
+
+sizeref <- 0.2
+```
+
+
+```{r}
+f1 <- function(s) a + b[1]*(L-s) - b[1]*(L-s)^3/(3*L^2)
+f2 <- function(s) a + b[2]*(L-s) - b[2]*(L-s)^3/(3*L^2)
+
+
+df1 <- function(s) -b[1] + b[1]*(L-s)^2/L^2
+df2 <- function(s) -b[2] + b[2]*(L-s)^2/L^2
+
+ddf1 <- function(s) -2*b[1]*(L-s)/L^2
+ddf2 <- function(s) -2*b[2]*(L-s)/L^2
+
+dddf1 <- function(s) 2*b[1]/L^2
+dddf2 <- function(s) 2*b[2]/L^2
+
+
+f_list <- list(f1, f2)
+df_list <- list(df1, df2)
+ddf_list <- list(ddf1, ddf2)
+dddf_list <- list(dddf1, dddf2)
+
+f <- my_apply_edge_functions(graph, f_list, L, L, h)
+df <- my_apply_edge_functions(graph, df_list, L, L, h)
+ddf <- my_apply_edge_functions(graph, ddf_list, L, L, h)
+dddf <- my_apply_edge_functions(graph, dddf_list, L, L, h)
+
+f_aux <- my_apply_edge_functions(graph, f_list_aux, L, L, h)
+df_aux <- my_apply_edge_functions(graph, df_list_aux, L, L, h)
+ddf_aux <- my_apply_edge_functions(graph, ddf_list_aux, L, L, h)
+dddf_aux <- my_apply_edge_functions(graph, dddf_list_aux, L, L, h)
+
+```
+
+```{r}
+p_base <- graph$plot(vertex_size = gsw, edge_color = "black", edge_width = gsw, type = "plotly")
+DF <- f$DF
+pfkirok <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("g"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("\\hat{e}_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+
+DF <- df$DF
+pdfkirok <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("\\hat{e}_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+DF <- ddf$DF
+pddfkirok <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("g''"), y = 0.8), 
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("\\hat{e}_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+DF <- dddf$DF
+pdddfkirok <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("g'''"), y = 0.8), 
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("\\hat{e}_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+save(pfkirok, file = here::here("data_files/pfkirok.Rdata"))
+save(pdfkirok, file = here::here("data_files/pdfkirok.Rdata"))
+save(pddfkirok, file = here::here("data_files/pddfkirok.Rdata"))
+save(pdddfkirok, file = here::here("data_files/pdddfkirok.Rdata"))
+```
+
+
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+load(here::here("data_files/pfkirok.Rdata"))
+pfkirok
+```
+
+
+:::
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("data_files/pdfkirok.Rdata"))
+pdfkirok
+```
+
+
+:::
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("data_files/pddfkirok.Rdata"))
+pddfkirok
+```
+
+
+:::
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
+load(here::here("data_files/pdddfkirok.Rdata"))
+pdddfkirok
+```
+
+
+:::
+
+
+::::
+
+
+# Additional plots
+
+```{r}
+DF <- f_aux$DF
+pf_aux <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("\\hat{f}"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("\\hat{e}_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+DF <- df_aux$DF
+pdf_aux <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("\\hat{f}'"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("\\hat{e}_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+DF <- ddf_aux$DF
+pddf_aux <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("\\hat{f}''"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("\\hat{e}_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+DF <- dddf_aux$DF
+pdddf_aux <- p_base |>
+  add_trace(
+  type = "cone",
+  x = ym1,
+  y = xm1,
+  z = zm1,
+  u = dy1,
+  v = dx1,
+  w = dz1,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+  add_trace(
+  type = "cone",
+  x = ym2,
+  y = xm2,
+  z = zm2,
+  u = dy2,
+  v = dx2,
+  w = dz2,
+  sizemode = "absolute",
+  sizeref = sizeref,
+  showscale = FALSE,
+  showlegend = FALSE,
+  colorscale = list(c(0, 1), c("red", "red")),
+  cmin = 0,
+  cmax = 1
+) |>
+    add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
+  config(mathjax = 'cdn') |>
+  plotly::layout(title = list(text = TeX("\\hat{f}'''"), y = 0.8),
+                 font = list(family = "Palatino"),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                   aspectratio = list(x = 2, 
+                                 y = 2, 
+                                 z = 2),
+                   camera = list(eye = list(x = x_eye, 
+                                       y = y_eye, 
+                                       z = z_eye),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+                   annotations = list(
+                     
+             list(
+               x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym1, y = xm1, z = zm1,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = ym2, y = xm2, z = zm2,
+               text = TeX("\\hat{e}_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "rgba(0,0,0,0)"))
+                 ))
+
+
+
+save(pf_aux, file = here::here("data_files/pf_aux2.Rdata"))
+save(pdf_aux, file = here::here("data_files/pdf_aux2.Rdata"))
+save(pddf_aux, file = here::here("data_files/pddf_aux2.Rdata"))
+save(pdddf_aux, file = here::here("data_files/pdddf_aux2.Rdata"))
+```
+
+
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
+load(here::here("h_kirchhoff.RData"))
+phkok
+```
+
+:::
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
+load(here::here("data_files/pf_aux2.Rdata"))
+pf_aux
+```
+
+:::
+
+::: {}
+
+```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+load(here::here("data_files/pfkirok.Rdata"))
+pfkirok
+```
+
+:::
+
+::::
+
+
+# For $\hat{f}$
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
+load(here::here("data_files/pf_aux2.Rdata"))
+pf_aux
+```
+
+:::
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{\\hat{e}_2}(t) = 4(t+\\ell_1)^3$.")}
+load(here::here("data_files/pdf_aux2.Rdata"))
+pdf_aux
+```
+
+:::
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{\\hat{e}_2}(t) = 12(t+\\ell_1)^2$.")}
+load(here::here("data_files/pddf_aux2.Rdata"))
+pddf_aux
+```
+
+:::
+
+
+::: {}
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{\\hat{e}_2}(t) = 24(t+\\ell_1)$.")}
+load(here::here("data_files/pdddf_aux2.Rdata"))
+pdddf_aux
+```
+
+
+:::
+
+::::
+
+
+
+
+
+# References
+
+```{r, eval =TRUE}
+grateful::cite_packages(output = "paragraph", out.dir = ".")
+```
+
