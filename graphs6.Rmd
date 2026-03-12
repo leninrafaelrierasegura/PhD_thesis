@@ -234,20 +234,12 @@ library(plotly)
 # Parameters
 a <- 1
 b <- 0.5
-
+TT <- 6*pi
 # Total arc-length
-L <- sqrt(a^2 + b^2) * 6*pi
+L <- sqrt(a^2 + b^2) * TT
 
 half_L <- L / 2
 
-# Arc-length parametrization (helix around x-axis)
-alpha_tilde <- function(s){
-  t <- s / sqrt(a^2 + b^2)
-  x <- b*t
-  y <- a*cos(t)
-  z <- a*sin(t)
-  data.frame(x=x, y=y, z=z)
-}
 
 max_x <- b * (L / sqrt(a^2 + b^2))
 
@@ -255,17 +247,29 @@ half_max_x <- max_x / 2
 
 dist_to_move <- half_L - half_max_x
 
+# Arc-length parametrization (helix around x-axis)
+alpha_tilde <- function(s){
+  t <- s / sqrt(a^2 + b^2)
+  x_shift <- TT*(sqrt(a^2 + b^2) - b) / 2
+  x <- b * t + x_shift
+  y <- a * cos(t)
+  z <- a * sin(t)
+  data.frame(x=x, y=y, z=z)
+}
+
+a0 = alpha_tilde(0)
+aL = alpha_tilde(L)
+aLh = alpha_tilde(half_L)
+
 # Smooth helix
 n_smooth <- 500
 s_smooth <- seq(0, L, length.out = n_smooth)
 curve_smooth <- alpha_tilde(s_smooth)
-curve_smooth$x <- curve_smooth$x + dist_to_move
 
 # Points for mapping lines
 n_map <- 50
 s_map <- seq(0, L, length.out = n_map)
 curve_map <- alpha_tilde(s_map)
-curve_map$x <- curve_map$x + dist_to_move
 
 # Interval along x-axis
 int_map <- data.frame(
@@ -300,7 +304,7 @@ p <- plot_ly() |>
     x = ~x, y = ~y, z = ~z,
     type = "scatter3d",
     mode = "markers",
-    marker = list(color = "black", size = 4),
+    marker = list(color = "black", size = 3),
     showlegend = FALSE
   ) |>
   
@@ -320,7 +324,7 @@ p <- plot_ly() |>
     x = ~x, y = ~y, z = ~z,
     type = "scatter3d",
     mode = "markers",
-    marker = list(color = "black", size = 4),
+    marker = list(color = "black", size = 3),
     showlegend = FALSE
   ) |>
   
@@ -345,7 +349,38 @@ p2 <- p |> config(mathjax = 'cdn') |>
               #aspectmode="data",
               aspectratio = list(x = L/3, y = 1, z = 1),
               camera = list(eye = list(x = 0, y = -4, z = 4),
-                            center = list(x = 0, y = 0, z = 0))
+                            center = list(x = 0, y = 0, z = 0)),
+              annotations = list(
+                list(
+               x = 0, y = 0, z = 0,
+               text = TeX("0"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+               list(
+               x = L, y = 0, z = 0,
+               text = TeX("\\ell"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),   
+                list(
+               x = aLh$x, y = aLh$y, z = aLh$z,
+               text = TeX("e"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+               list(
+               x = aL$x, y = aL$y, z = aL$z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),      
+             list(
+               x = a0$x, y = a0$y, z = a0$z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1))
             )
 )
 
