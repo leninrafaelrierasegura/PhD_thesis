@@ -57,7 +57,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = FALSE,       
+  eval = TRUE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -392,4 +392,90 @@ save(p2, file = here::here("graphs6p2.Rdata"))
 load(here::here("graphs6p2.Rdata"))
 p2
 ```
+
+
+
+```{r}
+library(plotly)
+
+TT <- 7*pi
+# parameter
+t <- seq(0, TT, length.out = 800)
+
+# speed
+speed <- sqrt(1 + cos(t)^2)
+
+# arc-length function
+s <- pracma::cumtrapz(t, speed)
+# s <- cumsum(c(0, diff(t) * (head(speed,-1) + tail(speed,-1))/2))
+
+L <- max(s)
+
+half_L <- L / 2
+half_TT <- TT / 2
+dist_to_move <- half_L - half_TT
+
+
+# curve alpha(t)
+x <- t + dist_to_move
+y <- sin(t) + 2
+z <- rep(0,length(t))
+
+
+# points where we draw connectors
+idx <- seq(1, length(t), length.out = 80)
+
+p <- plot_ly()
+
+# curve alpha
+p <- add_trace(p,
+  x = x, y = y, z = z,
+  type = "scatter3d",
+  mode = "lines",
+  line = list(width = 6, color = "blue"),
+  name = "alpha(t)"
+)
+
+# arc-length line along x=y
+p <- add_trace(p,
+  x = s,
+  y = rep(0,length(s)),
+  z = rep(0,length(s)),
+  type = "scatter3d",
+  mode = "lines",
+  line = list(width = 6, color = "red"),
+  name = "s-axis"
+)
+
+# connecting segments
+for(i in idx){
+  
+  p <- add_trace(p,
+    x = c(x[i], s[i]),
+    y = c(y[i], 0),
+    z = c(0,0),
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "gray", width = 3),
+    showlegend = FALSE
+  )
+  
+}
+
+p <- layout(
+  p,
+  scene = list(
+    xaxis = list(title = "x"),
+    yaxis = list(title = "y"),
+    zaxis = list(title = ""),
+    aspectratio = list(x = L/6, y = 1, z = 1),
+              camera = list(eye = list(x = 0, y = -3, z = 3),
+                            center = list(x = 0, y = 0, z = 0))
+  )
+)
+
+p
+```
+
+
 
