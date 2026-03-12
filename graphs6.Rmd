@@ -1,0 +1,360 @@
+---
+title: "Arc-length parametrization"
+date: "Last modified: `r format(Sys.time(), '%d-%m-%Y.')`"
+output:
+  html_document:
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    highlight: pygments
+    theme: flatly
+    code_folding: hide # class.source = "fold-hide" to hide code and add a button to show it
+    df_print: paged
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    fig_caption: true
+    code_download: true
+    css: visual.css
+always_allow_html: true
+bibliography: 
+  - references.bib
+  - grateful-refs.bib
+header-includes:
+  - \newcommand{\ar}{\mathbb{R}}
+  - \newcommand{\llav}[1]{\left\{#1\right\}}
+  - \newcommand{\pare}[1]{\left(#1\right)}
+  - \newcommand{\Ncal}{\mathcal{N}}
+  - \newcommand{\Vcal}{\mathcal{V}}
+  - \newcommand{\Ecal}{\mathcal{E}}
+  - \newcommand{\Wcal}{\mathcal{W}}
+  - \newcommand{\almosteverywhere}{\mathrm{a.e.}\;}
+---
+
+Go back to the [Contents](about.html) page.
+
+<div style="color: #2c3e50; text-align: right;">
+********  
+<strong>Press Show to reveal the code chunks.</strong>  
+
+********
+</div>
+
+
+```{r}
+# Create a clipboard button on the rendeblack HTML page
+source(here::here("clipboard.R")); clipboard
+# Set seed for reproducibility
+set.seed(1982) 
+# Set global options for all code chunks
+knitr::opts_chunk$set(
+  # Disable messages printed by R code chunks
+  message = FALSE,    
+  # Disable warnings printed by R code chunks
+  warning = FALSE,    
+  # Show R code within code chunks in output
+  echo = TRUE,        
+  # Include both R code and its results in output
+  include = TRUE,     
+  # Evaluate R code chunks
+  eval = FALSE,       
+  # Enable caching of R code chunks for faster rendering
+  cache = FALSE,      
+  # Align figures in the center of the output
+  fig.align = "center",
+  # Enable retina display for high-resolution figures
+  retina = 2,
+  # Show errors in the output instead of stopping rendering
+  error = TRUE,
+  # Do not collapse code and output into a single block
+  collapse = FALSE
+)
+# Start the figure counter
+fig_count <- 0
+# Define the captioner function
+captioner <- function(caption) {
+  fig_count <<- fig_count + 1
+  paste0("Figure ", fig_count, ": ", caption)
+}
+
+```
+
+```{r, eval = TRUE}
+library(MetricGraph)
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(viridis)
+library(plotly)
+library(patchwork)
+library(slackr)
+source("keys.R")
+slackr_setup(token = token) # token comes from keys.R
+```
+
+
+```{r}
+capture.output(
+  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+  file = here::here("old/purl_log.txt")
+)
+source(here::here("functionality1.R"))
+```
+
+
+
+```{r}
+library(plotly)
+
+# Parameters
+a <- 1
+b <- 0.5
+
+# Total arc-length
+L <- sqrt(a^2 + b^2) * 6*pi
+
+# Arc-length parametrization (helix around x-axis)
+alpha_tilde <- function(s){
+  t <- s / sqrt(a^2 + b^2)
+  x <- b*t
+  y <- a*cos(t)
+  z <- a*sin(t)
+  data.frame(x=x, y=y, z=z)
+}
+
+max_x <- b * (L / sqrt(a^2 + b^2))
+
+half_max_x <- max_x / 2
+
+# Smooth helix
+n_smooth <- 500
+s_smooth <- seq(0, L, length.out = n_smooth)
+curve_smooth <- alpha_tilde(s_smooth)
+
+# Points for mapping lines
+n_map <- 50
+s_map <- seq(0, L, length.out = n_map)
+curve_map <- alpha_tilde(s_map)
+
+# Interval along x-axis
+int_map <- data.frame(
+  x = s_map * max_x / L,
+  y = rep(0, n_map),
+  z = rep(0, n_map)
+)
+
+# Build mapping lines
+rows <- lapply(1:n_map, function(i) {
+  list(int_map[i, ], curve_map[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+# Plot
+p <- plot_ly() |>
+  
+  # Smooth helix
+  add_trace(
+    data = curve_smooth,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "#0000C8", width = 7),
+    showlegend = FALSE
+  ) |>
+  
+  # Sample helix points
+  add_trace(
+    data = curve_map,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(color = "black", size = 4),
+    showlegend = FALSE
+  ) |>
+  
+  # Interval [0,L]
+  add_trace(
+    data = int_map,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "#0000C8", width = 7),
+    showlegend = FALSE
+  ) |>
+  
+  # Interval points
+  add_trace(
+    data = int_map,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(color = "black", size = 4),
+    showlegend = FALSE
+  ) |>
+  
+  # Mapping lines
+  add_trace(
+    data = result,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "gray", width = 1),
+    showlegend = FALSE
+  )
+ 
+p1 <- layout(p,
+            margin = list(l = 0, r = 0, b = 0, t = 0),
+            scene = list(
+              xaxis = list(title = "x",  range = c(0, max_x)),
+              yaxis = list(title = "y", range = c(-1, 1)),
+              zaxis = list(title = "z", range = c(-1, 1)),
+              #aspectmode="data",
+              aspectratio = list(x = max_x/2, y = 1, z = 1),
+              camera = list(eye = list(x = 0, y = -4, z = 4),
+                            center = list(x = 0, y = 0, z = 0))
+            )
+)
+
+save(p1, file = here::here("graphs6p1.Rdata"))
+
+```
+
+
+```{r, eval = TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("graphs6p1.Rdata"))
+p1
+```
+
+
+
+```{r}
+library(plotly)
+
+# Parameters
+a <- 1
+b <- 0.5
+
+# Total arc-length
+L <- sqrt(a^2 + b^2) * 6*pi
+
+half_L <- L / 2
+
+# Arc-length parametrization (helix around x-axis)
+alpha_tilde <- function(s){
+  t <- s / sqrt(a^2 + b^2)
+  x <- b*t
+  y <- a*cos(t)
+  z <- a*sin(t)
+  data.frame(x=x, y=y, z=z)
+}
+
+max_x <- b * (L / sqrt(a^2 + b^2))
+
+half_max_x <- max_x / 2
+
+dist_to_move <- half_L - half_max_x
+
+# Smooth helix
+n_smooth <- 500
+s_smooth <- seq(0, L, length.out = n_smooth)
+curve_smooth <- alpha_tilde(s_smooth)
+curve_smooth$x <- curve_smooth$x + dist_to_move
+
+# Points for mapping lines
+n_map <- 50
+s_map <- seq(0, L, length.out = n_map)
+curve_map <- alpha_tilde(s_map)
+curve_map$x <- curve_map$x + dist_to_move
+
+# Interval along x-axis
+int_map <- data.frame(
+  x = s_map,
+  y = rep(0, n_map),
+  z = rep(0, n_map)
+)
+
+# Build mapping lines
+rows <- lapply(1:n_map, function(i) {
+  list(int_map[i, ], curve_map[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+# Plot
+p <- plot_ly() |>
+  
+  # Smooth helix
+  add_trace(
+    data = curve_smooth,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "darkgreen", width = 7),
+    showlegend = FALSE
+  ) |>
+  
+  # Sample helix points
+  add_trace(
+    data = curve_map,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(color = "black", size = 4),
+    showlegend = FALSE
+  ) |>
+  
+  # Interval [0,L]
+  add_trace(
+    data = int_map,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "#0000C8", width = 7),
+    showlegend = FALSE
+  ) |>
+  
+  # Interval points
+  add_trace(
+    data = int_map,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(color = "black", size = 4),
+    showlegend = FALSE
+  ) |>
+  
+  # Mapping lines
+  add_trace(
+    data = result,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "gray", width = 1),
+    showlegend = FALSE
+  )
+ 
+
+p2 <- p |> config(mathjax = 'cdn') |>
+            layout(p,
+                   font = list(family = "Palatino"),
+            margin = list(l = 0, r = 0, b = 0, t = 0),
+            scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = c(0, L)),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(-1, 1)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(-1, 1)),
+              #aspectmode="data",
+              aspectratio = list(x = L/3, y = 1, z = 1),
+              camera = list(eye = list(x = 0, y = -4, z = 4),
+                            center = list(x = 0, y = 0, z = 0))
+            )
+)
+
+save(p2, file = here::here("graphs6p2.Rdata"))
+```
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("graphs6p2.Rdata"))
+p2
+```
+
