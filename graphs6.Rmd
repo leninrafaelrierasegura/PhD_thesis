@@ -57,7 +57,7 @@ knitr::opts_chunk$set(
   # Include both R code and its results in output
   include = TRUE,     
   # Evaluate R code chunks
-  eval = TRUE,       
+  eval = FALSE,       
   # Enable caching of R code chunks for faster rendering
   cache = FALSE,      
   # Align figures in the center of the output
@@ -103,7 +103,7 @@ source(here::here("functionality1.R"))
 
 
 
-```{r}
+```{r, eval  = FALSE}
 library(plotly)
 
 # Parameters
@@ -217,11 +217,6 @@ p1 <- layout(p,
 )
 
 save(p1, file = here::here("graphs6p1.Rdata"))
-
-```
-
-
-```{r, eval = TRUE, fig.height = 7, out.width = "100%"}
 load(here::here("graphs6p1.Rdata"))
 p1
 ```
@@ -395,12 +390,13 @@ p2
 
 
 
-```{r}
+```{r, eval = FALSE}
 library(plotly)
+n_smooth <- 1000
 
-TT <- 7*pi
+TT <- 3*pi
 # parameter
-t <- seq(0, TT, length.out = 800)
+t <- seq(0, TT, length.out = n_smooth)
 
 # speed
 speed <- sqrt(1 + cos(t)^2)
@@ -413,54 +409,131 @@ L <- max(s)
 
 half_L <- L / 2
 half_TT <- TT / 2
-dist_to_move <- half_L - half_TT
+dist_to_move <- abs(half_L - half_TT)
 
-
+y_shift <- 4
 # curve alpha(t)
 x <- t + dist_to_move
-y <- sin(t) + 2
+y <- sin(t) + y_shift
 z <- rep(0,length(t))
 
+curve_smooth <- data.frame(x = x, y = y, z = z)
 
+
+n_map <- 25
 # points where we draw connectors
-idx <- seq(1, length(t), length.out = 80)
+idx <- seq(1, length(t), length.out = n_map)
 
-p <- plot_ly()
 
-# curve alpha
-p <- add_trace(p,
-  x = x, y = y, z = z,
+curve_map <- data.frame(x = x[idx], y = y[idx], z = z[idx])
+int_map <- data.frame(x = s[idx], y = rep(0, n_map), z = rep(0, n_map))
+
+
+# Build mapping lines
+rows <- lapply(1:n_map, function(i) {
+  list(int_map[i, ], curve_map[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+s_circ <- L
+radius <- s_circ / (2*pi)
+x_shift_for_circle <- radius + TT + dist_to_move
+
+theta <- seq(from=-pi,to=pi,length.out = n_smooth)
+circle_curve <- data.frame(x = radius*cos(theta) + x_shift_for_circle, 
+                    y = radius*sin(theta) + y_shift, 
+                    z = rep(0, length(theta)))
+
+
+circle_map <- circle_curve[idx, ]
+dist_to_move_circle <- abs(half_L - y_shift)
+int_map_circle <- data.frame(x = rep(x_shift_for_circle +2*radius, n_map), y = s[idx]-dist_to_move_circle, z = rep(0, n_map))
+
+# Build mapping lines for circle
+rows <- lapply(1:n_map, function(i) {
+  list(int_map_circle[i, ], circle_map[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result_for_circle <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+p <- plot_ly() |>
+  # smooth sin curve
+  add_trace(data = curve_smooth,
+  x = ~x, y = ~y, z = ~z,
   type = "scatter3d",
   mode = "lines",
-  line = list(width = 6, color = "blue"),
-  name = "alpha(t)"
-)
-
-# arc-length line along x=y
-p <- add_trace(p,
-  x = s,
-  y = rep(0,length(s)),
-  z = rep(0,length(s)),
+  line = list(width = 7, color = "#0000C8"),
+    showlegend = FALSE
+) |>
+  # sin curve
+  add_trace(data = curve_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 3, color = "black"),
+    showlegend = FALSE
+) |>
+  # smooth circle curve
+  add_trace(data = circle_curve,
+  x = ~x, y = ~y, z = ~z,
   type = "scatter3d",
   mode = "lines",
-  line = list(width = 6, color = "red"),
-  name = "s-axis"
-)
-
-# connecting segments
-for(i in idx){
-  
-  p <- add_trace(p,
-    x = c(x[i], s[i]),
-    y = c(y[i], 0),
-    z = c(0,0),
+  line = list(width = 7, color = "darkgreen"),
+    showlegend = FALSE
+) |>  
+  add_trace(data = circle_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 3, color = "black"),
+    showlegend = FALSE
+) |>
+  # interval [0,L]
+add_trace(data = int_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "lines+markers",
+  line = list(width = 7, color = "#0000C8"),
+  marker = list(size = 3, color = "black"),
+    showlegend = FALSE
+) |>
+  # interval for circle
+  add_trace(data = int_map_circle,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "lines+markers",
+  line = list(width = 7, color = "darkgreen"),
+  marker = list(size = 3, color = "black"),
+    showlegend = FALSE
+) |>
+  # Mapping lines
+  add_trace(
+    data = result,
+    x = ~x, y = ~y, z = ~z,
     type = "scatter3d",
     mode = "lines",
-    line = list(color = "gray", width = 3),
+    line = list(color = "gray", width = 1),
+    showlegend = FALSE
+  ) |>
+  # Mapping lines for circle
+  add_trace(
+    data = result_for_circle,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "gray", width = 1),
     showlegend = FALSE
   )
-  
-}
+
 
 p <- layout(
   p,
@@ -468,8 +541,8 @@ p <- layout(
     xaxis = list(title = "x"),
     yaxis = list(title = "y"),
     zaxis = list(title = ""),
-    aspectratio = list(x = L/6, y = 1, z = 1),
-              camera = list(eye = list(x = 0, y = -3, z = 3),
+    aspectratio = list(x = x_shift_for_circle +2*radius, y = L, z = L),
+              camera = list(eye = list(x = 0, y = -L, z = L),
                             center = list(x = 0, y = 0, z = 0))
   )
 )
@@ -478,4 +551,684 @@ p
 ```
 
 
+# WITH GRADIENT
+
+```{r}
+library(plotly)
+n_smooth <- 1000
+
+TT <- 3*pi
+# parameter
+t <- seq(0, TT, length.out = n_smooth)
+
+# speed
+speed <- sqrt(1 + cos(t)^2)
+
+# arc-length function
+s <- pracma::cumtrapz(t, speed)
+# s <- cumsum(c(0, diff(t) * (head(speed,-1) + tail(speed,-1))/2))
+
+L <- max(s)
+
+half_L <- L / 2
+half_TT <- TT / 2
+dist_to_move <- abs(half_L - half_TT)
+
+y_shift <- 4
+# curve alpha(t)
+x <- t + dist_to_move
+y <- sin(t) + y_shift
+z <- rep(0,length(t))
+
+curve_smooth <- data.frame(x = x, y = y, z = z)
+
+
+n_map <- 25
+# points where we draw connectors
+idx <- seq(1, length(t), length.out = n_map)
+
+
+curve_map <- data.frame(x = x[idx], y = y[idx], z = z[idx])
+int_map <- data.frame(x = s[idx], y = rep(0, n_map), z = rep(0, n_map))
+
+
+
+# Build mapping lines
+rows <- lapply(1:n_map, function(i) {
+  list(int_map[i, ], curve_map[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+s_circ <- L
+radius <- s_circ / (2*pi)
+x_shift_for_circle <- radius + TT + dist_to_move
+
+theta <- seq(from=-pi,to=pi,length.out = n_smooth)
+circle_curve <- data.frame(x = radius*cos(theta) + x_shift_for_circle, 
+                    y = radius*sin(theta) + y_shift, 
+                    z = rep(0, length(theta)))
+
+
+circle_map <- circle_curve[idx, ]
+dist_to_move_circle <- abs(half_L - y_shift)
+int_map_circle <- data.frame(x = rep(x_shift_for_circle +2*radius, n_map), y = s[idx]-dist_to_move_circle, z = rep(0, n_map))
+
+# Build mapping lines for circle
+rows <- lapply(1:n_map, function(i) {
+  list(int_map_circle[i, ], circle_map[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result_for_circle <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+v1 <- curve_map[1, ]
+v2 <- curve_map[n_map, ]
+e1 <- curve_map[ceiling(n_map/2), ]
+e2 <- circle_map[ceiling(n_map/2), ]
+zero1 <- int_map[1, ]
+le1 <- int_map[n_map, ]
+
+zero2 <- int_map_circle[1, ]
+le2 <- int_map_circle[n_map, ]
+
+vertex <- rbind(v1, v2, zero1, zero2, le1, le2)
+
+p <- plot_ly() |>
+  # smooth sin curve
+  add_trace(data = curve_smooth,
+  x = ~x, y = ~y, z = ~z,
+  type = "scatter3d",
+  mode = "lines",
+  line = list(width = 7, color = "black"),
+    showlegend = FALSE
+) |>
+  # sin curve
+  add_trace(data = curve_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 3, color = "rgba(0,0,0,0)"),
+    showlegend = FALSE
+) |>
+  # smooth circle curve
+  add_trace(data = circle_curve,
+  x = ~x, y = ~y, z = ~z,
+  type = "scatter3d",
+  mode = "lines",
+  line = list(width = 7, color = "black"),
+    showlegend = FALSE
+) |>  
+  add_trace(data = circle_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 3, color = "rgba(0,0,0,0)"),
+    showlegend = FALSE
+) |>
+  # interval [0,L]
+add_trace(data = int_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "lines+markers",
+  line = list(width = 7, color = "black"),
+  marker = list(size = 3, color = "rgba(0,0,0,0)"),
+    showlegend = FALSE
+) |>
+  # interval for circle
+  add_trace(data = int_map_circle,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "lines+markers",
+  line = list(width = 7, color = "black"),
+  marker = list(size = 3, color = "rgba(0,0,0,0)"),
+    showlegend = FALSE
+) |>
+  add_trace(data = vertex,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 5, color = "black"),
+    showlegend = FALSE
+) |> add_trace(
+    type = "cone",
+    x = e1$x,
+    y = e1$y,
+    z = e1$z,
+    u = 1,
+    v = 0,
+    w = 0,
+    sizemode = "absolute",
+    sizeref = 0.4,
+    colorscale = list(c(0, 1), c("green", "green")),
+    showscale = FALSE
+  ) |> add_trace(
+    type = "cone",
+    x = e2$x,
+    y = e2$y,
+    z = e2$z,
+    u = 0,
+    v = 1,
+    w = 0,
+    sizemode = "absolute",
+    sizeref = 0.4,
+    colorscale = list(c(0, 1), c("green", "green")),
+    showscale = FALSE
+  )
+
+pal <- colorRampPalette(c("royalblue", "cyan", "yellow", "red"))(n_map)
+
+
+dx <- int_map$x - curve_map$x
+dy <- int_map$y - curve_map$y
+dz <- int_map$z - curve_map$z
+
+dxc <- int_map_circle$x - circle_map$x
+dyc <- int_map_circle$y - circle_map$y
+dzc <- int_map_circle$z - circle_map$z
+
+
+for(i in 1:n_map){
+
+  seg <- rbind(
+    int_map[i, ],
+    curve_map[i, ]
+  )
+  
+  seg2 <- rbind(
+    int_map_circle[i, ],
+    circle_map[i, ]
+  )
+
+  p <- p |> add_trace(
+    data = seg,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = pal[i], width = 1),
+    showlegend = FALSE
+  ) |> add_trace(
+    data = seg2,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = pal[i], width = 1),
+    showlegend = FALSE
+  ) |> add_trace(
+    type = "cone",
+    x = int_map$x[i],
+    y = int_map$y[i],
+    z = int_map$z[i],
+    u = dx[i],
+    v = dy[i],
+    w = dz[i],
+    sizemode = "absolute",
+    sizeref = 0.2,
+    anchor = "tip",
+    colorscale = list(c(0, pal[i]), c(1, pal[i])),
+    showscale = FALSE
+  ) |> add_trace(
+    type = "cone",
+    x = int_map_circle$x[i],
+    y = int_map_circle$y[i],
+    z = int_map_circle$z[i],
+    u = dxc[i],
+    v = dyc[i],
+    w = dzc[i],
+    sizemode = "absolute",
+    sizeref = 0.2,
+    anchor = "tip",
+    colorscale = list(c(0, pal[i]), c(1, pal[i])),
+    showscale = FALSE
+  )
+}
+
+
+
+p3 <- p |>
+  config(mathjax = 'cdn') |> 
+  layout(p,
+         font = list(family = "Palatino"),
+            margin = list(l = 0, r = 0, b = 0, t = 0),
+            scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = c(0, x_shift_for_circle +2*radius)*1.01),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = range(int_map_circle$y)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(-1, 1)),
+    aspectratio = list(x = x_shift_for_circle +2*radius, y = L, z = L),
+              camera = list(eye = list(x = 0, y = -L*1.5, z = L*1.5),
+                            center = list(x = 0, y = 0, z = 0)),
+    annotations = list(
+      list(
+               x = zero1$x, y = zero1$y, z = zero1$z,
+               text = TeX("0"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+      list(
+               x = zero2$x, y = zero2$y, z = zero2$z,
+               text = TeX("0"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+      list(
+               x = le1$x, y = le1$y, z = le1$z,
+               text = TeX("\\ell_{e_1}"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+      list(
+               x = le2$x, y = le2$y, z = le2$z,
+               text = TeX("\\ell_{e_2}"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                list(
+               x = v1$x, y = v1$y, z = v1$z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+               list(
+               x = v2$x, y = v2$y, z = v2$z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+               list(
+               x = e1$x, y = e1$y, z = e1$z,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+               list(
+               x = e2$x, y = e2$y, z = e2$z,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1))
+  )
+)
+
+save(p3, file = here::here("graphs6p3.Rdata"))
+```
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("graphs6p3.Rdata"))
+p3
+```
+
+
+
+# WITH GRADIENT SHARED 
+
+```{r}
+library(plotly)
+n_smooth <- 1000
+
+TT <- 3*pi
+# parameter
+t <- seq(0, TT, length.out = n_smooth)
+
+# speed
+speed <- sqrt(1 + cos(t)^2)
+
+# arc-length function
+s <- pracma::cumtrapz(t, speed)
+# s <- cumsum(c(0, diff(t) * (head(speed,-1) + tail(speed,-1))/2))
+
+L <- max(s)
+
+half_L <- L / 2
+half_TT <- TT / 2
+dist_to_move <- abs(half_L - half_TT)
+
+y_shift <- 4
+# curve alpha(t)
+x <- t + dist_to_move
+y <- sin(t) + y_shift
+z <- rep(0,length(t))
+
+curve_smooth <- data.frame(x = x, y = y, z = z)
+
+
+n_map <- 25
+# points where we draw connectors
+idx <- seq(1, length(t), length.out = n_map)
+
+
+curve_map <- data.frame(x = x[idx], y = y[idx], z = z[idx])
+int_map <- data.frame(x = s[idx], y = rep(0, n_map), z = rep(0, n_map))
+
+
+
+# Build mapping lines
+rows <- lapply(1:n_map, function(i) {
+  list(int_map[i, ], curve_map[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+s_circ <- L
+radius <- s_circ / (2*pi)
+x_shift_for_circle <- radius + TT + dist_to_move
+
+theta <- seq(from=-pi,to=pi,length.out = n_smooth)
+circle_curve <- data.frame(x = radius*cos(theta) + x_shift_for_circle, 
+                    y = radius*sin(theta) + y_shift, 
+                    z = rep(0, length(theta)))
+
+
+circle_map <- circle_curve[idx, ]
+dist_to_move_circle <- abs(half_L - y_shift)
+int_map_circle <- data.frame(x = rep(x_shift_for_circle +2*radius, n_map), y = s[idx]-dist_to_move_circle, z = rep(0, n_map))
+
+# Build mapping lines for circle
+rows <- lapply(1:n_map, function(i) {
+  list(int_map_circle[i, ], circle_map[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result_for_circle <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+v1 <- curve_map[1, ]
+v2 <- curve_map[n_map, ]
+e1 <- curve_map[ceiling(n_map/2), ]
+e2 <- circle_map[ceiling(n_map/2), ]
+zero1 <- int_map[1, ]
+le1 <- int_map[n_map, ]
+
+zero2 <- int_map_circle[1, ]
+le2 <- int_map_circle[n_map, ]
+
+vertex <- rbind(v1, v2, zero1, zero2, le1, le2)
+
+p <- plot_ly() |>
+  # smooth sin curve
+  add_trace(data = curve_smooth,
+  x = ~x, y = ~y, z = ~z,
+  type = "scatter3d",
+  mode = "lines",
+  line = list(width = 7, color = "darkred"),
+    showlegend = FALSE
+) |>
+  # sin curve
+  add_trace(data = curve_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 3, color = "rgba(0,0,0,0)"),
+    showlegend = FALSE
+) |>
+  # smooth circle curve
+  add_trace(data = circle_curve,
+  x = ~x, y = ~y, z = ~z,
+  type = "scatter3d",
+  mode = "lines",
+  line = list(width = 7, color = "darkred"),
+    showlegend = FALSE
+) |>  
+  add_trace(data = circle_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 3, color = "rgba(0,0,0,0)"),
+    showlegend = FALSE
+) |>
+  # interval [0,L]
+add_trace(data = int_map,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "lines+markers",
+  line = list(width = 7, color = "#0000C8"),
+  marker = list(size = 3, color = "rgba(0,0,0,0)"),
+    showlegend = FALSE
+) |>
+  # interval for circle
+  add_trace(data = int_map_circle,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "lines+markers",
+  line = list(width = 7, color = "#0000C8"),
+  marker = list(size = 3, color = "rgba(0,0,0,0)"),
+    showlegend = FALSE
+) |>
+  add_trace(data = vertex,
+  x = ~x,
+  y = ~y,
+  z = ~z,
+  type = "scatter3d",
+  mode = "markers",
+  marker = list(size = 5, color = "black"),
+    showlegend = FALSE
+) |> add_trace(
+    type = "cone",
+    x = e1$x,
+    y = e1$y,
+    z = e1$z,
+    u = 1,
+    v = 0,
+    w = 0,
+    sizemode = "absolute",
+    sizeref = 0.4,
+    colorscale = list(c(0, 1), c("green", "green")),
+    showscale = FALSE
+  ) |> add_trace(
+    type = "cone",
+    x = e2$x,
+    y = e2$y,
+    z = e2$z,
+    u = 0,
+    v = 1,
+    w = 0,
+    sizemode = "absolute",
+    sizeref = 0.4,
+    colorscale = list(c(0, 1), c("green", "green")),
+    showscale = FALSE
+  )
+
+pal <- colorRampPalette(c("royalblue","cyan","yellow","red"))(100)
+
+pal <- colorRampPalette(c(
+  "#0000C8",  # dark navy
+  "#0074D9",  # royalblue
+  "#7FDBFF",  # cyan
+  "#2ECC40",  # green
+  "#FFDC00",  # yellow
+  "#FF851B",  # orange
+  "#FF4136",  # red
+  "darkred"
+))(100)
+
+gradient_line <- function(p0, p1, n = 40){
+
+  t <- seq(0,1,length.out = n)
+
+  x <- (1-t)*p0$x + t*p1$x
+  y <- (1-t)*p0$y + t*p1$y
+  z <- (1-t)*p0$z + t*p1$z
+
+  data.frame(x=x,y=y,z=z,t=t)
+}
+
+
+dx <- int_map$x - curve_map$x
+dy <- int_map$y - curve_map$y
+dz <- int_map$z - curve_map$z
+
+norm <- sqrt(dx^2 + dy^2 + dz^2)
+
+u <- dx / norm
+v <- dy / norm
+w <- dz / norm
+
+dxc <- int_map_circle$x - circle_map$x
+dyc <- int_map_circle$y - circle_map$y
+dzc <- int_map_circle$z - circle_map$z
+
+normc <- sqrt(dxc^2 + dyc^2 + dzc^2)
+
+uc <- dxc / normc
+vc <- dyc / normc
+wc <- dzc / normc
+
+p <- p |>
+  add_trace(
+    type = "cone",
+    x = int_map$x,
+    y = int_map$y,
+    z = int_map$z,
+    u = u,
+    v = v,
+    w = w,
+    sizemode = "absolute",
+    sizeref = 0.7,
+    anchor = "tip",
+    colorscale = list(c(0, "#0000C8"), c(1, "#0000C8")),
+    showscale = FALSE
+  ) |> add_trace(
+    type = "cone",
+    x = int_map_circle$x,
+    y = int_map_circle$y,
+    z = int_map_circle$z,
+    u = uc,
+    v = vc,
+    w = wc,
+    sizemode = "absolute",
+    sizeref = 0.4,
+    anchor = "tip",
+    colorscale = list(c(0, "#0000C8"), c(1, "#0000C8")),
+    showscale = FALSE
+  )
+
+for(i in 1:n_map){
+
+  g <- gradient_line(int_map[i,], curve_map[i,])
+
+  for(j in 1:(nrow(g)-1)){
+
+    seg <- g[j:(j+1),]
+
+    col <- pal[ round(seg$t[1]*(length(pal)-1))+1 ]
+
+    p <- p |> add_trace(
+      data = seg,
+      x = ~x, y = ~y, z = ~z,
+      type = "scatter3d",
+      mode = "lines",
+      line = list(color = col, width = 1),
+      showlegend = FALSE
+    )
+  }
+}
+
+for(i in 1:n_map){
+
+  g <- gradient_line(int_map_circle[i,], circle_map[i,])
+
+  for(j in 1:(nrow(g)-1)){
+
+    seg <- g[j:(j+1),]
+
+    col <- pal[ round(seg$t[1]*(length(pal)-1))+1 ]
+
+    p <- p |> add_trace(
+      data = seg,
+      x = ~x, y = ~y, z = ~z,
+      type = "scatter3d",
+      mode = "lines",
+      line = list(color = col, width = 1),
+      showlegend = FALSE
+    )
+  }
+}
+
+
+
+p4 <- p |>
+  config(mathjax = 'cdn') |> 
+  layout(p,
+         font = list(family = "Palatino"),
+            margin = list(l = 0, r = 0, b = 0, t = 0),
+            scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = c(0, x_shift_for_circle +2*radius)*1.01),
+              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = range(int_map_circle$y)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(0, 0.2)),
+    aspectratio = list(x = x_shift_for_circle +2*radius, y = L, z = 4),
+              camera = list(eye = list(x = 0, y = -L*1.5, z = L*1.5),
+                            center = list(x = 0, y = 0, z = 0)),
+    annotations = list(
+      list(
+               x = zero1$x, y = zero1$y, z = zero1$z,
+               text = TeX("0"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+      list(
+               x = zero2$x, y = zero2$y, z = zero2$z,
+               text = TeX("0"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+      list(
+               x = le1$x, y = le1$y, z = le1$z,
+               text = TeX("\\ell_{e_1}"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+      list(
+               x = le2$x, y = le2$y, z = le2$z,
+               text = TeX("\\ell_{e_2}"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                list(
+               x = v1$x, y = v1$y, z = v1$z,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+               list(
+               x = v2$x, y = v2$y, z = v2$z,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+               list(
+               x = e1$x, y = e1$y, z = e1$z,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+               list(
+               x = e2$x, y = e2$y, z = e2$z,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = gfsize),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1))
+  )
+)
+
+save(p4, file = here::here("graphs6p4.Rdata"))
+```
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("graphs6p4.Rdata"))
+p4
+```
 
