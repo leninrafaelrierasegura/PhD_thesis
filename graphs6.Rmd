@@ -220,8 +220,8 @@ p1 <- layout(p,
             )
 )
 
-save(p1, file = here::here("graphs6p1.Rdata"))
-load(here::here("graphs6p1.Rdata"))
+save(p1, file = here::here("data_files/graphs6p1.Rdata"))
+load(here::here("data_files/graphs6p1.Rdata"))
 p1
 ```
 
@@ -419,19 +419,29 @@ a0 = alpha_tilde(0)
 aL = alpha_tilde(L)
 aLh = alpha_tilde(half_L)
 
+hhhh <- 3
+ff <- function(s) 2*abs(sin(hhhh*pi*s/L))
+k <- 0:hhhh
+s_special <- k*L/hhhh
+
 # Smooth helix
 n_smooth <- 500
-s_smooth <- seq(0, L, length.out = n_smooth)
+
+#s_smooth <- seq(0, L, length.out = n_smooth)
+s_smooth <- sort(unique(c(
+  seq(0, L, length.out = n_smooth),
+  s_special
+)))
 curve_smooth <- alpha_tilde(s_smooth)
 
 
 # Points for mapping lines
-n_map <- 25
+n_map <- 100
 s_map <- seq(0, L, length.out = n_map)
 curve_map <- alpha_tilde(s_map)
 
 
-s_semi_coarse <- seq(0, L, length.out = n_smooth/2)
+#s_semi_coarse <- seq(0, L, length.out = n_smooth/2)
 
 # Interval along x-axis
 int_map <- data.frame(
@@ -439,18 +449,22 @@ int_map <- data.frame(
   y = rep(0, n_map)+4,
   z = rep(0, n_map)
 )
-ff <- function(t) 10*abs(sin(-2*t))/3
+
+
+ff_eval_coarse <- ff(s_map)
 
 ff_eval <- ff(s_smooth)
 
 curve_smooth$height <- ff_eval
 
-s_semi_coarse <- seq(0, L, length.out = n_smooth)
+s_semi_coarse <- s_smooth
 ff_s_semi_coarse <- ff(s_semi_coarse)
 y_semi_coarse <- rep(0, length(s_semi_coarse)) + 4
 
 
-ff_df <- data.frame(x = s_smooth, y = rep(0, n_smooth)+4, z = ff_eval)
+ff_df <- data.frame(x = s_smooth, y = rep(0, length(s_smooth))+4, z = ff_eval)
+
+ff_df_coarse <- data.frame(x = s_map, y = rep(0, length(s_map))+4, z = ff_eval_coarse)
 
 # Build mapping lines
 rows <- lapply(1:n_map, function(i) {
@@ -458,6 +472,30 @@ rows <- lapply(1:n_map, function(i) {
 })
 
 result <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+# Build mapping lines
+rows <- lapply(1:n_map, function(i) {
+  list(curve_map[i, ], ff_df_coarse[i, ], data.frame(x = NA, y = NA, z = NA))
+})
+
+result2 <- do.call(rbind, unlist(rows, recursive = FALSE))
+
+
+rows <- lapply(1:n_map, function(i) {
+  val <- ff_eval_coarse[i]
+
+  rbind(
+    cbind(curve_map[i, ], val = val),
+    cbind(ff_df_coarse[i, ], val = val),
+    data.frame(x = NA, y = NA, z = NA, val = NA)
+  )
+})
+
+result2 <- do.call(rbind, rows)
+
+ff_df_coarse_new <- result2$val
+
+
 
 zero <- int_map[1, ]
 ell <- int_map[n_map, ]
@@ -471,6 +509,9 @@ u <- b
 v <- -a*sin(ttt)
 w <-  a*cos(ttt)
 
+zmin <- min(ff_eval)
+zmax <- max(ff_eval)
+
 # Plot
 p <- plot_ly() |>
   
@@ -482,6 +523,8 @@ p <- plot_ly() |>
     mode = "lines",
     line = list(color = ff_eval, 
                 colorscale = "Viridis",
+                cmin = zmin,
+                cmax = zmax,
                 width = 7),
     showlegend = FALSE
   ) |>
@@ -495,16 +538,39 @@ p <- plot_ly() |>
     line = list(color = "black", width = 7),
     showlegend = FALSE
   ) |>
-  
+  # 
+  # # Mapping lines
+  # add_trace(
+  #   data = result,
+  #   x = ~x, y = ~y, z = ~z,
+  #   type = "scatter3d",
+  #   mode = "lines",
+  #   line = list(color = "gray", width = 1),
+  #   showlegend = FALSE
+  # ) |>
   # Mapping lines
+  # add_trace(
+  #   data = result2,
+  #   x = ~x, y = ~y, z = ~z,
+  #   type = "scatter3d",
+  #   mode = "lines",
+  #   line = list(color = "gray", width = 1),
+  #   showlegend = FALSE
+  # ) |>
   add_trace(
-    data = result,
-    x = ~x, y = ~y, z = ~z,
-    type = "scatter3d",
-    mode = "lines",
-    line = list(color = "gray", width = 1),
-    showlegend = FALSE
-  ) |>
+  data = result2,
+  x = ~x, y = ~y, z = ~z,
+  type = "scatter3d",
+  mode = "lines",
+  line = list(
+    color = ff_df_coarse_new,
+    colorscale = "Viridis",
+    cmin = zmin,
+    cmax = zmax,
+    width = 1
+  ),
+  showlegend = FALSE
+) |>
   add_trace(data = vertex,
   x = ~x,
   y = ~y,
@@ -523,7 +589,7 @@ p <- plot_ly() |>
     v = v,
     w = w,
     sizemode = "absolute",
-    sizeref = 0.4,
+    sizeref = 0.2,
     colorscale = list(c(0, 1), c("green", "green")),
     showscale = FALSE
   ) |>
@@ -536,6 +602,8 @@ p <- plot_ly() |>
     line = list(
       color = ~z,                 # color based on height
       colorscale = "Viridis",     # choose any colorscale you like
+    cmin = zmin,
+    cmax = zmax,
       width = 7
     ),
     showlegend = FALSE
@@ -558,23 +626,57 @@ u <- dx / norm
 v <- dy / norm
 w <- dz / norm
 
+dx2 <- curve_map$x - ff_df_coarse$x
+dy2 <- curve_map$y - ff_df_coarse$y
+dz2 <- curve_map$z - ff_df_coarse$z
+
+norm2 <- sqrt(dx2^2 + dy2^2 + dz2^2)
+
+u2 <- dx2 / norm2
+v2 <- dy2 / norm2
+w2 <- dz2 / norm2
+
+mag <- sqrt(u2^2 + v2^2 + w2^2)
+
+scale <- ff_eval_coarse / mag
+
+u_col <- u2 * scale
+v_col <- v2 * scale
+w_col <- w2 * scale
 
 p <- p |>
-  add_trace(
-    type = "cone",
-    x = int_map$x,
-    y = int_map$y,
-    z = int_map$z,
-    u = u,
-    v = v,
-    w = w,
-    sizemode = "absolute",
-    sizeref = 1.4,
-    anchor = "tip",
-    colorscale = list(c(0, "gray"), c(1, "gray")),
-    showscale = FALSE
-  ) 
+  # add_trace(
+  #   type = "cone",
+  #   x = int_map$x,
+  #   y = int_map$y,
+  #   z = int_map$z,
+  #   u = u,
+  #   v = v,
+  #   w = w,
+  #   sizemode = "absolute",
+  #   sizeref = 2,
+  #   anchor = "tip",
+  #   colorscale = list(c(0, "gray"), c(1, "gray")),
+  #   showscale = FALSE
+  # ) |>
+add_trace(
+  type = "cone",
+  x = curve_map$x,
+  y = curve_map$y,
+  z = curve_map$z,
+  u = u_col,
+  v = v_col,
+  w = w_col,
+  colorscale = "Viridis",
+  cmin = zmin,
+  cmax = zmax,
+  sizemode = "absolute",
+  sizeref = 0.2,
+  anchor = "tip",
+  showscale = FALSE
+)
 
+rv <- 0.5
 p2fhelix <- p |> config(mathjax = 'cdn') |>
             layout(p,
                    font = list(family = "Palatino"),
@@ -583,8 +685,8 @@ p2fhelix <- p |> config(mathjax = 'cdn') |>
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(-1, 4.1)),
               zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(-1, max(ff_eval))),
               #aspectmode="data",
-              aspectratio = list(x = L/3, y = 5/3, z = (max(ff_eval)+1)/3),
-              camera = list(eye = list(x = -6, y = -6, z = 4),
+              aspectratio = list(x = L/9, y = 5/3, z = (max(ff_eval)+1)/3),
+              camera = list(eye = list(x = -2*rv, y = -6*rv, z = 2*rv),
                             center = list(x = 0, y = 0, z = 0)),
               annotations = list(
                 list(
@@ -620,11 +722,11 @@ p2fhelix <- p |> config(mathjax = 'cdn') |>
             )
 )
 
-save(p2fhelix, file = here::here("graphs6p2fhelix.Rdata"))
+save(p2fhelix, file = here::here("data_files/graphs6p2fhelix.Rdata"))
 ```
 
 ```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("graphs6p2fhelix.Rdata"))
+load(here::here("data_files/graphs6p2fhelix.Rdata"))
 p2fhelix
 ```
 
@@ -668,7 +770,7 @@ s_smooth <- seq(0, L, length.out = n_smooth)
 curve_smooth <- alpha_tilde(s_smooth)
 
 # Points for mapping lines
-n_map <- 25
+n_map <- 100
 s_map <- seq(0, L, length.out = n_map)
 curve_map <- alpha_tilde(s_map)
 
@@ -731,7 +833,7 @@ p <- plot_ly() |>
     v = v,
     w = w,
     sizemode = "absolute",
-    sizeref = 0.4,
+    sizeref = 0.2,
     colorscale = list(c(0, 1), c("green", "green")),
     showscale = FALSE
   )
@@ -747,7 +849,7 @@ pal <- colorRampPalette(c(
   "darkred"
 ))(100)
 
-gradient_line <- function(p0, p1, n = 40){
+gradient_line <- function(p0, p1, n = 20){
 
   t <- seq(0,1,length.out = n)
 
@@ -780,7 +882,7 @@ p <- p |>
     v = v,
     w = w,
     sizemode = "absolute",
-    sizeref = 1.4,
+    sizeref = 0.6,
     anchor = "tip",
     colorscale = list(c(0, "#0000C8"), c(1, "#0000C8")),
     showscale = FALSE
@@ -807,17 +909,17 @@ for(i in 1:n_map){
   }
 }
 
-
+rv <- 0.5
 p2 <- p |> config(mathjax = 'cdn') |>
             layout(p,
                    font = list(family = "Palatino"),
             margin = list(l = 0, r = 0, b = 0, t = 0),
             scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = c(0, L)),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(-1, 4.1)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(-1, 1)),
+              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(-1, 2)),
               #aspectmode="data",
-              aspectratio = list(x = L/3, y = 5/3, z = 2/3),
-              camera = list(eye = list(x = -6, y = -6, z = 4),
+              aspectratio = list(x = L/9, y = 5/3, z = (2+1)/3),
+              camera = list(eye = list(x = -2*rv, y = -6*rv, z = 2*rv),
                             center = list(x = 0, y = 0, z = 0)),
               annotations = list(
                 list(
@@ -853,18 +955,20 @@ p2 <- p |> config(mathjax = 'cdn') |>
             )
 )
 
-save(p2, file = here::here("graphs6p2.Rdata"))
+save(p2, file = here::here("data_files/graphs6p2.Rdata"))
+
+
 ```
 
 
 ```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("graphs6p2.Rdata"))
+load(here::here("data_files/graphs6p2.Rdata"))
 p2
 ```
 
 
 
-```{r, eval = FALSE}
+```{r}
 library(plotly)
 n_smooth <- 500
 
@@ -1278,11 +1382,12 @@ p4tadpole_arclength <- p |>
   )
 )
 
-save(p4tadpole_arclength, file = here::here("graphs6p4tadpole_arclength.Rdata"))
+save(p4tadpole_arclength, file = here::here("data_files/graphs6p4tadpole_arclength.Rdata"))
 ```
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("graphs6p4tadpole_arclength.Rdata"))
+```
+{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("data_files/graphs6p4tadpole_arclength.Rdata"))
 p4tadpole_arclength
 ```
 
@@ -1593,13 +1698,13 @@ p3 <- p |>
   )
 )
 
-save(p3, file = here::here("graphs6p3.Rdata"))
+save(p3, file = here::here("data_files/graphs6p3.Rdata"))
 ```
 
 
 ```
 {r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("graphs6p3.Rdata"))
+load(here::here("data_files/graphs6p3.Rdata"))
 p3
 ```
 
@@ -1960,12 +2065,13 @@ p4 <- p |>
   )
 )
 
-save(p4, file = here::here("graphs6p4.Rdata"))
+save(p4, file = here::here("data_files/graphs6p4.Rdata"))
 ```
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("graphs6p4.Rdata"))
+```
+{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("data_files/graphs6p4.Rdata"))
 p4
 ```
 
