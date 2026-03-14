@@ -365,7 +365,7 @@ add_trace(
   showscale = FALSE
 )
 
-rv <- 0.75
+rv <- 0.65
 p2fhelix <- p |> config(mathjax = 'cdn') |>
             layout(p,
                    font = list(family = "Palatino"),
@@ -603,7 +603,7 @@ for(i in 1:n_map){
   }
 }
 
-rv <- 0.75
+rv <- 0.65
 p2 <- p |> config(mathjax = 'cdn') |>
             layout(p,
                    font = list(family = "Palatino"),
