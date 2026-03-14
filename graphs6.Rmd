@@ -292,7 +292,7 @@ p <- plot_ly() |>
     v = v,
     w = w,
     sizemode = "absolute",
-    sizeref = 0.2,
+    sizeref = 0.4,
     colorscale = list(c(0, 1), c("green", "green")),
     showscale = FALSE
   ) |>
@@ -527,7 +527,7 @@ p <- plot_ly() |>
     v = v,
     w = w,
     sizemode = "absolute",
-    sizeref = 0.2,
+    sizeref = 0.4,
     colorscale = list(c(0, 1), c("green", "green")),
     showscale = FALSE
   )
@@ -873,7 +873,7 @@ p <- plot_ly() |>
     v = 0,
     w = 0,
     sizemode = "absolute",
-    sizeref = 0.4,
+    sizeref = 0.6,
     colorscale = list(c(0, 1), c("green", "green")),
     showscale = FALSE) |>
   add_trace(
@@ -885,7 +885,7 @@ p <- plot_ly() |>
     v = 1,
     w = 0,
     sizemode = "absolute",
-    sizeref = 0.4,
+    sizeref = 0.6,
     colorscale = list(c(0, 1), c("green", "green")),
     showscale = FALSE
   )
@@ -1097,7 +1097,7 @@ add_trace(data = rbind(int_map, # interval for sin
     v = 0,
     w = 0,
     sizemode = "absolute",
-    sizeref = 0.4,
+    sizeref = 0.6,
     colorscale = list(c(0, 1), c("green", "green")),
     showscale = FALSE
   ) |> add_trace(
@@ -1109,7 +1109,7 @@ add_trace(data = rbind(int_map, # interval for sin
     v = 1,
     w = 0,
     sizemode = "absolute",
-    sizeref = 0.4,
+    sizeref = 0.6,
     colorscale = list(c(0, 1), c("green", "green")),
     showscale = FALSE
   )
