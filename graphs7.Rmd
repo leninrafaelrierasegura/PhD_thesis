@@ -156,7 +156,7 @@ graph$prune_vertices()
 
 
 ```{r}
-graph$build_mesh(h=0.001)
+graph$build_mesh(h=0.005)
 
 
 edge_length = graph$get_edge_lengths() %>% as.vector()
@@ -201,12 +201,12 @@ vertex_with_na <- vertex_removed %>%
 
 
 #graph$add_observations(data= fun, normalized = TRUE)
-rv <- 0.12
+rv <- 0.09
 p_spaguetti <- graph$plot_function(X= fun$f, 
                          type = "plotly", 
                          vertex_size = 0, 
-                         line_width = 8,
-                         support_color = "rgba(0,0,0,0)",
+                         line_width = 6,
+                         #support_color = "rgba(0,0,0,0)",
                          edge_color = "rgba(0,0,0,0)") %>% 
   layout(font = list(family = "Palatino"),
             margin = list(l = 0, r = 0, b = 0, t = 0),
@@ -214,7 +214,7 @@ p_spaguetti <- graph$plot_function(X= fun$f,
               yaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = range(xy_vertex[,1])),
               zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(0, max(fun$f, na.rm = TRUE))),
     aspectratio = list(x = 10, y = 10, z = 1),
-    camera = list(eye = list(y = 37.34*rv, x = -121.87*rv, z = 100*rv),
+    camera = list(eye = list(y = 37.34*rv, x = -121.87*rv, z = 40*rv),
                             center = list(x = 0, y = 0, z = 0))
   )
 )
