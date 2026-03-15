@@ -1,0 +1,286 @@
+---
+title: "Arc-length parametrization 2"
+date: "Last modified: `r format(Sys.time(), '%d-%m-%Y.')`"
+output:
+  html_document:
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    highlight: pygments
+    theme: flatly
+    code_folding: hide # class.source = "fold-hide" to hide code and add a button to show it
+    df_print: paged
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    fig_caption: true
+    code_download: true
+    css: visual.css
+always_allow_html: true
+bibliography: 
+  - references.bib
+  - grateful-refs.bib
+header-includes:
+  - \newcommand{\ar}{\mathbb{R}}
+  - \newcommand{\llav}[1]{\left\{#1\right\}}
+  - \newcommand{\pare}[1]{\left(#1\right)}
+  - \newcommand{\Ncal}{\mathcal{N}}
+  - \newcommand{\Vcal}{\mathcal{V}}
+  - \newcommand{\Ecal}{\mathcal{E}}
+  - \newcommand{\Wcal}{\mathcal{W}}
+  - \newcommand{\almosteverywhere}{\mathrm{a.e.}\;}
+---
+
+Go back to the [Contents](about.html) page.
+
+<div style="color: #2c3e50; text-align: right;">
+********  
+<strong>Press Show to reveal the code chunks.</strong>  
+
+********
+</div>
+
+
+```{r}
+# Create a clipboard button on the rendeblack HTML page
+source(here::here("clipboard.R")); clipboard
+# Set seed for reproducibility
+set.seed(1982) 
+# Set global options for all code chunks
+knitr::opts_chunk$set(
+  # Disable messages printed by R code chunks
+  message = FALSE,    
+  # Disable warnings printed by R code chunks
+  warning = FALSE,    
+  # Show R code within code chunks in output
+  echo = TRUE,        
+  # Include both R code and its results in output
+  include = TRUE,     
+  # Evaluate R code chunks
+  eval = FALSE,       
+  # Enable caching of R code chunks for faster rendering
+  cache = FALSE,      
+  # Align figures in the center of the output
+  fig.align = "center",
+  # Enable retina display for high-resolution figures
+  retina = 2,
+  # Show errors in the output instead of stopping rendering
+  error = TRUE,
+  # Do not collapse code and output into a single block
+  collapse = FALSE
+)
+# Start the figure counter
+fig_count <- 0
+# Define the captioner function
+captioner <- function(caption) {
+  fig_count <<- fig_count + 1
+  paste0("Figure ", fig_count, ": ", caption)
+}
+
+```
+
+```{r, eval = TRUE}
+library(MetricGraph)
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(viridis)
+library(plotly)
+library(patchwork)
+library(slackr)
+source("keys.R")
+slackr_setup(token = token) # token comes from keys.R
+```
+
+
+```{r}
+capture.output(
+  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+  file = here::here("old/purl_log.txt")
+)
+source(here::here("functionality1.R"))
+```
+
+
+
+
+
+```{r}
+library(sf)
+library(dplyr)
+
+
+
+pems_edges <- pems_repl$edges
+
+
+
+pems_edges_proj <- st_transform(pems_edges, 32610)  # UTM zone for this region
+
+# 1. Define your box as an sf polygon
+coordx_lwr1 <- -121.858
+coordx_upr1 <- -121.84
+coordy_lwr1 <- 37.315
+coordy_upr1 <- 37.35
+
+box_poly <- st_polygon(list(
+  matrix(
+    c(
+      coordx_lwr1, coordy_lwr1,
+      coordx_lwr1, coordy_upr1,
+      coordx_upr1, coordy_upr1,
+      coordx_upr1, coordy_lwr1,
+      coordx_lwr1, coordy_lwr1
+    ),
+    ncol = 2,
+    byrow = TRUE
+  )
+)) %>% st_sfc(crs = st_crs(pems_edges))
+
+# 2. Clip the lines by the box
+pems_clipped <- st_intersection(pems_edges, box_poly)
+
+remove_ids <- c(1,7,8,14,18,22,23,34,35,36,42,43,47,50,51)
+
+pems_clipped <- pems_clipped %>%
+  dplyr::slice(-remove_ids)
+
+
+graph <- metric_graph$new(edges = pems_clipped, longlat = TRUE)
+graph$prune_vertices()
+
+
+
+```
+
+
+
+```{r}
+graph$build_mesh(h=0.001)
+
+
+edge_length = graph$get_edge_lengths() %>% as.vector()
+
+PtE <- graph$mesh$VtE %>% as.data.frame() %>% rename(edge_number = V1, distance_on_edge = V2) 
+
+
+xy_vertex <- graph$V
+xy_mesh <- graph$mesh$V %>% as.data.frame() %>% rename(x = X, y = Y)
+
+fun1 = function(x) exp(-((x/0.2)^2))/6
+fun2 = function(x) exp(-((x/0.2)^2))/3
+fun3 = function(x) exp(-((x/0.4)^2))/2
+
+fun <- PtE %>%
+mutate(
+    f = NA_real_,  # start with NA
+    f = ifelse(edge_number %in% c(1,2,3,4,5,8,9,11,12,13,16,20,21,22,23,25), 0, f),
+    f = ifelse(edge_number == 10, fun1((distance_on_edge-0.41)*edge_length[10]), f),
+    f = ifelse(edge_number == 7, fun1((distance_on_edge-0.6)*edge_length[7]), f),
+    f = ifelse(edge_number == 14, fun2((distance_on_edge-0.5)*edge_length[14]), f),
+    f = ifelse(edge_number == 15, fun2((distance_on_edge-0.55)*edge_length[15]), f),
+    f = ifelse(edge_number == 18, fun3((distance_on_edge-0.5)*edge_length[18]), f),
+    f = ifelse(edge_number == 17, fun3(distance_on_edge*edge_length[17]+0.5*edge_length[18]), f),
+    f = ifelse(edge_number == 6, fun3(distance_on_edge*edge_length[6]-edge_length[6]-0.5*edge_length[18]), f)
+  )
+
+all_data <- cbind(xy_mesh, fun)
+
+vertex_removed <- all_data %>%
+  slice(-(1:22))
+
+vertex_with_na <- vertex_removed %>%
+  mutate(change = edge_number != lag(edge_number, default = first(edge_number))) %>%
+  group_by(group = cumsum(change)) %>%
+  group_split() %>%  # split into blocks of same edge_number
+  purrr::map_dfr(~bind_rows(.x, tibble(edge_number = NA, .rows = 1))) %>%
+  select(-group)
+
+
+
+
+
+#graph$add_observations(data= fun, normalized = TRUE)
+rv <- 0.12
+p_spaguetti <- graph$plot_function(X= fun$f, 
+                         type = "plotly", 
+                         vertex_size = 0, 
+                         line_width = 8,
+                         support_color = "rgba(0,0,0,0)",
+                         edge_color = "rgba(0,0,0,0)") %>% 
+  layout(font = list(family = "Palatino"),
+            margin = list(l = 0, r = 0, b = 0, t = 0),
+            scene = list(xaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = range(xy_vertex[,2])),
+              yaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = range(xy_vertex[,1])),
+              zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = c(0, max(fun$f, na.rm = TRUE))),
+    aspectratio = list(x = 10, y = 10, z = 1),
+    camera = list(eye = list(y = 37.34*rv, x = -121.87*rv, z = 100*rv),
+                            center = list(x = 0, y = 0, z = 0))
+  )
+)
+
+save(p_spaguetti, file = here::here("data_files/spaguetti.Rdata"))
+```
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("data_files/spaguetti.Rdata"))
+p_spaguetti
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# References
+
+```{r, eval = TRUE}
+grateful::cite_packages(output = "paragraph", out.dir = ".")
+```

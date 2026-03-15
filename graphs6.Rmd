@@ -679,13 +679,13 @@ speed <- sqrt(1 + cos(t)^2)
 s <- pracma::cumtrapz(t, speed)
 L <- max(s)
 # s <- cumsum(c(0, diff(t) * (head(speed,-1) + tail(speed,-1))/2))
-f1 <- function(t) exp(t/4)
+f1 <- function(s) exp(s/4)
 
 
 f1_on_curve <- f1(s)
 y_up_range <- max(f1_on_curve)
 
-f2 <- function(t) sin(3*pi*t/L) + y_up_range
+f2 <- function(s) sin(3*pi*s/L) + y_up_range
 f1df_int <- data.frame(x = s, y = rep(0, n_smooth), z = f1_on_curve)
 
 half_L <- L / 2

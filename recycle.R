@@ -1147,6 +1147,87 @@ p3
 
 
 
+```{r}
+library(plotly)
+library(pracma)
+
+Tt <- 2
+
+# 1. Define the curve
+phi <- seq(0, Tt, length.out = 100)
+x_curve <- phi
+y_curve <- rep(0, length(phi))
+z_curve <- exp(phi)
+
+# 2. Arc-length parametrization
+arc_length_fun <- function(t) sqrt(1 + (exp(t))^2)
+s_vals <- cumtrapz(phi, arc_length_fun(phi))  # cumulative arc length
+ell <- max(s_vals)  # total arc length
+
+# 3. Define uniform points along [0, ell]
+n_points <- 19
+s_uniform <- seq(0, ell, length.out = n_points)
+
+# 4. Find corresponding phi values (invert arc-length mapping)
+phi_from_s <- sapply(s_uniform, function(s_target) {
+  # Find phi such that integral from 0 to phi of ds/dt equals s_target
+  f <- function(t) cumtrapz(phi[phi <= t], arc_length_fun(phi[phi <= t])) - s_target
+  # Use uniroot to solve for t
+  # To simplify, use linear interpolation on precomputed s_vals
+  approx(s_vals, phi, xout = s_target)$y
+})
+
+# 5. Corresponding points on the curve
+x_curve_points <- phi_from_s
+y_curve_points <- rep(0, n_points)
+z_curve_points <- exp(phi_from_s)
+
+# 6. Plot
+fig <- plot_ly()
+
+# Curve
+fig <- fig %>% add_trace(x = x_curve, y = y_curve, z = z_curve,
+                         type='scatter3d', mode='lines', line=list(width=4,color='blue'),
+                         name='Curve')
+
+# Uniform arc-length interval along y-axis
+fig <- fig %>% add_trace(x = rep(0, n_points), y = s_uniform, z = rep(0, n_points),
+                         type='scatter3d', mode='markers', marker=list(size=4,color='green'),
+                         name='Interval [0, ell]')
+
+# Lines from arc-length interval to curve
+for (i in 1:n_points) {
+  fig <- fig %>% add_trace(x = c(0, x_curve_points[i]),
+                           y = c(s_uniform[i], 0),
+                           z = c(0, z_curve_points[i]),
+                           type='scatter3d', mode='lines',
+                           line=list(dash='dot', color='green'), showlegend=FALSE)
+}
+
+# Interval [0,4] points (original phi values) along x-axis
+fig <- fig %>% add_trace(x = x_curve_points, y = rep(0, n_points), z = z_curve_points,
+                         type='scatter3d', mode='markers', marker=list(size=4,color='red'),
+                         name='Interval [0,4]')
+
+# Lines from phi-interval to curve
+for (i in 1:n_points) {
+  fig <- fig %>% add_trace(x = c(x_curve_points[i], x_curve_points[i]),
+                           y = c(0,0),
+                           z = c(0, z_curve_points[i]),
+                           type='scatter3d', mode='lines',
+                           line=list(dash='dash', color='red'), showlegend=FALSE)
+}
+
+# Layout
+fig <- fig %>% layout(scene=list(
+  xaxis=list(title='phi / x-axis'),
+  yaxis=list(title='arc length s'),
+  zaxis=list(title='z = exp(phi)'),
+  aspectratio = list(x = Tt/4, y = ell/4, z = max(z_curve)/4)
+))
+
+fig
+```
 
 
 
