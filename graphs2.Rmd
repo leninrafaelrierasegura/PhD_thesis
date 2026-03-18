@@ -1429,7 +1429,7 @@ star3dg_path1 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
+  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_3e_1}})'"), y = 0.8),
                  font = list(family = "Palatino"),
                  scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
@@ -1567,7 +1567,7 @@ star3dg_path2 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
+  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_3e_2}})'"), y = 0.8),
                  font = list(family = "Palatino"),
                  scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
@@ -1705,7 +1705,7 @@ star3dg_path3 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
+  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_2e_1}})'"), y = 0.8),
                  font = list(family = "Palatino"),
                  scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
