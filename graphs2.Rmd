@@ -1926,8 +1926,28 @@ ddg3 <- function(s) -pi^2/L^2*cos(pi*s/L)*(-1)
 ddg_list <- list(ddg1, ddg2, ddg3)
 ddg <- apply_edge_functions_fast(graph, ddg_list)
 
+l_mesh <- seq(0, my_length, by = h)
+dfl1 <- ddg1(l_mesh)
+dfl2 <- ddg2(l_mesh)
+dfl3 <- ddg3(l_mesh)
 
-star3ddg_path1 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
+l_mesh_norm <- l_mesh/my_length
+PtE1 <- cbind(rep(1, length(l_mesh)), l_mesh_norm)
+PtE2 <- cbind(rep(2, length(l_mesh)), l_mesh_norm)
+PtE3 <- cbind(rep(3, length(l_mesh)), l_mesh_norm)
+XY1 <- graph$coordinates(PtE1)
+XY2 <- graph$coordinates(PtE2)
+XY3 <- graph$coordinates(PtE3)
+DF1 <- data.frame(x = XY1[,1], y = XY1[,2], z = dfl1)
+DF2 <- data.frame(x = XY2[,1], y = XY2[,2], z = dfl2)
+DF3 <- data.frame(x = XY3[,1], y = XY3[,2], z = dfl3)
+
+DF <- rbind(DF1, rep(NA, 3), DF2, rep(NA, 3), DF3)
+DF_NO_NA <- rbind(DF1, DF2, DF3)
+
+
+
+star3ddg_path1 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color = "black", edge_width = gsw, line_width = gsw, type = "plotly") |>
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -1977,6 +1997,21 @@ star3ddg_path1 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = g
   cmin = 0,
   cmax = 1
 ) |>
+  add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
   add_trace(
     x = c(e2_ini_y, e2_fin_y),
     y = c(e2_ini_x, e2_fin_x),
@@ -1995,7 +2030,7 @@ star3ddg_path1 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = g
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_3e_1}})'"), y = 0.8),
+  plotly::layout(title = list(text = TeX("(g'|_{p_{\\hat{e}_3e_1}})'"), y = 0.8),
                  font = list(family = "Palatino"),
                  scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
@@ -2066,9 +2101,28 @@ ddg_list <- list(ddg1, ddg2, ddg3)
 ddg <- apply_edge_functions_fast(graph, ddg_list)
 
 
+l_mesh <- seq(0, my_length, by = h)
+dfl1 <- ddg1(l_mesh)
+dfl2 <- ddg2(l_mesh)
+dfl3 <- ddg3(l_mesh)
+
+l_mesh_norm <- l_mesh/my_length
+PtE1 <- cbind(rep(1, length(l_mesh)), l_mesh_norm)
+PtE2 <- cbind(rep(2, length(l_mesh)), l_mesh_norm)
+PtE3 <- cbind(rep(3, length(l_mesh)), l_mesh_norm)
+XY1 <- graph$coordinates(PtE1)
+XY2 <- graph$coordinates(PtE2)
+XY3 <- graph$coordinates(PtE3)
+DF1 <- data.frame(x = XY1[,1], y = XY1[,2], z = dfl1)
+DF2 <- data.frame(x = XY2[,1], y = XY2[,2], z = dfl2)
+DF3 <- data.frame(x = XY3[,1], y = XY3[,2], z = dfl3)
+
+DF <- rbind(DF1, rep(NA, 3), DF2, rep(NA, 3), DF3)
+DF_NO_NA <- rbind(DF1, DF2, DF3)
 
 
-star3ddg_path2 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
+
+star3ddg_path2 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color = "black", edge_width = gsw, line_width = gsw, type = "plotly") |>
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -2118,6 +2172,21 @@ star3ddg_path2 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = g
   cmin = 0,
   cmax = 1
 ) |>
+  add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
   add_trace(
     x = c(e1_ini_y, e1_fin_y),
     y = c(e1_ini_x, e1_fin_x),
@@ -2136,7 +2205,7 @@ star3ddg_path2 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = g
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_3e_2}})'"), y = 0.8),
+  plotly::layout(title = list(text = TeX("(g'|_{p_{\\hat{e}_3e_2}})'"), y = 0.8),
                  font = list(family = "Palatino"),
                  scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
@@ -2206,8 +2275,28 @@ ddg_list <- list(ddg1, ddg2, ddg3)
 ddg <- apply_edge_functions_fast(graph, ddg_list)
 
 
+l_mesh <- seq(0, my_length, by = h)
+dfl1 <- ddg1(l_mesh)
+dfl2 <- ddg2(l_mesh)
+dfl3 <- ddg3(l_mesh)
 
-star3ddg_path3 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
+l_mesh_norm <- l_mesh/my_length
+PtE1 <- cbind(rep(1, length(l_mesh)), l_mesh_norm)
+PtE2 <- cbind(rep(2, length(l_mesh)), l_mesh_norm)
+PtE3 <- cbind(rep(3, length(l_mesh)), l_mesh_norm)
+XY1 <- graph$coordinates(PtE1)
+XY2 <- graph$coordinates(PtE2)
+XY3 <- graph$coordinates(PtE3)
+DF1 <- data.frame(x = XY1[,1], y = XY1[,2], z = dfl1)
+DF2 <- data.frame(x = XY2[,1], y = XY2[,2], z = dfl2)
+DF3 <- data.frame(x = XY3[,1], y = XY3[,2], z = dfl3)
+
+DF <- rbind(DF1, rep(NA, 3), DF2, rep(NA, 3), DF3)
+DF_NO_NA <- rbind(DF1, DF2, DF3)
+
+
+
+star3ddg_path3 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color = "black", edge_width = gsw, line_width = gsw, type = "plotly") |>
   config(mathjax = 'cdn') |>
   add_trace(
   type = "cone",
@@ -2257,6 +2346,21 @@ star3ddg_path3 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = g
   cmin = 0,
   cmax = 1
 ) |>
+  add_trace(data = DF,
+            x = ~y, 
+            y = ~x, 
+            z = ~z, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "rgb(0,0,200)", width = gsw),
+            showlegend = FALSE) |>
+  add_trace(x = rep(DF$y, each = 3), 
+            y = rep(DF$x, each = 3), 
+            z = unlist(lapply(DF$z, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
+            showlegend = FALSE) |>
   add_trace(
     x = c(e3_ini_y, e3_fin_y),
     y = c(e3_ini_x, e3_fin_x),
@@ -2275,7 +2379,7 @@ star3ddg_path3 <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = g
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_2e_1}})'"), y = 0.8),
+  plotly::layout(title = list(text = TeX("(g'|_{p_{\\hat{e}_2e_1}})'"), y = 0.8),
                  font = list(family = "Palatino"),
                  scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
               yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
