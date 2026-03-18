@@ -185,42 +185,90 @@ mutate(
     f = ifelse(edge_number == 6, fun3(distance_on_edge*edge_length[6]-edge_length[6]-0.5*edge_length[18]), f)
   )
 
-all_data <- cbind(xy_mesh, fun)
-
-vertex_removed <- all_data %>%
-  slice(-(1:22))
-
-vertex_with_na <- vertex_removed %>%
-  mutate(change = edge_number != lag(edge_number, default = first(edge_number))) %>%
-  group_by(group = cumsum(change)) %>%
-  group_split() %>%  # split into blocks of same edge_number
-  purrr::map_dfr(~bind_rows(.x, tibble(edge_number = NA, .rows = 1))) %>%
-  select(-group)
-
-
 
 x_range <- range(xy_vertex[,2])
 y_range <- range(xy_vertex[,1])
 z_range <- c(0, max(fun$f, na.rm = TRUE))
 
-#graph$add_observations(data= fun, normalized = TRUE)
-rv <- 0.09
-p_spaguetti <- graph$plot_function(X= fun$f, 
-                         type = "plotly", 
-                         vertex_size = 0, 
-                         line_width = 6,
-                         #support_color = "rgba(0,0,0,0)",
-                         edge_color = "rgba(0,0,0,0)") %>% 
-  layout(font = list(family = "Palatino"),
+# p_spaguetti <- graph$plot_function(X= fun$f, 
+#                          type = "plotly", 
+#                          vertex_size = 0, 
+#                          line_width = 6,
+#                          #support_color = "rgba(0,0,0,0)",
+#                          edge_color = "rgba(0,0,0,0)") %>% 
+#   layout(font = list(family = "Palatino"),
+#             margin = list(l = 0, r = 0, b = 0, t = 0),
+#             scene = list(xaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = x_range),
+#               yaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
+#               zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
+#     aspectratio = list(x = 10, y = 10, z = 1),
+#     camera = list(eye = list(y = 37.34*rv, x = -121.87*rv, z = 40*rv),
+#                             center = list(x = 0, y = 0, z = 0))
+#   )
+# )
+
+
+all_data <- cbind(xy_mesh, fun)
+
+on_vertex <- all_data %>%
+  slice((1:22))
+all_data_no_vertex <- all_data %>%
+  slice(-(1:22))
+
+
+# Split by edge_number
+edge_groups <- split(all_data_no_vertex, all_data_no_vertex$edge_number)
+
+
+# Function to create a single edge block
+create_edge_block <- function(edge_index) {
+  start_v <- graph$E[edge_index, 1]
+  end_v   <- graph$E[edge_index, 2]
+  
+  # Get edge data (assuming edge_index corresponds to the same index in edge_groups)
+  edge_data <- edge_groups[[edge_index]]
+  
+  # Create NA row matching the number of columns
+  na_row <- as.data.frame(matrix(NA, nrow = 1, ncol = ncol(on_vertex)))
+  colnames(na_row) <- colnames(on_vertex)
+  
+  # Combine: start vertex, edge, end vertex, NA
+  rbind(on_vertex[start_v, ],
+        edge_data,
+        on_vertex[end_v, ],
+        na_row)
+}
+
+# Apply for all edges and combine
+final_data <- do.call(rbind, lapply(seq_len(nrow(graph$E)), create_edge_block))
+
+x_range <- range(xy_vertex[,1])
+y_range <- range(xy_vertex[,2])
+z_range <- c(0, max(fun$f, na.rm = TRUE))
+rv <- 00.2
+
+p_spaguetti <- plot_ly() %>%
+  add_trace(data = final_data, 
+            x = ~x, y = ~y, z = ~f, 
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(width = 6),
+            color = ~f,
+            colorscale = "Viridis",
+            showlegend = FALSE,
+            showscale = FALSE) %>%
+layout(font = list(family = "Palatino"),
             margin = list(l = 0, r = 0, b = 0, t = 0),
             scene = list(xaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = x_range),
               yaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
               zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
-    aspectratio = list(x = 10, y = 10, z = 1),
-    camera = list(eye = list(y = 37.34*rv, x = -121.87*rv, z = 40*rv),
+    aspectratio = list(x = 10, y = 10, z = 0.5),
+    camera = list(eye = list(y = 37.32*rv, x = -121.87*rv, z = 40*rv),
                             center = list(x = 0, y = 0, z = 0))
   )
 )
+
+
 
 save(p_spaguetti, file = here::here("data_files/spaguetti.Rdata"))
 ```
@@ -230,14 +278,6 @@ save(p_spaguetti, file = here::here("data_files/spaguetti.Rdata"))
 load(here::here("data_files/spaguetti.Rdata"))
 p_spaguetti
 ```
-
-
-
-
-
-
-
-
 
 
 
