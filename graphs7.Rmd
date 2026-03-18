@@ -249,7 +249,7 @@ y_range <- range(xy_vertex[,2])
 z_range <- c(0, max(fun$f, na.rm = TRUE))
 rv <- 0.09
 
-final_data$f_color <- (final_data$f / z_range[2])^0.1
+final_data$f_color <- (final_data$f / z_range[2])^0.3
 
 p_spaguetti <- plot_ly() %>%
   add_trace(data = final_data, 
