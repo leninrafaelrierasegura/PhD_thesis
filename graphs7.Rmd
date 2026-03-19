@@ -169,7 +169,7 @@ xy_vertex <- graph$V
 xy_mesh <- graph$mesh$V %>% as.data.frame() %>% rename(x = X, y = Y)
 
 fun1 = function(x) 100*exp(-((x/0.2)^2))/4
-fun2 = function(x) 100*exp(-((x/0.2)^2))/3
+fun2 = function(x) 100*exp(-((x/0.16)^2))/3
 fun3 = function(x) 100*exp(-((x/0.4)^2))/2
 
 fun <- PtE %>%
@@ -188,26 +188,16 @@ mutate(
   )
 
 
-x_range <- range(xy_vertex[,2])
-y_range <- range(xy_vertex[,1])
+
+x_range <- range(xy_vertex[,1])
+y_range <- range(xy_vertex[,2])
 z_range <- c(0, max(fun$f, na.rm = TRUE))
 
-# p_spaguetti <- graph$plot_function(X= fun$f, 
-#                          type = "plotly", 
-#                          vertex_size = 0, 
-#                          line_width = 6,
-#                          #support_color = "rgba(0,0,0,0)",
-#                          edge_color = "rgba(0,0,0,0)") %>% 
-#   layout(font = list(family = "Palatino"),
-#             margin = list(l = 0, r = 0, b = 0, t = 0),
-#             scene = list(xaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = x_range),
-#               yaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
-#               zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
-#     aspectratio = list(x = 10, y = 10, z = 1),
-#     camera = list(eye = list(y = 37.34*rv, x = -121.87*rv, z = 40*rv),
-#                             center = list(x = 0, y = 0, z = 0))
-#   )
-# )
+
+FUN_AUX <- fun
+FUN_AUX$f_color <- (FUN_AUX$f / z_range[2])^0.3
+
+
 
 
 all_data <- cbind(xy_mesh, fun)
@@ -244,14 +234,30 @@ create_edge_block <- function(edge_index) {
 # Apply for all edges and combine
 final_data <- do.call(rbind, lapply(seq_len(nrow(graph$E)), create_edge_block))
 
-x_range <- range(xy_vertex[,1])
-y_range <- range(xy_vertex[,2])
-z_range <- c(0, max(fun$f, na.rm = TRUE))
-rv <- 0.09
+
+
+
 
 final_data$f_color <- (final_data$f / z_range[2])^0.3
 
-p_spaguetti <- plot_ly() %>%
+on_vertex$f_color <- (on_vertex$f / z_range[2])^0.3
+
+library(mapview)
+library(sf)
+
+on_vertex_sf <- st_as_sf(on_vertex,
+                         coords = c("x", "y"),
+                         crs = 4326)  # adjust CRS if needed
+
+p_spaguetti <- graph$plot_function(X= FUN_AUX$f_color,
+                         type = "mapview",
+                         mapview_caption = "Height",
+                         line_width = 6) 
+
+
+rv <- 0.21
+
+p_spaguetti3d <- plot_ly() %>%
   add_trace(data = final_data, 
             x = ~x, y = ~y, z = ~f, 
             type = "scatter3d", 
@@ -261,7 +267,25 @@ p_spaguetti <- plot_ly() %>%
               colorscale = "Viridis",     # choose any colorscale you like
               cmin = 0,
               cmax = 1,
-              width = 10),
+              width = 6),
+            showlegend = FALSE) %>%
+  add_trace(data = on_vertex, 
+            x = ~x, y = ~y, z = ~f, 
+            type = "scatter3d", 
+            mode = "markers",
+            marker = list(
+              color = ~f_color,   # <-- nonlinear boost toward high values               
+              colorscale = "Viridis",     # choose any colorscale you like
+              cmin = 0,
+              cmax = 1,
+              size = 4),
+            showlegend = FALSE) %>%
+    add_trace(x = rep(final_data$x, each = 3), 
+            y = rep(final_data$y, each = 3), 
+            z = unlist(lapply(final_data$f, function(zj) c(0, zj, NA))),
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(color = "gray", width = 0.5),
             showlegend = FALSE) %>%
   config(mathjax = 'cdn') %>%
 layout(font = list(family = "Palatino"),
@@ -270,15 +294,83 @@ layout(font = list(family = "Palatino"),
               yaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
               zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
     aspectratio = list(x = 10, y = 10, z = 1),
-    camera = list(eye = list(y = 0*rv, x = 121.87*rv, z = 30*rv),
+    camera = list(eye = list(y = -37.34*rv, x = 0*rv, z = 70*rv),
                             center = list(x = 0, y = 0, z = 0))
   )
 )
 
 
+p_spaguetti2d <- plot_ly() %>%
+  add_trace(data = final_data, 
+            x = ~x, y = ~y, z = ~f*0, 
+            type = "scatter3d", 
+            mode = "lines",
+            line = list(
+              color = ~f_color,   # <-- nonlinear boost toward high values               
+              colorscale = "Viridis",     # choose any colorscale you like
+              cmin = 0,
+              cmax = 1,
+              width = 6),
+            showlegend = FALSE) %>%
+  add_trace(data = on_vertex, 
+            x = ~x, y = ~y, z = ~f*0, 
+            type = "scatter3d", 
+            mode = "markers",
+            marker = list(
+              color = ~f_color,   # <-- nonlinear boost toward high values               
+              colorscale = "Viridis",     # choose any colorscale you like
+              cmin = 0,
+              cmax = 1,
+              size = 4),
+            showlegend = FALSE) %>%
+  config(mathjax = 'cdn') %>%
+layout(font = list(family = "Palatino"),
+            margin = list(l = 0, r = 0, b = 0, t = 0),
+            scene = list(xaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = x_range),
+              yaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
+              zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
+    aspectratio = list(x = 10, y = 10, z = 1),
+    camera = list(eye = list(y = -37.34*rv, x = 0*rv, z = 70*rv),
+                            center = list(x = 0, y = 0, z = 0))
+  )
+)
 
 save(p_spaguetti, file = here::here("data_files/spaguetti.Rdata"))
+save(p_spaguetti2d, file = here::here("data_files/spaguetti2d.Rdata"))
+save(p_spaguetti3d, file = here::here("data_files/spaguetti3d.Rdata"))
+
 ```
+
+
+
+
+:::: {style="display: grid; grid-template-columns: 645px 645px 645px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("data_files/spaguetti3d.Rdata"))
+p_spaguetti3d
+```
+
+
+:::
+
+::: {}
+
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("data_files/spaguetti2d.Rdata"))
+p_spaguetti2d
+```
+
+
+:::
+
+::: {}
 
 
 ```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
@@ -287,8 +379,10 @@ p_spaguetti
 ```
 
 
+:::
 
 
+::::
 
 
 
