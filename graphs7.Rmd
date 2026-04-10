@@ -87,6 +87,9 @@ library(dplyr)
 library(viridis)
 library(plotly)
 library(patchwork)
+library(ggmap)
+
+
 library(slackr)
 source("keys.R")
 slackr_setup(token = token) # token comes from keys.R
@@ -242,20 +245,82 @@ final_data$f_color <- (final_data$f / z_range[2])^0.3
 
 on_vertex$f_color <- (on_vertex$f / z_range[2])^0.3
 
-library(mapview)
-library(sf)
-
-on_vertex_sf <- st_as_sf(on_vertex,
-                         coords = c("x", "y"),
-                         crs = 4326)  # adjust CRS if needed
-
-p_spaguetti <- graph$plot_function(X= FUN_AUX$f_color,
-                         type = "mapview",
-                         mapview_caption = "Height",
-                         line_width = 6) 
-
 
 rv <- 0.21
+
+ 
+x_RR <- range(xy_mesh[,1])
+y_RR <- range(xy_mesh[,2])
+
+x_left <- x_RR[1]
+x_right <- x_RR[2]
+y_bottom <- y_RR[1]
+y_top <- y_RR[2]
+
+style_vector <- c(c(feature = "road", element = "geometry", visibility = "on"),
+                  c("&style=", feature = "poi", element = "labels", visibility = "off"),
+                  c("&style=", feature = "road", element = "labels", visibility = "off"),
+                  c("&style=", feature = "administrative", element = "labels", visibility = "off"), #name of places
+                  c("&style=", feature = "transit", element = "labels", visibility = "off"),
+                  c("&style=", feature = "landscape", element = "geometry", visibility = "on"),
+                  c("&style=", feature = "water", element = "geometry", visibility = "on")) 
+register_stadiamaps(Sys.getenv("GGMAP_STADIAMAPS_API_KEY"))
+# Obtain the maps
+p12 <- ggmap(get_stadiamap(bbox = c(left = x_left, bottom = y_bottom, right = x_right, top = y_top),
+              zoom = 16,
+              maptype = "stamen_toner_lite", 
+              scale =2,
+              style = style_vector,
+              color = "color")) 
+
+p_spaguetti <- p12 +
+  geom_path(
+    data = final_data,
+    aes(x = x, y = y, color = f_color),
+    linewidth = 1,
+    alpha = 1
+  ) + 
+  geom_point(
+    data = on_vertex,
+    aes(x = x, y = y, color = f_color),
+    size = 2,
+    alpha = 1
+  ) +
+  scale_color_viridis_c(
+    name = "Height",   # legend title
+    breaks =NULL,
+    guide = guide_colorbar(
+      barwidth = 0.5,   # thin bar
+      barheight = 6     # tall bar
+    )
+  ) +
+  labs(x = "Longitude", y = "Latitude") +
+  theme(
+    text = element_text(family = "Palatino"),
+    plot.margin = margin(0, 0, 0, 0),   # remove outer whitespace
+    panel.spacing = unit(0, "lines")
+  ) 
+  # xlim(x_left, -121.8475) + 
+  # ylim(37.335, 37.345)
+
+x_width <- x_right - x_left
+y_height <- y_top - y_bottom
+aspect_ratio <- y_height / x_width
+
+mywidth <- 6
+myheight <- mywidth * aspect_ratio
+
+
+# Save temporarily
+ggsave(here::here("data_files/map.png"), plot = p_spaguetti, width = 6, height = 6, dpi = 300)
+
+
+# x_range <- c(x_left, -121.8475)
+# y_range <- c(37.335, 37.345)
+
+
+xxx <- 10 
+yyy <- xxx * aspect_ratio
 
 p_spaguetti3d <- plot_ly() %>%
   add_trace(data = final_data, 
@@ -290,57 +355,64 @@ p_spaguetti3d <- plot_ly() %>%
   config(mathjax = 'cdn') %>%
 layout(font = list(family = "Palatino"),
             margin = list(l = 0, r = 0, b = 0, t = 0),
-            scene = list(xaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = x_range),
-              yaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
-              zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
-    aspectratio = list(x = 10, y = 10, z = 1),
+            scene = list(
+              xaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  
+                           tickfont = list(color = colaxnn),  range = x_range),
+              yaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  
+                           tickfont = list(color = colaxnn), range = y_range),
+              zaxis = list(title = list(text = "", font = list(color = colaxnn)),  
+                           tickfont = list(color = colaxnn), range = c(0,z_range[2])),
+    aspectratio = list(x = xxx, y = yyy, z = 1),
     camera = list(eye = list(y = -37.34*rv, x = 0*rv, z = 70*rv),
                             center = list(x = 0, y = 0, z = 0))
   )
 )
 
 
-p_spaguetti2d <- plot_ly() %>%
-  add_trace(data = final_data, 
-            x = ~x, y = ~y, z = ~f*0, 
-            type = "scatter3d", 
-            mode = "lines",
-            line = list(
-              color = ~f_color,   # <-- nonlinear boost toward high values               
-              colorscale = "Viridis",     # choose any colorscale you like
-              cmin = 0,
-              cmax = 1,
-              width = 6),
-            showlegend = FALSE) %>%
-  add_trace(data = on_vertex, 
-            x = ~x, y = ~y, z = ~f*0, 
-            type = "scatter3d", 
-            mode = "markers",
-            marker = list(
-              color = ~f_color,   # <-- nonlinear boost toward high values               
-              colorscale = "Viridis",     # choose any colorscale you like
-              cmin = 0,
-              cmax = 1,
-              size = 4),
-            showlegend = FALSE) %>%
-  config(mathjax = 'cdn') %>%
-layout(font = list(family = "Palatino"),
-            margin = list(l = 0, r = 0, b = 0, t = 0),
-            scene = list(xaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = x_range),
-              yaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
-              zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
-    aspectratio = list(x = 10, y = 10, z = 1),
-    camera = list(eye = list(y = -37.34*rv, x = 0*rv, z = 70*rv),
-                            center = list(x = 0, y = 0, z = 0))
-  )
-)
-
-save(p_spaguetti, file = here::here("data_files/spaguetti.Rdata"))
-save(p_spaguetti2d, file = here::here("data_files/spaguetti2d.Rdata"))
+# p_spaguetti2d <- plot_ly() %>%
+#   add_trace(data = final_data, 
+#             x = ~x, y = ~y, z = ~f*0, 
+#             type = "scatter3d", 
+#             mode = "lines",
+#             line = list(
+#               color = ~f_color,   # <-- nonlinear boost toward high values               
+#               colorscale = "Viridis",     # choose any colorscale you like
+#               cmin = 0,
+#               cmax = 1,
+#               width = 6),
+#             showlegend = FALSE) %>%
+#   add_trace(data = on_vertex, 
+#             x = ~x, y = ~y, z = ~f*0, 
+#             type = "scatter3d", 
+#             mode = "markers",
+#             marker = list(
+#               color = ~f_color,   # <-- nonlinear boost toward high values               
+#               colorscale = "Viridis",     # choose any colorscale you like
+#               cmin = 0,
+#               cmax = 1,
+#               size = 4),
+#             showlegend = FALSE) %>%
+#   config(mathjax = 'cdn') %>%
+# layout(font = list(family = "Palatino"),
+#             margin = list(l = 0, r = 0, b = 0, t = 0),
+#             scene = list(xaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn),  range = x_range),
+#               yaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = y_range),
+#               zaxis = list(title = list(text = "", font = list(color = colaxnn)),  tickfont = list(color = colaxnn), range = z_range),
+#     aspectratio = list(x = 10, y = 10, z = 1),
+#     camera = list(eye = list(y = -37.34*rv, x = 0*rv, z = 70*rv),
+#                             center = list(x = 0, y = 0, z = 0))
+#   )
+# )
+# 
+# save(p_spaguetti2d, file = here::here("data_files/spaguetti2d.Rdata"))
 save(p_spaguetti3d, file = here::here("data_files/spaguetti3d.Rdata"))
 
 ```
 
+
+```{r}
+
+```
 
 
 
@@ -358,24 +430,12 @@ p_spaguetti3d
 
 :::
 
-::: {}
-
-
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/spaguetti2d.Rdata"))
-p_spaguetti2d
-```
-
-
-:::
 
 ::: {}
 
 
 ```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/spaguetti.Rdata"))
-p_spaguetti
+knitr::include_graphics(here::here("data_files/map.png"))
 ```
 
 
@@ -386,6 +446,9 @@ p_spaguetti
 
 
 
+```{r}
+
+```
 
 
 
