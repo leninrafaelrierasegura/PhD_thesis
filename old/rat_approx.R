@@ -1,6 +1,6 @@
 library(ggplot2)
 alpha <- 0.6
-m <- 2
+m <- 10
 delta <- 10^(-(5+m)/2)
 # to check if the rational approximation is correct
 res <- rSPDE:::interp_rational_coefficients(order = m, 
@@ -27,7 +27,7 @@ h_x <- function(x){
   x^(-(alpha-floor(alpha)))
 }
 
-x <- seq(delta, 1, by = 0.001)
+x <- seq(delta, 1, length.out = 100)
 x <- 1/x
 df <- data.frame(x = x, f = f_x(x), g = g_x(x), h = h_x(x))
 
