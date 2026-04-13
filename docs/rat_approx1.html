@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Rational approximation</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/clipboard-2.0.6/clipboard.min.js"></script>
+<link href="site_libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+<script src="site_libs/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+<script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa-solid fa-clipboard\" style=\"color: #00008B\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="visual.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PhD thesis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="functionality1.html">Functionality</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Chapter 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="graphs1.html">Section 1.1</a>
+    </li>
+    <li>
+      <a href="graphs2.html">Section 1.2</a>
+    </li>
+    <li>
+      <a href="graphs3.html">Section 1.3</a>
+    </li>
+    <li>
+      <a href="graphs4.html">Section 1.4</a>
+    </li>
+    <li>
+      <a href="graphs5.html">Section 1.5</a>
+    </li>
+    <li>
+      <a href="graphs6.html">Section 1.6</a>
+    </li>
+    <li>
+      <a href="graphs7.html">Section 1.7</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Chapter 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="model_prop1.html">Section 2.1</a>
+    </li>
+    <li>
+      <a href="model_prop2.html">Section 2.2</a>
+    </li>
+    <li>
+      <a href="model_prop3.html">Section 2.3</a>
+    </li>
+    <li>
+      <a href="model_prop4.html">Section 2.4</a>
+    </li>
+    <li>
+      <a href="approximation.html">Section 2.5</a>
+    </li>
+    <li>
+      <a href="num_error.html">Section 2.6</a>
+    </li>
+    <li>
+      <a href="conv_rates.html">Section 2.7</a>
+    </li>
+    <li>
+      <a href="pems1.html">Section 2.8</a>
+    </li>
+    <li>
+      <a href="pems2.html">Section 2.9</a>
+    </li>
+    <li>
+      <a href="sim_study.html">Section 2.10</a>
+    </li>
+    <li>
+      <a href="mplots.html">Section 2.11</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Chapter 3
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Section 3.1</a>
+    </li>
+    <li>
+      <a href="index.html">Section 3.2</a>
+    </li>
+    <li>
+      <a href="index.html">Section 3.3</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://arxiv.org/abs/0000.00000">
+    <span class="fa fa-file-pdf"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/leninrafaelrierasegura/PhD_thesis">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Rational approximation</h1>
+<h4 class="date">Last modified: 13-04-2026.</h4>
+
+</div>
+
+
+<p>Go back to the <a href="about.html">Contents</a> page.</p>
+<div style="color: #2c3e50; text-align: right;">
+<hr />
+<p><strong>Press Show to reveal the code chunks.</strong></p>
+<hr />
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Create a clipboard button on the rendeblack HTML page</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;clipboard.R&quot;</span>)); clipboard</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1982</span>) </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Set global options for all code chunks</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="co"># Disable messages printed by R code chunks</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">message =</span> <span class="cn">FALSE</span>,    </span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="co"># Disable warnings printed by R code chunks</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">warning =</span> <span class="cn">FALSE</span>,    </span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="co"># Show R code within code chunks in output</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="at">echo =</span> <span class="cn">TRUE</span>,        </span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="co"># Include both R code and its results in output</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="at">include =</span> <span class="cn">TRUE</span>,     </span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  <span class="co"># Evaluate R code chunks</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>  <span class="at">eval =</span> <span class="cn">TRUE</span>,       </span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>  <span class="co"># Enable caching of R code chunks for faster rendering</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>  <span class="at">cache =</span> <span class="cn">FALSE</span>,      </span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="co"># Align figures in the center of the output</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="at">fig.align =</span> <span class="st">&quot;center&quot;</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="co"># Enable retina display for high-resolution figures</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  <span class="at">retina =</span> <span class="dv">2</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="co"># Show errors in the output instead of stopping rendering</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  <span class="at">error =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>  <span class="co"># Do not collapse code and output into a single block</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>)</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co"># Start the figure counter</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>fig_count <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co"># Define the captioner function</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>captioner <span class="ot">&lt;-</span> <span class="cf">function</span>(caption) {</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>  fig_count <span class="ot">&lt;&lt;-</span> fig_count <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">&quot;Figure &quot;</span>, fig_count, <span class="st">&quot;: &quot;</span>, caption)</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(MetricGraph)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">library</span>(ggmap)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">library</span>(slackr)</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;keys.R&quot;</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">slackr_setup</span>(<span class="at">token =</span> token) <span class="co"># token comes from keys.R</span></span></code></pre></div>
+<pre><code>## [1] &quot;Successfully connected to Slack&quot;</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">capture.output</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">purl</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;functionality1.Rmd&quot;</span>), <span class="at">output =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;functionality1.R&quot;</span>)),</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;old/purl_log.txt&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;functionality1.R&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>create_data <span class="ot">&lt;-</span> <span class="cf">function</span>(alpha, m){</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>res <span class="ot">&lt;-</span> rSPDE<span class="sc">:::</span><span class="fu">interp_rational_coefficients</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">order =</span> m, </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">type_rational_approx =</span> <span class="st">&quot;brasil&quot;</span>, </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">type_interp =</span> <span class="st">&quot;spline&quot;</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">alpha =</span> alpha)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>partFraction <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  term_matrix <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, res<span class="sc">$</span>p, <span class="st">&quot;-&quot;</span>) <span class="co"># matrix of (x - p[i])</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  term_values <span class="ot">&lt;-</span> <span class="fu">sweep</span>(<span class="dv">1</span> <span class="sc">/</span> term_matrix, <span class="dv">2</span>, res<span class="sc">$</span>r, <span class="st">&quot;*&quot;</span>) <span class="co"># multiply columns by r[i]</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rowSums</span>(term_values) <span class="sc">+</span> res<span class="sc">$</span>k)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>}</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>powerFun <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  <span class="fu">return</span>(x<span class="sc">^</span>(<span class="sc">-</span>(alpha<span class="sc">-</span><span class="fu">floor</span>(alpha))))</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>}</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span>(<span class="dv">5</span><span class="sc">+</span>m)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#x &lt;- seq(1, 1/delta, length.out = 1000)</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>, min_reciprocal_delta, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>pf <span class="ot">&lt;-</span> <span class="fu">partFraction</span>(x)</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>po <span class="ot">&lt;-</span> <span class="fu">powerFun</span>(x)</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>Linferror <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(pf <span class="sc">-</span> po))</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">val =</span> pf, <span class="at">method =</span> <span class="st">&quot;partFraction&quot;</span>, <span class="at">alpha =</span> alpha, <span class="at">m =</span> m, <span class="at">Linferror =</span> Linferror),</span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>            <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">val =</span>  po, <span class="at">method =</span> <span class="st">&quot;powerFun&quot;</span>, <span class="at">alpha =</span> alpha, <span class="at">m =</span> m, <span class="at">Linferror =</span> Linferror))</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="fu">return</span>(df)</span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>}</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">1.6</span>, <span class="fl">2.6</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">20</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>delta_aux <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span>(<span class="sc">-</span>(<span class="dv">5</span><span class="sc">+</span>m)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>min_reciprocal_delta <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="dv">1</span><span class="sc">/</span>delta_aux)</span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>min_m <span class="ot">&lt;-</span> <span class="fu">min</span>(m)</span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(alpha, <span class="cf">function</span>(a) {</span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>  <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(m, <span class="cf">function</span>(mm) {</span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>    <span class="fu">create_data</span>(a, mm)</span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a>  }))</span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>}))</span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a></span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a></span>
+<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a>    <span class="at">m =</span> {</span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a>      m_vals <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(m))</span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a>      <span class="fu">factor</span>(</span>
+<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a>        m,</span>
+<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a>        <span class="at">levels =</span> m_vals,</span>
+<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a>        <span class="at">labels =</span> <span class="fu">sprintf</span>(<span class="st">&quot;$m = %g$&quot;</span>, m_vals))</span>
+<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a>      },</span>
+<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a>    <span class="at">alpha =</span> {</span>
+<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a>      alpha_vals <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(alpha))</span>
+<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>      <span class="fu">factor</span>(</span>
+<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>        alpha,</span>
+<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a>        <span class="at">levels =</span> alpha_vals,</span>
+<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a>        <span class="at">labels =</span> <span class="fu">sprintf</span>(<span class="st">&quot;$</span><span class="sc">\\</span><span class="st">alpha = %g$&quot;</span>, alpha_vals)</span>
+<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a>      )</span>
+<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a>    },</span>
+<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a>    <span class="at">method =</span> <span class="fu">factor</span>(</span>
+<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a>      method,</span>
+<span id="cb6-62"><a href="#cb6-62" tabindex="-1"></a>      <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;partFraction&quot;</span>, <span class="st">&quot;powerFun&quot;</span>),</span>
+<span id="cb6-63"><a href="#cb6-63" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;$r(x) = k+</span><span class="sc">\\</span><span class="st">sum_{i=1}^mr_i(x-p_i)^{-1}$&quot;</span>, <span class="st">&quot;$f(x) = x^{-</span><span class="sc">\\</span><span class="st">{</span><span class="sc">\\</span><span class="st">alpha</span><span class="sc">\\</span><span class="st">}}$&quot;</span>)</span>
+<span id="cb6-64"><a href="#cb6-64" tabindex="-1"></a>    )</span>
+<span id="cb6-65"><a href="#cb6-65" tabindex="-1"></a>  )</span>
+<span id="cb6-66"><a href="#cb6-66" tabindex="-1"></a></span>
+<span id="cb6-67"><a href="#cb6-67" tabindex="-1"></a>df_lab <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb6-68"><a href="#cb6-68" tabindex="-1"></a>  <span class="fu">distinct</span>(m, alpha, Linferror)</span>
+<span id="cb6-69"><a href="#cb6-69" tabindex="-1"></a></span>
+<span id="cb6-70"><a href="#cb6-70" tabindex="-1"></a>df_lab <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb6-71"><a href="#cb6-71" tabindex="-1"></a>  <span class="fu">group_by</span>(m, alpha) <span class="sc">|&gt;</span></span>
+<span id="cb6-72"><a href="#cb6-72" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-73"><a href="#cb6-73" tabindex="-1"></a>    <span class="at">Linferror =</span> <span class="fu">first</span>(Linferror),</span>
+<span id="cb6-74"><a href="#cb6-74" tabindex="-1"></a>    <span class="at">x_mid =</span> <span class="fu">mean</span>(<span class="fu">range</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb6-75"><a href="#cb6-75" tabindex="-1"></a>    <span class="at">y_mid =</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(<span class="fu">range</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))),  <span class="co"># because of log scale</span></span>
+<span id="cb6-76"><a href="#cb6-76" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb6-77"><a href="#cb6-77" tabindex="-1"></a>  )</span>
+<span id="cb6-78"><a href="#cb6-78" tabindex="-1"></a></span>
+<span id="cb6-79"><a href="#cb6-79" tabindex="-1"></a>p_RAT1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(x, val, <span class="at">color =</span> method, <span class="at">linetype =</span> method)) <span class="sc">+</span> </span>
+<span id="cb6-80"><a href="#cb6-80" tabindex="-1"></a>  <span class="fu">facet_grid</span>(m <span class="sc">~</span> alpha) <span class="sc">+</span></span>
+<span id="cb6-81"><a href="#cb6-81" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-82"><a href="#cb6-82" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>(<span class="at">n.breaks =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb6-83"><a href="#cb6-83" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb6-84"><a href="#cb6-84" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">name =</span> <span class="st">&quot;Method&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;$r(x) = k+</span><span class="sc">\\</span><span class="st">sum_{i=1}^mr_i(x-p_i)^{-1}$&quot;</span> <span class="ot">=</span> <span class="st">&quot;red&quot;</span>, <span class="st">&quot;$f(x) = x^{-</span><span class="sc">\\</span><span class="st">{</span><span class="sc">\\</span><span class="st">alpha</span><span class="sc">\\</span><span class="st">}}$&quot;</span> <span class="ot">=</span> <span class="st">&quot;blue&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb6-85"><a href="#cb6-85" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">name =</span> <span class="st">&quot;Method&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;$r(x) = k+</span><span class="sc">\\</span><span class="st">sum_{i=1}^mr_i(x-p_i)^{-1}$&quot;</span> <span class="ot">=</span> <span class="st">&quot;solid&quot;</span>, <span class="st">&quot;$f(x) = x^{-</span><span class="sc">\\</span><span class="st">{</span><span class="sc">\\</span><span class="st">alpha</span><span class="sc">\\</span><span class="st">}}$&quot;</span> <span class="ot">=</span> <span class="st">&quot;dashed&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb6-86"><a href="#cb6-86" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb6-87"><a href="#cb6-87" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.3</span>, <span class="st">&quot;cm&quot;</span>), </span>
+<span id="cb6-88"><a href="#cb6-88" tabindex="-1"></a>        <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Palatino&quot;</span>),</span>
+<span id="cb6-89"><a href="#cb6-89" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb6-90"><a href="#cb6-90" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb6-91"><a href="#cb6-91" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb6-92"><a href="#cb6-92" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb6-93"><a href="#cb6-93" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb6-94"><a href="#cb6-94" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)) <span class="sc">+</span></span>
+<span id="cb6-95"><a href="#cb6-95" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;$x$&quot;</span>, </span>
+<span id="cb6-96"><a href="#cb6-96" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;$y$&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb6-97"><a href="#cb6-97" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-98"><a href="#cb6-98" tabindex="-1"></a>  <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb6-99"><a href="#cb6-99" tabindex="-1"></a>  <span class="at">legend.direction =</span> <span class="st">&quot;horizontal&quot;</span>,</span>
+<span id="cb6-100"><a href="#cb6-100" tabindex="-1"></a>  <span class="at">legend.key.width  =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb6-101"><a href="#cb6-101" tabindex="-1"></a>  <span class="at">legend.key.height =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">&quot;cm&quot;</span>)</span>
+<span id="cb6-102"><a href="#cb6-102" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb6-103"><a href="#cb6-103" tabindex="-1"></a> <span class="fu">geom_text</span>(</span>
+<span id="cb6-104"><a href="#cb6-104" tabindex="-1"></a>    <span class="at">data =</span> df_lab,</span>
+<span id="cb6-105"><a href="#cb6-105" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb6-106"><a href="#cb6-106" tabindex="-1"></a>      <span class="at">x =</span> x_mid,</span>
+<span id="cb6-107"><a href="#cb6-107" tabindex="-1"></a>      <span class="at">y =</span> y_mid,</span>
+<span id="cb6-108"><a href="#cb6-108" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">&quot;$</span><span class="sc">\\</span><span class="st">|r-f</span><span class="sc">\\</span><span class="st">|_{L_{</span><span class="sc">\\</span><span class="st">infty}(1,1/</span><span class="sc">\\</span><span class="st">delta_{%d})} = %.2e$&quot;</span>, min_m, Linferror)</span>
+<span id="cb6-109"><a href="#cb6-109" tabindex="-1"></a>    ),</span>
+<span id="cb6-110"><a href="#cb6-110" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-111"><a href="#cb6-111" tabindex="-1"></a>    <span class="at">parse =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-112"><a href="#cb6-112" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>,</span>
+<span id="cb6-113"><a href="#cb6-113" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb6-114"><a href="#cb6-114" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="fl">0.5</span></span>
+<span id="cb6-115"><a href="#cb6-115" tabindex="-1"></a>  )</span>
+<span id="cb6-116"><a href="#cb6-116" tabindex="-1"></a></span>
+<span id="cb6-117"><a href="#cb6-117" tabindex="-1"></a></span>
+<span id="cb6-118"><a href="#cb6-118" tabindex="-1"></a></span>
+<span id="cb6-119"><a href="#cb6-119" tabindex="-1"></a></span>
+<span id="cb6-120"><a href="#cb6-120" tabindex="-1"></a><span class="fu">myggsave</span>(p_RAT1, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;data_files/tikzpic/p_RAT1.pdf&quot;</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<embed src="data_files/tikzpic/p_RAT1.pdf" title="Figure 1: Covariance error for the interval graph." width="1200px" height="600px" type="application/pdf" />
+<p class="caption">
+Figure 1: Covariance error for the interval graph.
+</p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUmF0aW9uYWwgYXBwcm94aW1hdGlvbiIKZGF0ZTogIkxhc3QgbW9kaWZpZWQ6IGByIGZvcm1hdChTeXMudGltZSgpLCAnJWQtJW0tJVkuJylgIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIG1hdGhqYXg6ICJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvbnBtL21hdGhqYXhAMy9lczUvdGV4LW1tbC1jaHRtbC5qcyIKICAgIGhpZ2hsaWdodDogcHlnbWVudHMKICAgIHRoZW1lOiBmbGF0bHkKICAgIGNvZGVfZm9sZGluZzogaGlkZSAjIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUiIHRvIGhpZGUgY29kZSBhbmQgYWRkIGEgYnV0dG9uIHRvIHNob3cgaXQKICAgIGRmX3ByaW50OiBwYWdlZAogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6CiAgICAgIGNvbGxhcHNlZDogdHJ1ZQogICAgICBzbW9vdGhfc2Nyb2xsOiB0cnVlCiAgICBudW1iZXJfc2VjdGlvbnM6IHRydWUKICAgIGZpZ19jYXB0aW9uOiB0cnVlCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjc3M6IHZpc3VhbC5jc3MKYWx3YXlzX2FsbG93X2h0bWw6IHRydWUKYmlibGlvZ3JhcGh5OiAKICAtIHJlZmVyZW5jZXMuYmliCiAgLSBncmF0ZWZ1bC1yZWZzLmJpYgpoZWFkZXItaW5jbHVkZXM6CiAgLSBcbmV3Y29tbWFuZHtcYXJ9e1xtYXRoYmJ7Un19CiAgLSBcbmV3Y29tbWFuZHtcbGxhdn1bMV17XGxlZnRceyMxXHJpZ2h0XH19CiAgLSBcbmV3Y29tbWFuZHtccGFyZX1bMV17XGxlZnQoIzFccmlnaHQpfQogIC0gXG5ld2NvbW1hbmR7XE5jYWx9e1xtYXRoY2Fse059fQogIC0gXG5ld2NvbW1hbmR7XFZjYWx9e1xtYXRoY2Fse1Z9fQogIC0gXG5ld2NvbW1hbmR7XEVjYWx9e1xtYXRoY2Fse0V9fQogIC0gXG5ld2NvbW1hbmR7XFdjYWx9e1xtYXRoY2Fse1d9fQogIC0gXG5ld2NvbW1hbmR7XGFsbW9zdGV2ZXJ5d2hlcmV9e1xtYXRocm17YS5lLn1cO30KLS0tCgpHbyBiYWNrIHRvIHRoZSBbQ29udGVudHNdKGFib3V0Lmh0bWwpIHBhZ2UuCgo8ZGl2IHN0eWxlPSJjb2xvcjogIzJjM2U1MDsgdGV4dC1hbGlnbjogcmlnaHQ7Ij4KKioqKioqKiogIAo8c3Ryb25nPlByZXNzIFNob3cgdG8gcmV2ZWFsIHRoZSBjb2RlIGNodW5rcy48L3N0cm9uZz4gIAoKKioqKioqKioKPC9kaXY+CgoKYGBge3J9CiMgQ3JlYXRlIGEgY2xpcGJvYXJkIGJ1dHRvbiBvbiB0aGUgcmVuZGVibGFjayBIVE1MIHBhZ2UKc291cmNlKGhlcmU6OmhlcmUoImNsaXBib2FyZC5SIikpOyBjbGlwYm9hcmQKIyBTZXQgc2VlZCBmb3IgcmVwcm9kdWNpYmlsaXR5CnNldC5zZWVkKDE5ODIpIAojIFNldCBnbG9iYWwgb3B0aW9ucyBmb3IgYWxsIGNvZGUgY2h1bmtzCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICAjIERpc2FibGUgbWVzc2FnZXMgcHJpbnRlZCBieSBSIGNvZGUgY2h1bmtzCiAgbWVzc2FnZSA9IEZBTFNFLCAgICAKICAjIERpc2FibGUgd2FybmluZ3MgcHJpbnRlZCBieSBSIGNvZGUgY2h1bmtzCiAgd2FybmluZyA9IEZBTFNFLCAgICAKICAjIFNob3cgUiBjb2RlIHdpdGhpbiBjb2RlIGNodW5rcyBpbiBvdXRwdXQKICBlY2hvID0gVFJVRSwgICAgICAgIAogICMgSW5jbHVkZSBib3RoIFIgY29kZSBhbmQgaXRzIHJlc3VsdHMgaW4gb3V0cHV0CiAgaW5jbHVkZSA9IFRSVUUsICAgICAKICAjIEV2YWx1YXRlIFIgY29kZSBjaHVua3MKICBldmFsID0gVFJVRSwgICAgICAgCiAgIyBFbmFibGUgY2FjaGluZyBvZiBSIGNvZGUgY2h1bmtzIGZvciBmYXN0ZXIgcmVuZGVyaW5nCiAgY2FjaGUgPSBGQUxTRSwgICAgICAKICAjIEFsaWduIGZpZ3VyZXMgaW4gdGhlIGNlbnRlciBvZiB0aGUgb3V0cHV0CiAgZmlnLmFsaWduID0gImNlbnRlciIsCiAgIyBFbmFibGUgcmV0aW5hIGRpc3BsYXkgZm9yIGhpZ2gtcmVzb2x1dGlvbiBmaWd1cmVzCiAgcmV0aW5hID0gMiwKICAjIFNob3cgZXJyb3JzIGluIHRoZSBvdXRwdXQgaW5zdGVhZCBvZiBzdG9wcGluZyByZW5kZXJpbmcKICBlcnJvciA9IFRSVUUsCiAgIyBEbyBub3QgY29sbGFwc2UgY29kZSBhbmQgb3V0cHV0IGludG8gYSBzaW5nbGUgYmxvY2sKICBjb2xsYXBzZSA9IEZBTFNFCikKIyBTdGFydCB0aGUgZmlndXJlIGNvdW50ZXIKZmlnX2NvdW50IDwtIDAKIyBEZWZpbmUgdGhlIGNhcHRpb25lciBmdW5jdGlvbgpjYXB0aW9uZXIgPC0gZnVuY3Rpb24oY2FwdGlvbikgewogIGZpZ19jb3VudCA8PC0gZmlnX2NvdW50ICsgMQogIHBhc3RlMCgiRmlndXJlICIsIGZpZ19jb3VudCwgIjogIiwgY2FwdGlvbikKfQoKYGBgCgpgYGB7ciwgZXZhbCA9IFRSVUV9CmxpYnJhcnkoTWV0cmljR3JhcGgpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShyZXNoYXBlMikKbGlicmFyeShkcGx5cikKbGlicmFyeSh2aXJpZGlzKQpsaWJyYXJ5KHBsb3RseSkKbGlicmFyeShwYXRjaHdvcmspCmxpYnJhcnkoZ2dtYXApCgoKbGlicmFyeShzbGFja3IpCnNvdXJjZSgia2V5cy5SIikKc2xhY2tyX3NldHVwKHRva2VuID0gdG9rZW4pICMgdG9rZW4gY29tZXMgZnJvbSBrZXlzLlIKYGBgCgoKYGBge3J9CmNhcHR1cmUub3V0cHV0KAogIGtuaXRyOjpwdXJsKGhlcmU6OmhlcmUoImZ1bmN0aW9uYWxpdHkxLlJtZCIpLCBvdXRwdXQgPSBoZXJlOjpoZXJlKCJmdW5jdGlvbmFsaXR5MS5SIikpLAogIGZpbGUgPSBoZXJlOjpoZXJlKCJvbGQvcHVybF9sb2cudHh0IikKKQpzb3VyY2UoaGVyZTo6aGVyZSgiZnVuY3Rpb25hbGl0eTEuUiIpKQpgYGAKCmBgYHtyfQpjcmVhdGVfZGF0YSA8LSBmdW5jdGlvbihhbHBoYSwgbSl7CnJlcyA8LSByU1BERTo6OmludGVycF9yYXRpb25hbF9jb2VmZmljaWVudHMoCiAgb3JkZXIgPSBtLCAKICB0eXBlX3JhdGlvbmFsX2FwcHJveCA9ICJicmFzaWwiLCAKICB0eXBlX2ludGVycCA9ICJzcGxpbmUiLCAKICBhbHBoYSA9IGFscGhhKQoKcGFydEZyYWN0aW9uIDwtIGZ1bmN0aW9uKHgpIHsKICB0ZXJtX21hdHJpeCA8LSBvdXRlcih4LCByZXMkcCwgIi0iKSAjIG1hdHJpeCBvZiAoeCAtIHBbaV0pCiAgdGVybV92YWx1ZXMgPC0gc3dlZXAoMSAvIHRlcm1fbWF0cml4LCAyLCByZXMkciwgIioiKSAjIG11bHRpcGx5IGNvbHVtbnMgYnkgcltpXQogIHJldHVybihyb3dTdW1zKHRlcm1fdmFsdWVzKSArIHJlcyRrKQp9Cgpwb3dlckZ1biA8LSBmdW5jdGlvbih4KXsKICByZXR1cm4oeF4oLShhbHBoYS1mbG9vcihhbHBoYSkpKSkKfQoKZGVsdGEgPC0gMTBeKC0oNSttKS8yKQoKI3ggPC0gc2VxKDEsIDEvZGVsdGEsIGxlbmd0aC5vdXQgPSAxMDAwKQp4IDwtIHNlcSgxLCBtaW5fcmVjaXByb2NhbF9kZWx0YSwgbGVuZ3RoLm91dCA9IDEwMDApCnBmIDwtIHBhcnRGcmFjdGlvbih4KQpwbyA8LSBwb3dlckZ1bih4KQpMaW5mZXJyb3IgPC0gbWF4KGFicyhwZiAtIHBvKSkKZGYgPC0gcmJpbmQoZGF0YS5mcmFtZSh4ID0geCwgdmFsID0gcGYsIG1ldGhvZCA9ICJwYXJ0RnJhY3Rpb24iLCBhbHBoYSA9IGFscGhhLCBtID0gbSwgTGluZmVycm9yID0gTGluZmVycm9yKSwKICAgICAgICAgICAgZGF0YS5mcmFtZSh4ID0geCwgdmFsID0gIHBvLCBtZXRob2QgPSAicG93ZXJGdW4iLCBhbHBoYSA9IGFscGhhLCBtID0gbSwgTGluZmVycm9yID0gTGluZmVycm9yKSkKcmV0dXJuKGRmKQp9CgphbHBoYSA8LSBjKDAuNiwgMS42LCAyLjYpCm0gPC0gYygzLDYsMjApCmRlbHRhX2F1eCA8LSAxMF4oLSg1K20pLzIpCm1pbl9yZWNpcHJvY2FsX2RlbHRhIDwtIG1pbigxL2RlbHRhX2F1eCkKbWluX20gPC0gbWluKG0pCgpkZiA8LSBkby5jYWxsKHJiaW5kLCBsYXBwbHkoYWxwaGEsIGZ1bmN0aW9uKGEpIHsKICBkby5jYWxsKHJiaW5kLCBsYXBwbHkobSwgZnVuY3Rpb24obW0pIHsKICAgIGNyZWF0ZV9kYXRhKGEsIG1tKQogIH0pKQp9KSkKCgpkZiA8LSBkZiB8PgogIG11dGF0ZSgKICAgIG0gPSB7CiAgICAgIG1fdmFscyA8LSBzb3J0KHVuaXF1ZShtKSkKICAgICAgZmFjdG9yKAogICAgICAgIG0sCiAgICAgICAgbGV2ZWxzID0gbV92YWxzLAogICAgICAgIGxhYmVscyA9IHNwcmludGYoIiRtID0gJWckIiwgbV92YWxzKSkKICAgICAgfSwKICAgIGFscGhhID0gewogICAgICBhbHBoYV92YWxzIDwtIHNvcnQodW5pcXVlKGFscGhhKSkKICAgICAgZmFjdG9yKAogICAgICAgIGFscGhhLAogICAgICAgIGxldmVscyA9IGFscGhhX3ZhbHMsCiAgICAgICAgbGFiZWxzID0gc3ByaW50ZigiJFxcYWxwaGEgPSAlZyQiLCBhbHBoYV92YWxzKQogICAgICApCiAgICB9LAogICAgbWV0aG9kID0gZmFjdG9yKAogICAgICBtZXRob2QsCiAgICAgIGxldmVscyA9IGMoInBhcnRGcmFjdGlvbiIsICJwb3dlckZ1biIpLAogICAgICBsYWJlbHMgPSBjKCIkcih4KSA9IGsrXFxzdW1fe2k9MX1ebXJfaSh4LXBfaSleey0xfSQiLCAiJGYoeCkgPSB4XnstXFx7XFxhbHBoYVxcfX0kIikKICAgICkKICApCgpkZl9sYWIgPC0gZGYgfD4KICBkaXN0aW5jdChtLCBhbHBoYSwgTGluZmVycm9yKQoKZGZfbGFiIDwtIGRmIHw+CiAgZ3JvdXBfYnkobSwgYWxwaGEpIHw+CiAgc3VtbWFyaXNlKAogICAgTGluZmVycm9yID0gZmlyc3QoTGluZmVycm9yKSwKICAgIHhfbWlkID0gbWVhbihyYW5nZSh4LCBuYS5ybSA9IFRSVUUpKSwKICAgIHlfbWlkID0gZXhwKG1lYW4obG9nKHJhbmdlKHZhbCwgbmEucm0gPSBUUlVFKSkpKSwgICMgYmVjYXVzZSBvZiBsb2cgc2NhbGUKICAgIC5ncm91cHMgPSAiZHJvcCIKICApCgpwX1JBVDEgPC0gZ2dwbG90KGRmLCBhZXMoeCwgdmFsLCBjb2xvciA9IG1ldGhvZCwgbGluZXR5cGUgPSBtZXRob2QpKSArIAogIGZhY2V0X2dyaWQobSB+IGFscGhhKSArCiAgZ2VvbV9saW5lKGxpbmV3aWR0aCA9IDEpICsKICBzY2FsZV95X2xvZzEwKG4uYnJlYWtzID0gNSkgKwogIHNjYWxlX3hfY29udGludW91cyhuLmJyZWFrcyA9IDYpICsKICBzY2FsZV9jb2xvdXJfbWFudWFsKG5hbWUgPSAiTWV0aG9kIiwgdmFsdWVzID0gYygiJHIoeCkgPSBrK1xcc3VtX3tpPTF9Xm1yX2koeC1wX2kpXnstMX0kIiA9ICJyZWQiLCAiJGYoeCkgPSB4XnstXFx7XFxhbHBoYVxcfX0kIiA9ICJibHVlIikpICsgCiAgc2NhbGVfbGluZXR5cGVfbWFudWFsKG5hbWUgPSAiTWV0aG9kIiwgdmFsdWVzID0gYygiJHIoeCkgPSBrK1xcc3VtX3tpPTF9Xm1yX2koeC1wX2kpXnstMX0kIiA9ICJzb2xpZCIsICIkZih4KSA9IHheey1cXHtcXGFscGhhXFx9fSQiID0gImRhc2hlZCIpKSArIAogIHRoZW1lX2J3KCkgKwogIHRoZW1lKHBhbmVsLnNwYWNpbmcgPSB1bml0KDAuMywgImNtIiksIAogICAgICAgIHRleHQgPSBlbGVtZW50X3RleHQoZmFtaWx5ID0gIlBhbGF0aW5vIiksCiAgICAgICAgcGxvdC50aXRsZSA9IGVsZW1lbnRfdGV4dChoanVzdCA9IDAuNSwgc2l6ZSA9IDE2KSwKICAgICAgICBzdHJpcC50ZXh0ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMiksCiAgICAgICAgYXhpcy50aXRsZSA9IGVsZW1lbnRfdGV4dChzaXplID0gMTQpLAogICAgICAgIGF4aXMudGV4dCA9IGVsZW1lbnRfdGV4dChzaXplID0gMTIpLAogICAgICAgIGxlZ2VuZC50aXRsZSA9IGVsZW1lbnRfdGV4dChzaXplID0gMTQpLAogICAgICAgIGxlZ2VuZC50ZXh0ID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMikpICsKICBsYWJzKHggPSAiJHgkIiwgCiAgICAgICB5ID0gIiR5JCIpICsgCiAgdGhlbWUoCiAgbGVnZW5kLnBvc2l0aW9uID0gImJvdHRvbSIsCiAgbGVnZW5kLmRpcmVjdGlvbiA9ICJob3Jpem9udGFsIiwKICBsZWdlbmQua2V5LndpZHRoICA9IHVuaXQoMiwgImNtIiksCiAgbGVnZW5kLmtleS5oZWlnaHQgPSB1bml0KDAsICJjbSIpCikgKwogZ2VvbV90ZXh0KAogICAgZGF0YSA9IGRmX2xhYiwKICAgIGFlcygKICAgICAgeCA9IHhfbWlkLAogICAgICB5ID0geV9taWQsCiAgICAgIGxhYmVsID0gc3ByaW50ZigiJFxcfHItZlxcfF97TF97XFxpbmZ0eX0oMSwxL1xcZGVsdGFfeyVkfSl9ID0gJS4yZSQiLCBtaW5fbSwgTGluZmVycm9yKQogICAgKSwKICAgIGluaGVyaXQuYWVzID0gRkFMU0UsCiAgICBwYXJzZSA9IEZBTFNFLAogICAgc2l6ZSA9IDQsCiAgICBoanVzdCA9IDAuNSwKICAgIHZqdXN0ID0gMC41CiAgKQoKCgoKbXlnZ3NhdmUocF9SQVQxLCB3aWR0aCA9IDEyLCBoZWlnaHQgPSA2KQoKYGBgCgoKCmBgYHtyLCBldmFsID0gVFJVRSwgb3V0LndpZHRoPSIxMjAwcHgiLCBvdXQuaGVpZ2h0PSI2MDBweCIsIGZpZy5jYXAgPSBjYXB0aW9uZXIoIkNvdmFyaWFuY2UgZXJyb3IgZm9yIHRoZSBpbnRlcnZhbCBncmFwaC4iKX0Ka25pdHI6OmluY2x1ZGVfZ3JhcGhpY3MoaGVyZTo6aGVyZSgiZGF0YV9maWxlcy90aWt6cGljL3BfUkFUMS5wZGYiKSkKYGBgCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("rat_approx1.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

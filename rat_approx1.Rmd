@@ -1,0 +1,272 @@
+---
+title: "Rational approximation"
+date: "Last modified: `r format(Sys.time(), '%d-%m-%Y.')`"
+output:
+  html_document:
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    highlight: pygments
+    theme: flatly
+    code_folding: hide # class.source = "fold-hide" to hide code and add a button to show it
+    df_print: paged
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    fig_caption: true
+    code_download: true
+    css: visual.css
+always_allow_html: true
+bibliography: 
+  - references.bib
+  - grateful-refs.bib
+header-includes:
+  - \newcommand{\ar}{\mathbb{R}}
+  - \newcommand{\llav}[1]{\left\{#1\right\}}
+  - \newcommand{\pare}[1]{\left(#1\right)}
+  - \newcommand{\Ncal}{\mathcal{N}}
+  - \newcommand{\Vcal}{\mathcal{V}}
+  - \newcommand{\Ecal}{\mathcal{E}}
+  - \newcommand{\Wcal}{\mathcal{W}}
+  - \newcommand{\almosteverywhere}{\mathrm{a.e.}\;}
+---
+
+Go back to the [Contents](about.html) page.
+
+<div style="color: #2c3e50; text-align: right;">
+********  
+<strong>Press Show to reveal the code chunks.</strong>  
+
+********
+</div>
+
+
+```{r}
+# Create a clipboard button on the rendeblack HTML page
+source(here::here("clipboard.R")); clipboard
+# Set seed for reproducibility
+set.seed(1982) 
+# Set global options for all code chunks
+knitr::opts_chunk$set(
+  # Disable messages printed by R code chunks
+  message = FALSE,    
+  # Disable warnings printed by R code chunks
+  warning = FALSE,    
+  # Show R code within code chunks in output
+  echo = TRUE,        
+  # Include both R code and its results in output
+  include = TRUE,     
+  # Evaluate R code chunks
+  eval = TRUE,       
+  # Enable caching of R code chunks for faster rendering
+  cache = FALSE,      
+  # Align figures in the center of the output
+  fig.align = "center",
+  # Enable retina display for high-resolution figures
+  retina = 2,
+  # Show errors in the output instead of stopping rendering
+  error = TRUE,
+  # Do not collapse code and output into a single block
+  collapse = FALSE
+)
+# Start the figure counter
+fig_count <- 0
+# Define the captioner function
+captioner <- function(caption) {
+  fig_count <<- fig_count + 1
+  paste0("Figure ", fig_count, ": ", caption)
+}
+
+```
+
+```{r, eval = TRUE}
+library(MetricGraph)
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(viridis)
+library(plotly)
+library(patchwork)
+library(ggmap)
+
+
+library(slackr)
+source("keys.R")
+slackr_setup(token = token) # token comes from keys.R
+```
+
+
+```{r}
+capture.output(
+  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+  file = here::here("old/purl_log.txt")
+)
+source(here::here("functionality1.R"))
+```
+
+```{r}
+create_data <- function(alpha, m){
+res <- rSPDE:::interp_rational_coefficients(
+  order = m, 
+  type_rational_approx = "brasil", 
+  type_interp = "spline", 
+  alpha = alpha)
+
+partFraction <- function(x) {
+  term_matrix <- outer(x, res$p, "-") # matrix of (x - p[i])
+  term_values <- sweep(1 / term_matrix, 2, res$r, "*") # multiply columns by r[i]
+  return(rowSums(term_values) + res$k)
+}
+
+powerFun <- function(x){
+  return(x^(-(alpha-floor(alpha))))
+}
+
+delta <- 10^(-(5+m)/2)
+
+#x <- seq(1, 1/delta, length.out = 1000)
+x <- seq(1, min_reciprocal_delta, length.out = 1000)
+pf <- partFraction(x)
+po <- powerFun(x)
+Linferror <- max(abs(pf - po))
+df <- rbind(data.frame(x = x, val = pf, method = "partFraction", alpha = alpha, m = m, Linferror = Linferror),
+            data.frame(x = x, val =  po, method = "powerFun", alpha = alpha, m = m, Linferror = Linferror))
+return(df)
+}
+
+alpha <- c(0.6, 1.6, 2.6)
+m <- c(3,6,20)
+delta_aux <- 10^(-(5+m)/2)
+min_reciprocal_delta <- min(1/delta_aux)
+min_m <- min(m)
+
+df <- do.call(rbind, lapply(alpha, function(a) {
+  do.call(rbind, lapply(m, function(mm) {
+    create_data(a, mm)
+  }))
+}))
+
+
+df <- df |>
+  mutate(
+    m = {
+      m_vals <- sort(unique(m))
+      factor(
+        m,
+        levels = m_vals,
+        labels = sprintf("$m = %g$", m_vals))
+      },
+    alpha = {
+      alpha_vals <- sort(unique(alpha))
+      factor(
+        alpha,
+        levels = alpha_vals,
+        labels = sprintf("$\\alpha = %g$", alpha_vals)
+      )
+    },
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun"),
+      labels = c("$r(x) = k+\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x) = x^{-\\{\\alpha\\}}$")
+    )
+  )
+
+df_lab <- df |>
+  distinct(m, alpha, Linferror)
+
+df_lab <- df |>
+  group_by(m, alpha) |>
+  summarise(
+    Linferror = first(Linferror),
+    x_mid = mean(range(x, na.rm = TRUE)),
+    y_mid = exp(mean(log(range(val, na.rm = TRUE)))),  # because of log scale
+    .groups = "drop"
+  )
+
+p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) + 
+  facet_grid(m ~ alpha) +
+  geom_line(linewidth = 1) +
+  scale_y_log10(n.breaks = 5) +
+  scale_x_continuous(n.breaks = 6) +
+  scale_colour_manual(name = "Method", values = c("$r(x) = k+\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red", "$f(x) = x^{-\\{\\alpha\\}}$" = "blue")) + 
+  scale_linetype_manual(name = "Method", values = c("$r(x) = k+\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "solid", "$f(x) = x^{-\\{\\alpha\\}}$" = "dashed")) + 
+  theme_bw() +
+  theme(panel.spacing = unit(0.3, "cm"), 
+        text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        strip.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12)) +
+  labs(x = "$x$", 
+       y = "$y$") + 
+  theme(
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  legend.key.width  = unit(2, "cm"),
+  legend.key.height = unit(0, "cm")
+) +
+ geom_text(
+    data = df_lab,
+    aes(
+      x = x_mid,
+      y = y_mid,
+      label = sprintf("$\\|r-f\\|_{L_{\\infty}(1,1/\\delta_{%d})} = %.2e$", min_m, Linferror)
+    ),
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 4,
+    hjust = 0.5,
+    vjust = 0.5
+  )
+
+
+
+
+myggsave(p_RAT1, width = 12, height = 6)
+
+```
+
+
+
+```{r, eval = TRUE, out.width="1200px", out.height="600px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/p_RAT1.pdf"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
