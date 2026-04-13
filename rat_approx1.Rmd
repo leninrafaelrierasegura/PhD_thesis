@@ -134,7 +134,7 @@ df <- rbind(data.frame(x = x, val = pf, method = "partFraction", alpha = alpha, 
 return(df)
 }
 
-alpha <- c(0.6, 1.6, 2.6)
+alpha <- c(0.3, 1.6, 2.9, 3.3)
 m <- c(3,6,20)
 delta_aux <- 10^(-(5+m)/2)
 min_reciprocal_delta <- min(1/delta_aux)
@@ -236,6 +236,59 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_RAT1.pdf"))
 
 
 
+```{r}
+alpha_vector <- 1 + seq(0.5, 0.9, by = 0.1)
+m_vector <- c(1:20)
+errors <- matrix(NA, nrow = length(m_vector), ncol = length(alpha_vector))
+for (alpha in alpha_vector) {
+  for (m in m_vector) {
+    res <- rSPDE:::interp_rational_coefficients(
+      order = m, 
+      type_rational_approx = "brasil", 
+      type_interp = "spline", 
+      alpha = alpha)
+    
+    partFraction <- function(x) {
+      term_matrix <- outer(x, res$p, "-") # matrix of (x - p[i])
+      term_values <- sweep(1 / term_matrix, 2, res$r, "*") # multiply columns by r[i]
+      return(rowSums(term_values) + res$k)
+    }
+    
+    powerFun <- function(x){
+      return(x^(-(alpha-floor(alpha))))
+    }
+    
+    delta <- 10^(-(5+m)/2)
+    x <- seq(1, 1/delta, length.out = 10)
+    pf <- partFraction(x)
+    po <- powerFun(x)
+    Linferror <- max(abs(pf - po))
+    
+    m_index <- which(m_vector == m)
+    alpha_index <- which(alpha_vector == alpha)
+    errors[m_index, alpha_index] <- Linferror
+  }
+}
+
+observed_rates <- rep(NA, length(alpha_vector))
+for (u in 1:length(alpha_vector)) {
+  observed_rates[u] <- coef(lm(log(errors[, u]) ~ sqrt(m_vector)))[2]
+}
+
+theoretical_rates <- - 2 * pi * sqrt(alpha_vector - floor(alpha_vector))
+
+p_m <- error.convergence.plotter(x_axis_vector = m_vector, 
+                                 alpha_vector, 
+                                 errors, 
+                                 theoretical_rates, 
+                                 observed_rates,
+                                 line_equation_fun = exp_line_equation,
+                                 fig_title = expression("Convergence in " * italic(m)),
+                                 x_axis_label = expression(italic(m)),
+                                 apply_sqrt = TRUE)
+p_m
+
+```
 
 
 
