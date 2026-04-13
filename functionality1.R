@@ -1,4 +1,4 @@
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 # Create a clipboard button on the rendered HTML page
 source(here::here("clipboard.R")); clipboard
 # Set seed for reproducibility
@@ -36,7 +36,7 @@ captioner <- function(caption) {
 
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 library(MetricGraph)
 library(ggplot2)
 library(reshape2)
@@ -50,7 +50,7 @@ source("keys.R")
 slackr_setup(token = token) # token comes from keys.R
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 # Color for axis name and axis numbers
 colaxnn <- "gray"
 # Global font size
@@ -61,7 +61,7 @@ mydarkblue <- "#0000C8"
 gsw <- 7
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 gets.graph.interval <- function(n){
   edge <- rbind(c(0,0),c(1,0))
   edges = list(edge)
@@ -71,7 +71,7 @@ gets.graph.interval <- function(n){
 }
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 gets.graph.circle <- function(n){
   r = 1/(pi)
   theta <- seq(from=-pi,to=pi,length.out = 100)
@@ -83,7 +83,7 @@ gets.graph.circle <- function(n){
 }
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 # Function to build a tadpole graph and create a mesh
 gets.graph.tadpole <- function(h){
   edge1 <- rbind(c(0,0),c(1,0))
@@ -97,7 +97,75 @@ gets.graph.tadpole <- function(h){
 }
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
+tadpole.eig <- function(k,graph){
+x1 <- c(0,graph$get_edge_lengths()[1]*graph$mesh$PtE[graph$mesh$PtE[,1]==1,2]) 
+x2 <- c(0,graph$get_edge_lengths()[2]*graph$mesh$PtE[graph$mesh$PtE[,1]==2,2]) 
+
+if(k==0){ 
+  f.e1 <- rep(1,length(x1)) 
+  f.e2 <- rep(1,length(x2)) 
+  f1 = c(f.e1[1],f.e2[1],f.e1[-1], f.e2[-1]) 
+  f = list(phi=f1/sqrt(3)) 
+  
+} else {
+  f.e1 <- -2*sin(pi*k*1/2)*cos(pi*k*x1/2) 
+  f.e2 <- sin(pi*k*x2/2)                  
+  
+  f1 = c(f.e1[1],f.e2[1],f.e1[-1], f.e2[-1]) 
+  
+  if((k %% 2)==1){ 
+    f = list(phi=f1/sqrt(3)) 
+  } else { 
+    f.e1 <- (-1)^{k/2}*cos(pi*k*x1/2)
+    f.e2 <- cos(pi*k*x2/2)
+    f2 = c(f.e1[1],f.e2[1],f.e1[-1],f.e2[-1]) 
+    f <- list(phi=f1,psi=f2/sqrt(3/2))
+  }
+}
+return(f)
+}
+
+
+## ----------------------------------------------------------------
+# Function to compute the eigenpairs of the tadpole graph
+gets.eigen.params <- function(N_finite = 4, kappa = 1, alpha = 0.5, graph){
+  EIGENVAL <- NULL
+  EIGENVAL_ALPHA <- NULL
+  EIGENVAL_MINUS_ALPHA <- NULL
+  EIGENFUN <- NULL
+  INDEX <- NULL
+  for (j in 0:N_finite) {
+    lambda_j <- kappa^2 + (j*pi/2)^2
+    lambda_j_alpha_half <- lambda_j^(alpha/2)
+    lambda_j_minus_alpha_half <- lambda_j^(-alpha/2)
+    e_j <- tadpole.eig(j,graph)$phi
+    EIGENVAL <- c(EIGENVAL, lambda_j)
+    EIGENVAL_ALPHA <- c(EIGENVAL_ALPHA, lambda_j_alpha_half)  
+    EIGENVAL_MINUS_ALPHA <- c(EIGENVAL_MINUS_ALPHA, lambda_j_minus_alpha_half)
+    EIGENFUN <- cbind(EIGENFUN, e_j)
+    INDEX <- c(INDEX, j)
+    if (j>0 && (j %% 2 == 0)) {
+      lambda_j <- kappa^2 + (j*pi/2)^2
+      lambda_j_alpha_half <- lambda_j^(alpha/2)
+      lambda_j_minus_alpha_half <- lambda_j^(-alpha/2)
+      e_j <- tadpole.eig(j,graph)$psi
+      EIGENVAL <- c(EIGENVAL, lambda_j)
+      EIGENVAL_ALPHA <- c(EIGENVAL_ALPHA, lambda_j_alpha_half)    
+      EIGENVAL_MINUS_ALPHA <- c(EIGENVAL_MINUS_ALPHA, lambda_j_minus_alpha_half)
+      EIGENFUN <- cbind(EIGENFUN, e_j)
+      INDEX <- c(INDEX, j+0.1)
+      }
+    }
+  return(list(EIGENVAL = EIGENVAL,
+              EIGENVAL_ALPHA = EIGENVAL_ALPHA, 
+              EIGENVAL_MINUS_ALPHA = EIGENVAL_MINUS_ALPHA,
+              EIGENFUN = EIGENFUN,
+              INDEX = INDEX))
+}
+
+
+## ----------------------------------------------------------------
 # Function to order the vertices for plotting
 plotting.order <- function(v, graph){
   edge_number <- graph$mesh$VtE[, 1]
@@ -106,7 +174,7 @@ plotting.order <- function(v, graph){
 }
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 # Original camera
 eye <- list(x = 5, y = 3, z = 4)
 center <- list(x = (1+2/pi)/2, y = 0, z = 0)
@@ -143,7 +211,7 @@ tadpole.layout.with.zoom <- function(x_range, y_range, z_range){
 }
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 myggsave <- function(plot, width = 9.22, height = 7.05) {
   
   dir_to_save <- here::here("data_files/tikzpic")
@@ -180,7 +248,7 @@ myggsave <- function(plot, width = 9.22, height = 7.05) {
 }
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 
 library(plotly)
 library(reticulate)
@@ -253,7 +321,7 @@ combined.save(r'{output_pdf}', 'PDF', resolution={resolution})
 # combine_plotly_grid_pdf(list(p1, p2, p3, p4), output_pdf = "plots_2x2.pdf", ncol = 4)
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 library(plotly)
 library(reticulate)
 
@@ -304,7 +372,7 @@ combined.save(r'%s', 'PDF', resolution=%d)
 # combine_plotly_pdf(p1, p2, output_pdf = "my_plots.pdf")
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 library(plotly)
 library(reticulate)
 
@@ -341,7 +409,7 @@ img_rgb.save(r'%s', 'PDF', resolution=%d)
 # combine_plotly_pdf_single(p1, output_pdf = "single_plot.pdf")
 
 
-## -----------------------------------------------------------------------------
+## ----------------------------------------------------------------
 
 loglog_line_equation <- function(x1, y1, slope) {
   b <- log10(y1 / (x1 ^ slope))
@@ -386,7 +454,10 @@ error.convergence.plotter <- function(x_axis_vector,
                                       line_equation_fun,
                                       fig_title,
                                       x_axis_label,
+                                      y_axis_label,
                                       apply_sqrt = FALSE) {
+  
+  relative_per_error <- 100 * abs(theoretical_rates - observed_rates) / abs(theoretical_rates)
   
   x_vec <- if (apply_sqrt) sqrt(x_axis_vector) else x_axis_vector
   
@@ -411,11 +482,11 @@ error.convergence.plotter <- function(x_axis_vector,
   colnames(df) <- c("x_axis_vector", alpha_vector)
   df_melted <- melt(df, id.vars = "x_axis_vector", variable.name = "column", value.name = "value")
   
-  custom_labels <- paste0(formatC(alpha_vector, format = "f", digits = 2), 
-                          " | ", 
-                          formatC(theoretical_rates, format = "f", digits = 4), 
-                          " | ", 
-                          formatC(observed_rates, format = "f", digits = 4))
+  custom_labels <- sprintf("$%s \\; | \\; %s \\; | \\; %s \\; | \\; %s$",
+                           formatC(alpha_vector, format = "f", digits = 2),
+                           formatC(theoretical_rates, format = "f", digits = 2),
+                           formatC(observed_rates, format = "f", digits = 2),
+                           formatC(relative_per_error, format = "f", digits = 2))
   
   df_melted$column <- factor(df_melted$column, levels = alpha_vector, labels = custom_labels)
 
@@ -426,8 +497,8 @@ error.convergence.plotter <- function(x_axis_vector,
     labs(
       title = fig_title,
       x = x_axis_label,
-      y = expression(Error),
-      color = "          α  | theo  | obs"
+      y = y_axis_label,
+      color = "$\\quad\\quad\\;\\alpha\\;\\;|\\;\\;\\mbox{theo}\\;|\\;\\;\\mbox{obs}\\;\\;\\;|\\%\\mbox{re}$"
     ) +
     (if (apply_sqrt) {
       scale_x_continuous(breaks = x_vec, labels = round(x_axis_vector, 4))
@@ -441,7 +512,7 @@ error.convergence.plotter <- function(x_axis_vector,
     }) +
     theme_minimal() +
     theme(text = element_text(family = "Palatino"),
-          legend.position = "bottom",
+          legend.position = "right",
           legend.direction = "vertical",
           plot.margin = margin(0, 0, 0, 0),
           plot.title = element_text(hjust = 0.5, size = 18, face = "bold"))

@@ -200,12 +200,13 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
         legend.title = element_text(size = 14),
         legend.text = element_text(size = 12)) +
   labs(x = "$x$", 
-       y = "$y$") + 
+       y = "$r(x),\\;f(x)$") + 
   theme(
   legend.position = "bottom",
   legend.direction = "horizontal",
   legend.key.width  = unit(2, "cm"),
-  legend.key.height = unit(0, "cm")
+  legend.key.height = unit(0, "cm"),
+  plot.margin = margin(0, 0, 0, 0)
 ) +
  geom_text(
     data = df_lab,
@@ -237,8 +238,8 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_RAT1.pdf"))
 
 
 ```{r}
-alpha_vector <- 1 + seq(0.5, 0.9, by = 0.1)
-m_vector <- c(1:20)
+alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05)
+m_vector <- c(1:14)
 errors <- matrix(NA, nrow = length(m_vector), ncol = length(alpha_vector))
 for (alpha in alpha_vector) {
   for (m in m_vector) {
@@ -277,16 +278,18 @@ for (u in 1:length(alpha_vector)) {
 
 theoretical_rates <- - 2 * pi * sqrt(alpha_vector - floor(alpha_vector))
 
-p_m <- error.convergence.plotter(x_axis_vector = m_vector, 
+conv_rate_ratapprox <- error.convergence.plotter(x_axis_vector = m_vector, 
                                  alpha_vector, 
                                  errors, 
                                  theoretical_rates, 
                                  observed_rates,
                                  line_equation_fun = exp_line_equation,
-                                 fig_title = expression("Convergence in " * italic(m)),
-                                 x_axis_label = expression(italic(m)),
+                                 fig_title = "",
+                                 x_axis_label = "$m$",
+                                 y_axis_label = "$\\|r-f\\|_{L_{\\infty}(1,1/\\delta)}$",
                                  apply_sqrt = TRUE)
-p_m
+
+myggsave(conv_rate_ratapprox, width = 10, height = 4)
 
 ```
 
@@ -295,14 +298,147 @@ p_m
 
 
 
+```{r, eval = TRUE, out.width="1000px", out.height="400px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/conv_rate_ratapprox.pdf"))
+```
+
+
+```{r}
+m_vector <- c(1:14)
+delta_vector <- 10^(-(5+m_vector)/2)
+
+df_delta <- data.frame(m = m_vector, delta = delta_vector)
+p_delta <- ggplot(df_delta, aes(x = m, y = delta)) +
+  geom_line(color = "blue", size = 1) +
+  geom_point(color = "red", size = 2) +
+  #scale_y_log10(n.breaks = 5) +
+  theme_bw() +
+  theme(panel.spacing = unit(0.3, "cm"), 
+        text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        strip.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12)) +
+  labs(x = "$m$", 
+       y = "$\\delta$") + 
+  theme(
+    plot.margin = margin(0, 0, 0, 0)
+  )
+```
+
+
+# Compare true eigenvalues with that of the matrix
+
+```{r}
+
+kappa <- 4
+
+h = 0.1
+graph <- gets.graph.tadpole(h = h)
+graph$compute_fem()
+
+
+H <- h*0.1
+GRAPH <- gets.graph.tadpole(h = H)
+GRAPH$compute_fem()
+
+C <- GRAPH$mesh$C
+G <- GRAPH$mesh$G
+L <- kappa^2*C + G
+realL <- L %*% solve(C) / kappa^2
+EIGEN <- Re(rev(eigen(realL, only.values = TRUE)$values))
+
+
+C <- graph$mesh$C
+G <- graph$mesh$G
+L <- kappa^2*C + G
+realL <- L %*% solve(C) / kappa^2
+eigenval <- Re(rev(eigen(realL, only.values = TRUE)$values))
+
+
+
+N_finite <- 2/3 * (length(eigenval) - 1) + 1
+eigenpairs <- gets.eigen.params(N_finite = N_finite, kappa = kappa, alpha = 0.8, graph)
+EIGENVAL <- eigenpairs$EIGENVAL / kappa^2
+
+
+df <- data.frame(
+  index = 1:length(eigenval),
+  eigenval = eigenval,
+  EIGEN = EIGEN[1:length(eigenval)],
+  EIGENVAL = EIGENVAL[1:length(eigenval)]
+) 
+
+p_eigen <- ggplot(df, aes(x = index)) +
+  geom_line(aes(y = eigenval, color = "$\\lambda_{j,h}\\mbox{ (numerical)}$"), linewidth = 1) +
+  geom_point(aes(y = eigenval, color = "$\\lambda_{j,h}\\mbox{ (numerical)}$"), size = 1) +
+  geom_line(aes(y = EIGEN, color = "$\\lambda_{j,H}\\mbox{ (numerical)}$"), linewidth = 1) +
+  geom_point(aes(y = EIGEN, color = "$\\lambda_{j,H}\\mbox{ (numerical)}$"), size = 1) +
+  geom_line(aes(y = EIGENVAL, color = "$\\lambda_{j}\\mbox{ (true)}$"), linewidth = 1) +
+  geom_point(aes(y = EIGENVAL, color = "$\\lambda_{j}\\mbox{ (true)}$"), size = 1) +
+  scale_color_manual(name = "Eigenvalues", values = c("$\\lambda_{j,h}\\mbox{ (numerical)}$" = "green", 
+                                                      "$\\lambda_{j,H}\\mbox{ (numerical)}$" = "red", 
+                                                      "$\\lambda_{j}\\mbox{ (true)}$" = "blue")) +
+  theme_bw() +
+  theme(panel.spacing = unit(0.3, "cm"), 
+        text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        strip.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12)) +
+  labs(x = "$j$", 
+       y = "$\\lambda_j,\\;\\lambda_{j,h}$") + 
+  theme(
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.key.width  = unit(2, "cm"),
+    legend.key.height = unit(0.5, "cm"),
+    plot.margin = margin(0, 0, 0, 0))
+
+
+
+myggsave(p_eigen, width = 6, height = 4)
+
+```
+
+
+
+```{r, eval = TRUE, out.width="600px", out.height="400px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/p_eigen.pdf"))
+```
 
 
 
 
+```
+{r}
+h = 0.1
+kappa <- 4
+graph <- gets.graph.tadpole(h = h)
+
+
+graph$build_mesh(h = h)
+graph$compute_fem()
+C <- graph$mesh$C
+G <- graph$mesh$G
+L <- kappa^2*C + G
+realL <- L %*% solve(C) / kappa^2
+eigenval <- rev(eigen(realL, only.values = TRUE)$values)
+
+
+A <- realL
+lambda_max <- RSpectra::eigs(A, k = 1, which = "LM")$values
+
+N_finite <- 2/3 * (length(eigenval) - 1) + 1
+eigenpairs <- gets.eigen.params(N_finite = N_finite, kappa = kappa, alpha = 0.8, graph)
+EIGENVAL <- eigenpairs$EIGENVAL / kappa^2
 
 
 
 
+```
 
 
 
