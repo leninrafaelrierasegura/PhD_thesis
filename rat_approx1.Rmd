@@ -104,7 +104,8 @@ capture.output(
 source(here::here("functionality1.R"))
 ```
 
-```{r}
+```
+{r}
 create_data <- function(alpha, m){
 res <- rSPDE:::interp_rational_coefficients(
   order = m, 
@@ -205,8 +206,7 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
   legend.position = "bottom",
   legend.direction = "horizontal",
   legend.key.width  = unit(2, "cm"),
-  legend.key.height = unit(0, "cm"),
-  plot.margin = margin(0, 0, 0, 0)
+  legend.key.height = unit(0, "cm")
 ) +
  geom_text(
     data = df_lab,
@@ -237,7 +237,8 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_RAT1.pdf"))
 
 
 
-```{r}
+```
+{r}
 alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05)
 m_vector <- c(1:14)
 errors <- matrix(NA, nrow = length(m_vector), ncol = length(alpha_vector))
@@ -310,8 +311,8 @@ delta_vector <- 10^(-(5+m_vector)/2)
 df_delta <- data.frame(m = m_vector, delta = delta_vector)
 p_delta <- ggplot(df_delta, aes(x = m, y = delta)) +
   geom_line(color = "blue", size = 1) +
-  geom_point(color = "red", size = 2) +
-  #scale_y_log10(n.breaks = 5) +
+  geom_point(color = "blue", size = 2) +
+  scale_y_log10(n.breaks = 5) +
   theme_bw() +
   theme(panel.spacing = unit(0.3, "cm"), 
         text = element_text(family = "Palatino"),
@@ -320,25 +321,31 @@ p_delta <- ggplot(df_delta, aes(x = m, y = delta)) +
         axis.title = element_text(size = 14),
         axis.text = element_text(size = 12)) +
   labs(x = "$m$", 
-       y = "$\\delta$") + 
-  theme(
-    plot.margin = margin(0, 0, 0, 0)
-  )
+       y = "$\\delta_m = 10^{-(5+m)/2}$")
+
+myggsave(p_delta, width = 8, height = 4)
+
+```
+
+
+
+```{r, eval = TRUE, out.width="800px", out.height="400px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/p_delta.pdf"))
 ```
 
 
 # Compare true eigenvalues with that of the matrix
 
-```{r}
-
+```
+{r}
 kappa <- 4
 
-h = 0.1
+h = 0.09
 graph <- gets.graph.tadpole(h = h)
 graph$compute_fem()
 
 
-H <- h*0.1
+H <- h/2
 GRAPH <- gets.graph.tadpole(h = H)
 GRAPH$compute_fem()
 
@@ -389,23 +396,22 @@ p_eigen <- ggplot(df, aes(x = index)) +
         legend.title = element_text(size = 14),
         legend.text = element_text(size = 12)) +
   labs(x = "$j$", 
-       y = "$\\lambda_j,\\;\\lambda_{j,h}$") + 
+       y = "$\\lambda_j,\\;\\lambda_{j,h},\\;\\lambda_{j,H}$") + 
   theme(
     legend.position = "bottom",
     legend.direction = "horizontal",
-    legend.key.width  = unit(2, "cm"),
-    legend.key.height = unit(0.5, "cm"),
-    plot.margin = margin(0, 0, 0, 0))
+    legend.key.width  = unit(1, "cm"),
+    legend.key.height = unit(0, "cm"))
 
 
 
-myggsave(p_eigen, width = 6, height = 4)
+myggsave(p_eigen, width = 8, height = 4)
 
 ```
 
 
 
-```{r, eval = TRUE, out.width="600px", out.height="400px", fig.cap = captioner("Covariance error for the interval graph.")}
+```{r, eval = TRUE, out.width="800px", out.height="400px", fig.cap = captioner("Covariance error for the interval graph.")}
 knitr::include_graphics(here::here("data_files/tikzpic/p_eigen.pdf"))
 ```
 
@@ -414,31 +420,49 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_eigen.pdf"))
 
 ```
 {r}
-h = 0.1
+compute_lower_bound <- function(h){
 kappa <- 4
 graph <- gets.graph.tadpole(h = h)
-
-
-graph$build_mesh(h = h)
 graph$compute_fem()
 C <- graph$mesh$C
 G <- graph$mesh$G
 L <- kappa^2*C + G
-realL <- L %*% solve(C) / kappa^2
-eigenval <- rev(eigen(realL, only.values = TRUE)$values)
+I <- diag(nrow(C))
+realL <- L %*% solve(C, I) / kappa^2
+lambda_max <- Re(RSpectra::eigs(realL, k = 1, which = "LM")$values)
+cte <- 1/lambda_max
+return(cte)
+}
 
 
-A <- realL
-lambda_max <- RSpectra::eigs(A, k = 1, which = "LM")$values
+h_vector <- seq(0.005, 0.1, by = 0.005)
+lower_bounds <- sapply(h_vector, compute_lower_bound)
+df_lower <- data.frame(h = h_vector, lower_bound = lower_bounds)
 
-N_finite <- 2/3 * (length(eigenval) - 1) + 1
-eigenpairs <- gets.eigen.params(N_finite = N_finite, kappa = kappa, alpha = 0.8, graph)
-EIGENVAL <- eigenpairs$EIGENVAL / kappa^2
-
-
-
+p_lower <- ggplot(df_lower, aes(x = h, y = lower_bound)) +
+  geom_line(color = "blue", linewidth = 1) +
+  geom_point(color = "blue", size = 2) +
+  scale_y_log10(n.breaks = 5) +
+  theme_bw() +
+  theme(panel.spacing = unit(0.3, "cm"), 
+        text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 16),
+        strip.text = element_text(size = 12),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12)) +
+  labs(x = "$h$", 
+       y = "$\\kappa^2\\lambda^{-1}_{N_h,h}$")
+myggsave(p_lower, width = 8, height = 4)
 
 ```
+
+
+
+```{r, eval = TRUE, out.width="800px", out.height="400px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/p_lower.pdf"))
+```
+
+
 
 
 

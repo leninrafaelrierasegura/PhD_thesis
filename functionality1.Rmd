@@ -570,7 +570,7 @@ error.convergence.plotter <- function(x_axis_vector,
     theme(text = element_text(family = "Palatino"),
           legend.position = "right",
           legend.direction = "vertical",
-          plot.margin = margin(0, 0, 0, 0),
+          #plot.margin = margin(0, 0, 0, 0),
           plot.title = element_text(hjust = 0.5, size = 18, face = "bold"))
   
   return(p)

@@ -1,4 +1,4 @@
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Create a clipboard button on the rendered HTML page
 source(here::here("clipboard.R")); clipboard
 # Set seed for reproducibility
@@ -36,7 +36,7 @@ captioner <- function(caption) {
 
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(MetricGraph)
 library(ggplot2)
 library(reshape2)
@@ -50,7 +50,7 @@ source("keys.R")
 slackr_setup(token = token) # token comes from keys.R
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Color for axis name and axis numbers
 colaxnn <- "gray"
 # Global font size
@@ -61,7 +61,7 @@ mydarkblue <- "#0000C8"
 gsw <- 7
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 gets.graph.interval <- function(n){
   edge <- rbind(c(0,0),c(1,0))
   edges = list(edge)
@@ -71,7 +71,7 @@ gets.graph.interval <- function(n){
 }
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 gets.graph.circle <- function(n){
   r = 1/(pi)
   theta <- seq(from=-pi,to=pi,length.out = 100)
@@ -83,7 +83,7 @@ gets.graph.circle <- function(n){
 }
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Function to build a tadpole graph and create a mesh
 gets.graph.tadpole <- function(h){
   edge1 <- rbind(c(0,0),c(1,0))
@@ -97,7 +97,7 @@ gets.graph.tadpole <- function(h){
 }
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 tadpole.eig <- function(k,graph){
 x1 <- c(0,graph$get_edge_lengths()[1]*graph$mesh$PtE[graph$mesh$PtE[,1]==1,2]) 
 x2 <- c(0,graph$get_edge_lengths()[2]*graph$mesh$PtE[graph$mesh$PtE[,1]==2,2]) 
@@ -127,7 +127,7 @@ return(f)
 }
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Function to compute the eigenpairs of the tadpole graph
 gets.eigen.params <- function(N_finite = 4, kappa = 1, alpha = 0.5, graph){
   EIGENVAL <- NULL
@@ -165,7 +165,7 @@ gets.eigen.params <- function(N_finite = 4, kappa = 1, alpha = 0.5, graph){
 }
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Function to order the vertices for plotting
 plotting.order <- function(v, graph){
   edge_number <- graph$mesh$VtE[, 1]
@@ -174,7 +174,7 @@ plotting.order <- function(v, graph){
 }
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Original camera
 eye <- list(x = 5, y = 3, z = 4)
 center <- list(x = (1+2/pi)/2, y = 0, z = 0)
@@ -211,7 +211,7 @@ tadpole.layout.with.zoom <- function(x_range, y_range, z_range){
 }
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 myggsave <- function(plot, width = 9.22, height = 7.05) {
   
   dir_to_save <- here::here("data_files/tikzpic")
@@ -248,7 +248,7 @@ myggsave <- function(plot, width = 9.22, height = 7.05) {
 }
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 
 library(plotly)
 library(reticulate)
@@ -321,7 +321,7 @@ combined.save(r'{output_pdf}', 'PDF', resolution={resolution})
 # combine_plotly_grid_pdf(list(p1, p2, p3, p4), output_pdf = "plots_2x2.pdf", ncol = 4)
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(plotly)
 library(reticulate)
 
@@ -372,7 +372,7 @@ combined.save(r'%s', 'PDF', resolution=%d)
 # combine_plotly_pdf(p1, p2, output_pdf = "my_plots.pdf")
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(plotly)
 library(reticulate)
 
@@ -409,7 +409,7 @@ img_rgb.save(r'%s', 'PDF', resolution=%d)
 # combine_plotly_pdf_single(p1, output_pdf = "single_plot.pdf")
 
 
-## ----------------------------------------------------------------
+## -----------------------------------------------------------------------------
 
 loglog_line_equation <- function(x1, y1, slope) {
   b <- log10(y1 / (x1 ^ slope))
@@ -514,7 +514,7 @@ error.convergence.plotter <- function(x_axis_vector,
     theme(text = element_text(family = "Palatino"),
           legend.position = "right",
           legend.direction = "vertical",
-          plot.margin = margin(0, 0, 0, 0),
+          #plot.margin = margin(0, 0, 0, 0),
           plot.title = element_text(hjust = 0.5, size = 18, face = "bold"))
   
   return(p)
