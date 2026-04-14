@@ -105,7 +105,8 @@ source(here::here("functionality1.R"))
 ```
 
 
-```]{r}
+```
+{r}
 make_segment <- function(n) {
   x <- seq(n, n + 1, length.out = 200)
   x <- x[x < (n + 1)]
@@ -120,7 +121,7 @@ df <- rbind(
   make_segment(2)
 )
 
-closed_pts <- data.frame(x = 0:2, y = 0)
+closed_pts <- data.frame(x = 0:3, y = 0)
 open_pts   <- data.frame(x = 1:3, y = 1)
 
 rational_part_plot <- ggplot(df, aes(x, y)) +
@@ -156,8 +157,7 @@ knitr::include_graphics(here::here("data_files/tikzpic/rational_part_plot.pdf"))
 
 
 
-```
-{r}
+```{r}
 create_data <- function(alpha, m){
 res <- rSPDE:::interp_rational_coefficients(
   order = m, 
@@ -220,12 +220,11 @@ df <- df |>
     method = factor(
       method,
       levels = c("partFraction", "powerFun"),
-      labels = c("$r(x) = k+\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x) = x^{-\\{\\alpha\\}}$")
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")
     )
   )
 
-df_lab <- df |>
-  distinct(m, alpha, Linferror)
+
 
 df_lab <- df |>
   group_by(m, alpha) |>
@@ -236,13 +235,25 @@ df_lab <- df |>
     .groups = "drop"
   )
 
+format_scientific <- function(x, digits = 2) {
+  ifelse(
+    x == 0,
+    "0",
+    {
+      e <- floor(log10(abs(x)))
+      m <- round(x / 10^e, digits)
+      sprintf("%.2f \\times 10^{%d}", m, e)
+    }
+  )
+}
+
 p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) + 
   facet_grid(m ~ alpha) +
   geom_line(linewidth = 1) +
   scale_y_log10(n.breaks = 5) +
-  scale_x_continuous(n.breaks = 6) +
-  scale_colour_manual(name = "Method", values = c("$r(x) = k+\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red", "$f(x) = x^{-\\{\\alpha\\}}$" = "blue")) + 
-  scale_linetype_manual(name = "Method", values = c("$r(x) = k+\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "solid", "$f(x) = x^{-\\{\\alpha\\}}$" = "dashed")) + 
+  scale_x_continuous(n.breaks = 4) +
+  scale_colour_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red", "$f(x^{-1}) = x^{-\\alpha}$" = "blue")) + 
+  scale_linetype_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "solid", "$f(x^{-1}) = x^{-\\alpha}$" = "dashed")) + 
   theme_bw() +
   theme(panel.spacing = unit(0.3, "cm"), 
         text = element_text(family = "Palatino"),
@@ -253,7 +264,7 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
         legend.title = element_text(size = 14),
         legend.text = element_text(size = 12)) +
   labs(x = "$x$", 
-       y = "$r(x),\\;f(x)$") + 
+       y = "$r_m(x^{-1}),\\;f(x^{-1})$") + 
   theme(
   legend.position = "bottom",
   legend.direction = "horizontal",
@@ -264,20 +275,22 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
     data = df_lab,
     aes(
       x = x_mid,
-      y = y_mid,
-      label = sprintf("$\\|r-f\\|_{L_{\\infty}(1,1/\\delta_{%d})} = %.2e$", min_m, Linferror)
+      y = Inf,
+      label = sprintf("$\\|r_m-f\\|_{L_{\\infty}([\\delta_{%d},1])} = %s$", min_m, format_scientific(Linferror))
     ),
     inherit.aes = FALSE,
     parse = FALSE,
-    size = 4,
+    size = 3,
     hjust = 0.5,
-    vjust = 0.5
-  )
+    vjust = 2
+  ) +
+
+  coord_cartesian(clip = "off")
 
 
 
 
-myggsave(p_RAT1, width = 12, height = 6)
+myggsave(p_RAT1, width = 9, height = 5)
 
 ```
 
@@ -356,7 +369,8 @@ knitr::include_graphics(here::here("data_files/tikzpic/conv_rate_ratapprox.pdf")
 ```
 
 
-```{r}
+```
+{r}
 m_vector <- c(1:14)
 delta_vector <- 10^(-(5+m_vector)/2)
 

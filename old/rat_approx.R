@@ -8,8 +8,8 @@ capture.output(
 source(here::here("functionality1.R"))
 
 
-alpha <- 1.6
-m <- 10
+alpha <- 0.99
+m <- 2
 
 
 res <- rSPDE:::interp_rational_coefficients(
@@ -40,7 +40,7 @@ powerFun <- function(x){
 }
 
 delta <- 10^(-(5+m)/2)
-x <- seq(1, 1/delta, length.out = 100)
+x <- seq(delta,1, length.out = 100)
 #x <- 1/x
 df <- data.frame(x = x, pq = pOverq(x), pf = partFraction(x), po = powerFun(x))
 
