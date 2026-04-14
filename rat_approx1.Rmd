@@ -250,7 +250,7 @@ format_scientific <- function(x, digits = 2) {
 p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) + 
   facet_grid(m ~ alpha) +
   geom_line(linewidth = 2) +
-  #scale_y_log10(n.breaks = 5) +
+  scale_y_log10(n.breaks = 5) +
   scale_x_continuous(n.breaks = 4) +
   scale_colour_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red", "$f(x^{-1}) = x^{-\\alpha}$" = "blue")) + 
   scale_linetype_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "solid", "$f(x^{-1}) = x^{-\\alpha}$" = "dashed")) + 
@@ -265,6 +265,7 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
         axis.text.x = element_text(size = 10),  # x-axis numbers
         axis.text.y = element_text(size = 10),   # y-axis numbers
         legend.title = element_text(size = 10),
+        #plot.margin = margin(0, 0, 0, 0),
         legend.text = element_text(size = 10)) +
   labs(x = "$x$", 
        y = "$r_m(x^{-1}),\\;f(x^{-1})$") + 
