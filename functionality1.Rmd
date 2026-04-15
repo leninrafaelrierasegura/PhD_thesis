@@ -511,6 +511,7 @@ error.convergence.plotter <- function(x_axis_vector,
                                       fig_title,
                                       x_axis_label,
                                       y_axis_label,
+                                      color_label,
                                       apply_sqrt = FALSE) {
   
   relative_per_error <- 100 * abs(theoretical_rates - observed_rates) / abs(theoretical_rates)
@@ -554,7 +555,7 @@ error.convergence.plotter <- function(x_axis_vector,
       title = fig_title,
       x = x_axis_label,
       y = y_axis_label,
-      color = "$\\quad\\quad\\;\\alpha\\;\\;|\\;\\;\\mbox{theo}\\;|\\;\\;\\mbox{obs}\\;\\;\\;|\\%\\mbox{re}$"
+      color = color_label
     ) +
     (if (apply_sqrt) {
       scale_x_continuous(breaks = x_vec, labels = round(x_axis_vector, 4))
@@ -562,7 +563,8 @@ error.convergence.plotter <- function(x_axis_vector,
       scale_x_log10(breaks = x_axis_vector, labels = round(x_axis_vector, 4))
     }) +
     (if (apply_sqrt) {
-      scale_y_continuous(trans = "log", labels = scales::scientific_format())
+      #scale_y_continuous(trans = "log", labels = scales::scientific_format())
+      scale_y_continuous(trans = scales::log_trans(base = exp(1)), labels = scales::scientific_format())
     } else {
       scale_y_log10(labels = scales::scientific_format())
     }) +

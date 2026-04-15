@@ -157,7 +157,8 @@ knitr::include_graphics(here::here("data_files/tikzpic/rational_part_plot.pdf"))
 
 
 
-```{r}
+```
+{r}
 create_data <- function(alpha, m){
 res <- rSPDE:::interp_rational_coefficients(
   order = m, 
@@ -177,11 +178,11 @@ powerFun <- function(x){
 
 delta <- 10^(-(5+m)/2)
 
-#x <- seq(1, 1/delta, length.out = 1000)
+x_to_compute_error <- seq(1, 1/delta, length.out = 1000)
 x <- seq(1, min_reciprocal_delta, length.out = 1000)
 pf <- partFraction(x)
 po <- powerFun(x)
-Linferror <- max(abs(pf - po))
+Linferror <- max(abs(partFraction(x_to_compute_error) - powerFun(x_to_compute_error)))
 df <- rbind(data.frame(x = x, val = pf, method = "partFraction", alpha = alpha, m = m, Linferror = Linferror),
             data.frame(x = x, val =  po, method = "powerFun", alpha = alpha, m = m, Linferror = Linferror))
 return(df)
@@ -219,8 +220,8 @@ df <- df |>
     },
     method = factor(
       method,
-      levels = c("partFraction", "powerFun"),
-      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
     )
   )
 
@@ -252,22 +253,22 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
   scale_y_log10(n.breaks = 5) +
   scale_x_log10(n.breaks = 5) +
   scale_colour_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red", "$f(x^{-1}) = x^{-\\alpha}$" = "blue")) + 
-  scale_linetype_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "solid", "$f(x^{-1}) = x^{-\\alpha}$" = "dashed")) + 
+  scale_linetype_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "dashed", "$f(x^{-1}) = x^{-\\alpha}$" = "solid")[2:1]) + 
   theme_bw() +
   theme(panel.spacing = unit(0.3, "cm"), 
         text = element_text(family = "Palatino"),
-        plot.title = element_text(hjust = 0.5, size = 10),
-        strip.text.x = element_text(size = 10),  # alpha (top)
-        strip.text.y = element_text(size = 10),   # m (left)
-        axis.title.x = element_text(size = 10),
-        axis.title.y = element_text(size = 10),
-        axis.text.x = element_text(size = 10),  # x-axis numbers
-        axis.text.y = element_text(size = 10),   # y-axis numbers
-        legend.title = element_text(size = 10),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
         #plot.margin = margin(0, 0, 0, 0),
-        legend.text = element_text(size = 10)) +
-  labs(x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log\\mbox{ scale})$", min_m),
-       y = "$(\\log\\mbox{ scale})$" # $r_m(x^{-1}),\\;f(x^{-1})$"
+        legend.text = element_text(size = 12)) +
+  labs(x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log_{10}\\mbox{ scale})$", min_m),
+       y = "$(\\log_{10}\\mbox{ scale})$" # $r_m(x^{-1}),\\;f(x^{-1})$"
        ) + 
   theme(
   legend.position = "bottom",
@@ -278,13 +279,14 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
  geom_text(
     data = df_lab,
     aes(
-      label = sprintf("$\\|r_m-f\\|_{L_{\\infty}([\\delta_{%d},1])} = %s$", min_m, format_scientific(Linferror))
+      #label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_{%d}])} = %s$", min_m, format_scientific(Linferror))
+      label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
     ),
     x = 0,
-    y = -2,
+    y = -2.1,
     inherit.aes = FALSE,
     parse = FALSE,
-    size = 3,
+    size = 3.5,
     hjust = 0,
     vjust = 0
   ) 
@@ -294,17 +296,563 @@ myggsave(p_RAT1, width = 9, height = 6)
 
 ```
 
-
-
 ```{r, eval = TRUE, out.width="1200px", out.height="600px", fig.cap = captioner("Covariance error for the interval graph.")}
 knitr::include_graphics(here::here("data_files/tikzpic/p_RAT1.pdf"))
 ```
 
-
+# LOG
 
 ```
 {r}
-alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05)
+library(patchwork)
+
+create_data <- function(alpha, m){
+res <- rSPDE:::interp_rational_coefficients(
+  order = m, 
+  type_rational_approx = "brasil", 
+  type_interp = "spline", 
+  alpha = alpha)
+
+partFraction <- function(x) {
+  term_matrix <- outer(x, res$p, "-") # matrix of (x - p[i])
+  term_values <- sweep(1 / term_matrix, 2, res$r, "*") # multiply columns by r[i]
+  return(rowSums(term_values) + res$k)
+}
+
+powerFun <- function(x){
+  return(x^(-(alpha-floor(alpha))))
+}
+
+delta <- 10^(-(5+m)/2)
+
+
+x <- seq(1, 1/delta, length.out = 1000)
+pf <- partFraction(x)
+po <- powerFun(x)
+Linferror <- max(abs(partFraction(x) - powerFun(x)))
+df <- rbind(data.frame(x = x, val = pf, method = "partFraction", Linferror = Linferror),
+            data.frame(x = x, val =  po, method = "powerFun", Linferror = Linferror))
+return(df)
+}
+
+alpha <- 1.6
+m <- c(2,6,12)
+min_m <- min(m)
+
+df1 <- create_data(alpha, m[1])
+df2 <- create_data(alpha, m[2])
+df3 <- create_data(alpha, m[3])
+
+df1 <- df1 |>
+  mutate(
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
+    )
+  )
+
+df2 <- df2 |>
+  mutate(
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
+    )
+  )
+
+df3 <- df3 |>
+  mutate(
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
+    )
+  )
+
+common_scales <- list(
+  scale_colour_manual(
+    name = "Function",
+    values = c(
+      "$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red",
+      "$f(x^{-1}) = x^{-\\alpha}$" = "blue"
+    )
+  ),
+  scale_linetype_manual(
+    name = "Function",
+    values = c(
+      "$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "dashed",
+      "$f(x^{-1}) = x^{-\\alpha}$" = "solid"
+    )
+  )
+)
+
+format_scientific <- function(x, digits = 2) {
+  ifelse(
+    x == 0,
+    "0",
+    {
+      e <- floor(log10(abs(x)))
+      m <- round(x / 10^e, digits)
+      sprintf("%.2f \\times 10^{%d}", m, e)
+    }
+  )
+}
+
+df_lab1 <- df1 |>
+  summarise(
+    Linferror = first(Linferror),  # because of log scale
+    .groups = "drop"
+  )
+
+df_lab2 <- df2 |>
+  summarise(
+    Linferror = first(Linferror),  # because of log scale
+    .groups = "drop"
+  )
+
+df_lab3 <- df3 |>
+  summarise(
+    Linferror = first(Linferror),  # because of log scale
+    .groups = "drop"
+  )
+
+p1 <- ggplot(df1, aes(x = x, y = val, colour = method, linetype = method)) +
+geom_line(linewidth = 2) +
+  scale_y_log10(n.breaks = 5) +
+  scale_x_log10(n.breaks = 5) +
+  theme_bw() +
+  common_scales +
+  labs(x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log_{10}\\mbox{ scale})$", m[1]),
+       y = "$(\\log_{10}\\mbox{ scale})$" # $r_m(x^{-1}),\\;f(x^{-1})$"
+       ) + 
+  theme(
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  legend.key.width  = unit(2, "cm"),
+  legend.key.height = unit(0, "cm"),
+  text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
+        #plot.margin = margin(0, 0, 0, 0),
+        legend.text = element_text(size = 12)
+) +
+  labs(title = NULL) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "black"),
+    strip.text = element_text(size = 12)
+  ) +
+  facet_wrap(~ sprintf("$m = %d,\\;\\;\\alpha = %s$", m[1], alpha)) +
+ geom_text(
+    data = df_lab1,
+    aes(label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
+    ),
+    x = 0,
+    y = -2.12,
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 3.5,
+    hjust = 0,
+    vjust = 0
+  ) 
+
+
+p2 <- ggplot(df2, aes(x = x, y = val, colour = method, linetype = method)) +
+  geom_line(linewidth = 2) +
+  scale_y_log10(n.breaks = 5) +
+  scale_x_log10(n.breaks = 5) +
+  theme_bw() +
+  common_scales +
+  labs(x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log_{10}\\mbox{ scale})$", m[2]),
+       y = "$(\\log_{10}\\mbox{ scale})$" # $r_m(x^{-1}),\\;f(x^{-1})$"
+       ) + 
+  theme(
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  legend.key.width  = unit(2, "cm"),
+  legend.key.height = unit(0, "cm"),
+  text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
+        #plot.margin = margin(0, 0, 0, 0),
+        legend.text = element_text(size = 12)
+) +
+  labs(title = NULL) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "black"),
+    strip.text = element_text(size = 12)
+  ) +
+  facet_wrap(~ sprintf("$m = %d,\\;\\;\\alpha = %s$", m[2], alpha)) +
+ geom_text(
+    data = df_lab2,
+    aes(label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
+    ),
+    x = 0,
+    y = -3.34,
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 3.5,
+    hjust = 0,
+    vjust = 0
+  ) 
+
+
+p3 <- ggplot(df3, aes(x = x, y = val, colour = method, linetype = method)) +
+  geom_line(linewidth = 2) +
+  scale_y_log10(n.breaks = 5) +
+  scale_x_log10(n.breaks = 5) +
+  theme_bw() +
+  common_scales +
+  labs(x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log_{10}\\mbox{ scale})$", m[3]),
+       y = "$(\\log_{10}\\mbox{ scale})$" # $r_m(x^{-1}),\\;f(x^{-1})$"
+       ) + 
+  theme(
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  legend.key.width  = unit(2, "cm"),
+  legend.key.height = unit(0, "cm"),
+  text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
+        #plot.margin = margin(0, 0, 0, 0),
+        legend.text = element_text(size = 12)
+) +
+  labs(title = NULL) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "black"),
+    strip.text = element_text(size = 12)
+  ) +
+  facet_wrap(~ sprintf("$m = %d,\\;\\;\\alpha = %s$", m[3], alpha)) +
+ geom_text(
+    data = df_lab3,
+    aes(label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
+    ),
+    x = 0,
+    y = -5.15,
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 3.5,
+    hjust = 0,
+    vjust = 0
+  ) 
+
+
+p_one_columnLOG <- ((p1 | p2 | p3) + 
+  plot_layout(guides = "collect")) & 
+  theme(
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.key.width  = unit(2, "cm"),
+    legend.key.height = unit(0, "cm"),  # <- avoid zero, can cause issues
+    legend.box = "horizontal"
+  )
+
+
+myggsave(p_one_columnLOG, width = 10, height = 10/3)
+```
+
+```{r, eval = TRUE, out.width="1000px", out.height="333px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/p_one_columnLOG.pdf"))
+```
+
+
+# NO LOG
+
+```
+{r}
+library(patchwork)
+
+create_data <- function(alpha, m){
+res <- rSPDE:::interp_rational_coefficients(
+  order = m, 
+  type_rational_approx = "brasil", 
+  type_interp = "spline", 
+  alpha = alpha)
+
+partFraction <- function(x) {
+  term_matrix <- outer(x, res$p, "-") # matrix of (x - p[i])
+  term_values <- sweep(1 / term_matrix, 2, res$r, "*") # multiply columns by r[i]
+  return(rowSums(term_values) + res$k)
+}
+
+powerFun <- function(x){
+  return(x^(-(alpha-floor(alpha))))
+}
+
+delta <- 10^(-(5+m)/2)
+
+
+x <- seq(1, 1/delta, length.out = 1000)
+pf <- partFraction(x)
+po <- powerFun(x)
+Linferror <- max(abs(partFraction(x) - powerFun(x)))
+df <- rbind(data.frame(x = x, val = pf, method = "partFraction", Linferror = Linferror),
+            data.frame(x = x, val =  po, method = "powerFun", Linferror = Linferror))
+return(df)
+}
+
+alpha <- 1.6
+m <- c(2,6,12)
+min_m <- min(m)
+
+df1 <- create_data(alpha, m[1])
+df2 <- create_data(alpha, m[2])
+df3 <- create_data(alpha, m[3])
+
+df1 <- df1 |>
+  mutate(
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
+    )
+  )
+
+df2 <- df2 |>
+  mutate(
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
+    )
+  )
+
+df3 <- df3 |>
+  mutate(
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
+    )
+  )
+
+common_scales <- list(
+  scale_colour_manual(
+    name = "Function",
+    values = c(
+      "$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red",
+      "$f(x^{-1}) = x^{-\\alpha}$" = "blue"
+    )
+  ),
+  scale_linetype_manual(
+    name = "Function",
+    values = c(
+      "$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "dashed",
+      "$f(x^{-1}) = x^{-\\alpha}$" = "solid"
+    )
+  )
+)
+
+format_scientific <- function(x, digits = 2) {
+  ifelse(
+    x == 0,
+    "0",
+    {
+      e <- floor(log10(abs(x)))
+      m <- round(x / 10^e, digits)
+      sprintf("%.2f \\times 10^{%d}", m, e)
+    }
+  )
+}
+
+df_lab1 <- df1 |>
+  summarise(
+    Linferror = first(Linferror),  # because of log scale
+    .groups = "drop"
+  )
+
+df_lab2 <- df2 |>
+  summarise(
+    Linferror = first(Linferror),  # because of log scale
+    .groups = "drop"
+  )
+
+df_lab3 <- df3 |>
+  summarise(
+    Linferror = first(Linferror),  # because of log scale
+    .groups = "drop"
+  )
+
+p1 <- ggplot(df1, aes(x = x, y = val, colour = method, linetype = method)) +
+geom_line(linewidth = 2) +
+  #scale_y_log10(n.breaks = 5) +
+  #scale_x_log10(n.breaks = 5) +
+  theme_bw() +
+  common_scales +
+  labs(x = sprintf("$x\\in[1,1/\\delta_{%d}]$", m[1]),
+       y = "" # $r_m(x^{-1}),\\;f(x^{-1})$"
+       ) + 
+  theme(
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  legend.key.width  = unit(2, "cm"),
+  legend.key.height = unit(0, "cm"),
+  text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
+        #plot.margin = margin(0, 0, 0, 0),
+        legend.text = element_text(size = 12)
+) +
+  labs(title = NULL) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "black"),
+    strip.text = element_text(size = 12)
+  ) +
+  facet_wrap(~ sprintf("$m = %d,\\;\\;\\alpha = %s$", m[1], alpha)) +
+ geom_text(
+    data = df_lab1,
+    aes(label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
+    ),
+    x = 0.1,
+    y = 0.9,
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 3.5,
+    hjust = -0.1,
+    vjust = 0
+  ) 
+
+
+p2 <- ggplot(df2, aes(x = x, y = val, colour = method, linetype = method)) +
+  geom_line(linewidth = 2) +
+  #scale_y_log10(n.breaks = 5) +
+  #scale_x_log10(n.breaks = 5) +
+  theme_bw() +
+  common_scales +
+  labs(#x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log_{10}\\mbox{ scale})$", m[2]),
+    x = sprintf("$x\\in[1,1/\\delta_{%d}]$", m[2]),
+       y = "" # $r_m(x^{-1}),\\;f(x^{-1})$"
+       ) + 
+  theme(
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  legend.key.width  = unit(2, "cm"),
+  legend.key.height = unit(0, "cm"),
+  text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
+        #plot.margin = margin(0, 0, 0, 0),
+        legend.text = element_text(size = 12)
+) +
+  labs(title = NULL) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "black"),
+    strip.text = element_text(size = 12)
+  ) +
+  facet_wrap(~ sprintf("$m = %d,\\;\\;\\alpha = %s$", m[2], alpha)) +
+ geom_text(
+    data = df_lab2,
+    aes(label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
+    ),
+    x = 0.1,
+    y = 0.9,
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 3.5,
+    hjust = -0.1,
+    vjust = 0
+  ) 
+
+
+p3 <- ggplot(df3, aes(x = x, y = val, colour = method, linetype = method)) +
+  geom_line(linewidth = 2) +
+  #scale_y_log10(n.breaks = 5) +
+  #scale_x_log10(n.breaks = 5) +
+  theme_bw() +
+  common_scales +
+  labs(#x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log_{10}\\mbox{ scale})$", m[3]),
+    x = sprintf("$x\\in[1,1/\\delta_{%d}]$", m[3]),
+       y = "" # $r_m(x^{-1}),\\;f(x^{-1})$"
+       ) + 
+  theme(
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  legend.key.width  = unit(2, "cm"),
+  legend.key.height = unit(0, "cm"),
+  text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
+        #plot.margin = margin(0, 0, 0, 0),
+        legend.text = element_text(size = 12)
+) +
+  labs(title = NULL) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "black"),
+    strip.text = element_text(size = 12)
+  ) +
+  facet_wrap(~ sprintf("$m = %d,\\;\\;\\alpha = %s$", m[3], alpha)) +
+ geom_text(
+    data = df_lab3,
+    aes(label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
+    ),
+    x = 0.1,
+    y = 0.9,
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 3.5,
+    hjust = -0.1,
+    vjust = 0
+  ) 
+
+
+p_one_columnnoLOG <- ((p1 | p2 | p3) + 
+  plot_layout(guides = "collect")) & 
+  theme(
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.key.width  = unit(2, "cm"),
+    legend.key.height = unit(0, "cm"),  # <- avoid zero, can cause issues
+    legend.box = "horizontal"
+  )
+
+
+myggsave(p_one_columnnoLOG, width = 10, height = 10/3)
+```
+
+
+```{r, eval = TRUE, out.width="1000px", out.height="333px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/p_one_columnnoLOG.pdf"))
+```
+
+
+```{r}
+alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05) + 2
 m_vector <- c(1:14)
 errors <- matrix(NA, nrow = length(m_vector), ncol = length(alpha_vector))
 for (alpha in alpha_vector) {
@@ -345,17 +893,18 @@ for (u in 1:length(alpha_vector)) {
 theoretical_rates <- - 2 * pi * sqrt(alpha_vector - floor(alpha_vector))
 
 conv_rate_ratapprox <- error.convergence.plotter(x_axis_vector = m_vector, 
-                                 alpha_vector, 
+                                 alpha_vector = alpha_vector - floor(alpha_vector), 
                                  errors, 
                                  theoretical_rates, 
                                  observed_rates,
                                  line_equation_fun = exp_line_equation,
                                  fig_title = "",
-                                 x_axis_label = "$m$",
-                                 y_axis_label = "$\\|r-f\\|_{L_{\\infty}(1,1/\\delta)}$",
+                                 x_axis_label = "$m\\quad(\\sqrt{\\phantom{x}}\\mbox{ scale})$",
+                                 y_axis_label = "$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])}\\quad(\\log_{\\mathrm{e}}\\mbox{ scale})$",
+                                 color_label = "$\\quad\\;\\;\\{\\alpha\\}\\;|\\;\\;\\mbox{theo}\\;|\\;\\;\\mbox{obs}\\;\\;\\;|\\%\\mbox{re}$",
                                  apply_sqrt = TRUE)
 
-myggsave(conv_rate_ratapprox, width = 10, height = 4)
+myggsave(conv_rate_ratapprox, width = 8, height = 3.2)
 
 ```
 
