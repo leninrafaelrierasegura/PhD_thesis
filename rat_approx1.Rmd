@@ -225,16 +225,6 @@ df <- df |>
   )
 
 
-
-df_lab <- df |>
-  group_by(m, alpha) |>
-  summarise(
-    Linferror = first(Linferror),
-    x_mid = mean(range(x, na.rm = TRUE)),
-    y_mid = exp(mean(log(range(val, na.rm = TRUE)))),  # because of log scale
-    .groups = "drop"
-  )
-
 format_scientific <- function(x, digits = 2) {
   ifelse(
     x == 0,
@@ -247,11 +237,20 @@ format_scientific <- function(x, digits = 2) {
   )
 }
 
+df_lab <- df |>
+  group_by(m, alpha) |>
+  summarise(
+    Linferror = first(Linferror),
+    x_mid = mean(range(x, na.rm = TRUE)),
+    y_mid = exp(mean(log(range(val, na.rm = TRUE)))),  # because of log scale
+    .groups = "drop"
+  )
+
 p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) + 
   facet_grid(m ~ alpha) +
   geom_line(linewidth = 2) +
   scale_y_log10(n.breaks = 5) +
-  scale_x_continuous(n.breaks = 4) +
+  scale_x_log10(n.breaks = 5) +
   scale_colour_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red", "$f(x^{-1}) = x^{-\\alpha}$" = "blue")) + 
   scale_linetype_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "solid", "$f(x^{-1}) = x^{-\\alpha}$" = "dashed")) + 
   theme_bw() +
@@ -260,15 +259,16 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
         plot.title = element_text(hjust = 0.5, size = 10),
         strip.text.x = element_text(size = 10),  # alpha (top)
         strip.text.y = element_text(size = 10),   # m (left)
-        axis.title.x = element_text(size = 12),
+        axis.title.x = element_text(size = 10),
         axis.title.y = element_text(size = 10),
         axis.text.x = element_text(size = 10),  # x-axis numbers
         axis.text.y = element_text(size = 10),   # y-axis numbers
         legend.title = element_text(size = 10),
         #plot.margin = margin(0, 0, 0, 0),
         legend.text = element_text(size = 10)) +
-  labs(x = "$x$", 
-       y = "$r_m(x^{-1}),\\;f(x^{-1})$") + 
+  labs(x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log\\mbox{ scale})$", min_m),
+       y = "$(\\log\\mbox{ scale})$" # $r_m(x^{-1}),\\;f(x^{-1})$"
+       ) + 
   theme(
   legend.position = "bottom",
   legend.direction = "horizontal",
@@ -278,20 +278,16 @@ p_RAT1 <- ggplot(df, aes(x, val, color = method, linetype = method)) +
  geom_text(
     data = df_lab,
     aes(
-      x = x_mid,
-      y = Inf,
       label = sprintf("$\\|r_m-f\\|_{L_{\\infty}([\\delta_{%d},1])} = %s$", min_m, format_scientific(Linferror))
     ),
+    x = 0,
+    y = -2,
     inherit.aes = FALSE,
     parse = FALSE,
     size = 3,
-    hjust = 0.5,
-    vjust = 2
-  ) +
-
-  coord_cartesian(clip = "off")
-
-
+    hjust = 0,
+    vjust = 0
+  ) 
 
 
 myggsave(p_RAT1, width = 9, height = 6)
