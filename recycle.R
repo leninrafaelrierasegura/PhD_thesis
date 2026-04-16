@@ -1230,6 +1230,229 @@ fig
 ```
 
 
+generate_graph_on_sphere <- function(n, steps = 200, step_size = 0.01) {
+  # --- Random initial points on sphere ---
+  X <- matrix(rnorm(3 * n), n, 3)
+  X <- X / sqrt(rowSums(X^2))  # normalize to unit sphere
+  
+  # --- Repulsion (Coulomb-like optimization) ---
+  for (s in 1:steps) {
+    F <- matrix(0, n, 3)
+    
+    for (i in 1:(n-1)) {
+      for (j in (i+1):n) {
+        diff <- X[i, ] - X[j, ]
+        d <- sqrt(sum(diff^2)) + 1e-8
+        
+        force <- diff / d^3   # repulsive force
+        
+        F[i, ] <- F[i, ] + force
+        F[j, ] <- F[j, ] - force
+      }
+    }
+    
+    # update + reproject to sphere
+    X <- X + step_size * F
+    X <- X / sqrt(rowSums(X^2))
+  }
+  
+  nodes <- X
+  nodes2d <- nodes[, 1:2]
+  
+  # --- Fully connected edges ---
+  edges <- list()
+  edges2d <- list()
+  k <- 1
+  
+  for (i in 1:(n-1)) {
+    for (j in (i+1):n) {
+      edges[[k]] <- rbind(nodes[i, ], nodes[j, ])
+      edges2d[[k]] <- rbind(nodes2d[i, ], nodes2d[j, ])
+      k <- k + 1
+    }
+  }
+  
+  return(list(
+    nodes = nodes,
+    edges = edges,
+    edges2d = edges2d
+  ))
+}
+
+
+
+
+# check this arrangement, may become in handy
+
+create_data <- function(alpha, m){
+  res <- rSPDE:::interp_rational_coefficients(
+    order = m, 
+    type_rational_approx = "brasil", 
+    type_interp = "spline", 
+    alpha = alpha)
+  
+  partFraction <- function(x) {
+    term_matrix <- outer(x, res$p, "-") # matrix of (x - p[i])
+    term_values <- sweep(1 / term_matrix, 2, res$r, "*") # multiply columns by r[i]
+    return(rowSums(term_values) + res$k)
+  }
+  
+  powerFun <- function(x){
+    return(x^(-(alpha-floor(alpha))))
+  }
+  
+  delta <- 10^(-(5+m)/2)
+  
+  x <- seq(1, 1/delta, length.out = 1000)
+  pf <- partFraction(x)
+  po <- powerFun(x)
+  Linferror <- max(abs(partFraction(x) - powerFun(x)))
+  df <- rbind(data.frame(x = x, val = pf, method = "partFraction", alpha = alpha, m = m, Linferror = Linferror),
+              data.frame(x = x, val =  po, method = "powerFun", alpha = alpha, m = m, Linferror = Linferror))
+  return(df)
+}
+
+alpha <- c(0.4, 1.6, 2.4)
+m <- c(2,6,12)
+delta_aux <- 10^(-(5+m)/2)
+min_reciprocal_delta <- min(1/delta_aux)
+min_m <- min(m)
+
+df <- do.call(rbind, lapply(alpha, function(a) {
+  do.call(rbind, lapply(m, function(mm) {
+    create_data(a, mm)
+  }))
+}))
+
+
+df <- df |>
+  mutate(
+    m = {
+      m_vals <- sort(unique(m))
+      factor(
+        m,
+        levels = m_vals,
+        labels = sprintf("$m = %g$", m_vals))
+    },
+    alpha = {
+      alpha_vals <- sort(unique(alpha))
+      factor(
+        alpha,
+        levels = alpha_vals,
+        labels = sprintf("$\\alpha = %g$", alpha_vals)
+      )
+    },
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
+    )
+  )
+
+
+format_scientific <- function(x, digits = 2) {
+  ifelse(
+    x == 0,
+    "0",
+    {
+      e <- floor(log10(abs(x)))
+      m <- round(x / 10^e, digits)
+      sprintf("%.2f \\times 10^{%d}", m, e)
+    }
+  )
+}
+
+df_lab <- df |>
+  group_by(m, alpha) |>
+  summarise(
+    Linferror = first(Linferror),
+    x_mid = mean(range(x, na.rm = TRUE)),
+    y_mid = exp(mean(log(range(val, na.rm = TRUE)))),  # because of log scale
+    .groups = "drop"
+  )
+
+p_RAT22 <- ggplot(df, aes(x, val, color = method, linetype = method)) + 
+  facet_wrap(alpha~ m, scales = "free_x", nrow = length(unique(df$alpha)))+#facet_grid(alpha ~ m, scales = "free_x") +
+  geom_line(linewidth = 2) +
+  scale_y_log10(n.breaks = 5) +
+  scale_x_log10(n.breaks = 5) +
+  scale_colour_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red", "$f(x^{-1}) = x^{-\\alpha}$" = "blue")) + 
+  scale_linetype_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "dashed", "$f(x^{-1}) = x^{-\\alpha}$" = "solid")[2:1]) + 
+  theme_bw() +
+  theme(panel.spacing = unit(0.3, "cm"), 
+        text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
+        #plot.margin = margin(0, 0, 0, 0),
+        legend.text = element_text(size = 12)) +
+  labs(x = sprintf("$x\\in[1,1/\\delta_{%d}]\\quad(\\log_{10}\\mbox{ scale})$", min_m),
+       y = "$(\\log_{10}\\mbox{ scale})$" # $r_m(x^{-1}),\\;f(x^{-1})$"
+  ) + 
+  theme(
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    legend.key.width  = unit(2, "cm"),
+    legend.key.height = unit(0, "cm")
+  ) +
+  geom_text(
+    data = df_lab,
+    aes(
+      #label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_{%d}])} = %s$", min_m, format_scientific(Linferror))
+      label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
+    ),
+    x = 0,
+    y = -2.1,
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 3.5,
+    hjust = 0,
+    vjust = 0
+  ) 
+
+
+
+generate_graph_on_sphere <- function(n) {
+  # --- Generate n points on the unit sphere (Fibonacci sphere) ---
+  i <- 0:(n-1)
+  phi <- pi * (3 - sqrt(5))  # golden angle
+  
+  z <- 1 - 2 * i / (n - 1)   # z from 1 to -1
+  theta <- phi * i           # angle
+  
+  r <- sqrt(1 - z^2)
+  x <- r * cos(theta)
+  y <- r * sin(theta)
+  
+  nodes <- cbind(x, y, z)
+  nodes2d <- cbind(x, y)
+  
+  # --- Build fully connected edge list ---
+  edges <- list()
+  edges2d <- list()
+  k <- 1
+  
+  for (i in 1:(n-1)) {
+    for (j in (i+1):n) {
+      edges[[k]] <- rbind(nodes[i, ], nodes[j, ])
+      edges2d[[k]] <- rbind(nodes2d[i, ], nodes2d[j, ])
+      k <- k + 1
+    }
+  }
+  
+  return(list(nodes = nodes,
+              edges2d = edges2d,
+              edges = edges))
+}
+
+
+
+
 
 
 

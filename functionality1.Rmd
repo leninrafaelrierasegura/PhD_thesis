@@ -581,6 +581,97 @@ error.convergence.plotter <- function(x_axis_vector,
 ```
 
 
+```{r}
+generate_graph_on_sphere <- function(n,
+                                     k = 6,   # polar circles
+                                     m = 12,  # tropics
+                                     M = 24){
+  # ---- latitude structure (symmetric) ----
+  z_levels <- c(1,  0.75, 0.35, 0, -0.35, -0.75, -1)
+  counts   <- c(1,  k,    m,    M,  m,     k,    1)
+  
+  # ---- check consistency ----
+  if (sum(counts) != n) {
+    stop(sprintf("n must be %d for given k, m, M", sum(counts)))
+  }
+  
+  nodes_list <- list()
+  idx <- 1
+  
+  for (b in seq_along(z_levels)) {
+    
+    z <- z_levels[b]
+    nb <- counts[b]
+    
+    if (nb == 1) {
+      # poles
+      nodes_list[[idx]] <- matrix(c(0, 0, z), ncol = 3)
+      idx <- idx + 1
+      next
+    }
+    
+    # ---- uniform circle ----
+    theta <- seq(0, 2*pi, length.out = nb + 1)[- (nb + 1)]
+    
+    r <- sqrt(1 - z^2)
+    
+    circle <- cbind(
+      r * cos(theta),
+      r * sin(theta),
+      rep(z, nb)
+    )
+    
+    nodes_list[[idx]] <- circle
+    idx <- idx + 1
+  }
+  
+  nodes <- do.call(rbind, nodes_list)
+  nodes2d <- nodes[, 1:2]
+  
+  # ---- fully connected edges ----
+  edges <- list()
+  edges2d <- list()
+  k <- 1
+  
+  for (i in 1:(nrow(nodes) - 1)) {
+    for (j in (i + 1):nrow(nodes)) {
+      edges[[k]] <- rbind(nodes[i, ], nodes[j, ])
+      edges2d[[k]] <- rbind(nodes2d[i, ], nodes2d[j, ])
+      k <- k + 1
+    }
+  }
+  return(
+  list(
+    nodes = nodes,
+    edges = edges,
+    edges2d = edges2d,
+    structure = list(
+      z_levels = z_levels,
+      counts = counts
+    )
+  ))
+}
+```
+
+
+```{r}
+plot_sparse_pattern <- function(A) {
+  s <- summary(A)
+  
+  p <- ggplot(s, aes(x = j, y = i)) +
+    geom_point(size = 1) +
+    scale_y_reverse() +
+    scale_x_continuous(position = "top") +  # move x-axis to top
+    coord_fixed() +
+    labs(x = "Column", y = "Row") +
+    theme_bw() +
+    theme(
+      panel.grid = element_blank()
+    )
+  return(p)
+}
+```
+
 # References
 
 ```{r, purl = FALSE}

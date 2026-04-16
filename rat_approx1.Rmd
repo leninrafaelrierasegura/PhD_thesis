@@ -154,8 +154,148 @@ myggsave(rational_part_plot, width = 6, height = 4)
 knitr::include_graphics(here::here("data_files/tikzpic/rational_part_plot.pdf"))
 ```
 
+# Axis free
 
 
+```
+{r}
+create_data <- function(alpha, m){
+res <- rSPDE:::interp_rational_coefficients(
+  order = m, 
+  type_rational_approx = "brasil", 
+  type_interp = "spline", 
+  alpha = alpha)
+
+partFraction <- function(x) {
+  term_matrix <- outer(x, res$p, "-") # matrix of (x - p[i])
+  term_values <- sweep(1 / term_matrix, 2, res$r, "*") # multiply columns by r[i]
+  return(rowSums(term_values) + res$k)
+}
+
+powerFun <- function(x){
+  return(x^(-(alpha-floor(alpha))))
+}
+
+delta <- 10^(-(5+m)/2)
+
+x <- seq(1, 1/delta, length.out = 1000)
+pf <- partFraction(x)
+po <- powerFun(x)
+Linferror <- max(abs(partFraction(x) - powerFun(x)))
+df <- rbind(data.frame(x = x, val = pf, method = "partFraction", alpha = alpha, m = m, Linferror = Linferror),
+            data.frame(x = x, val =  po, method = "powerFun", alpha = alpha, m = m, Linferror = Linferror))
+return(df)
+}
+
+alpha <- c(0.4, 1.6, 2.4)
+m <- c(2,6,12)
+delta_aux <- 10^(-(5+m)/2)
+min_reciprocal_delta <- min(1/delta_aux)
+min_m <- min(m)
+
+df <- do.call(rbind, lapply(alpha, function(a) {
+  do.call(rbind, lapply(m, function(mm) {
+    create_data(a, mm)
+  }))
+}))
+
+
+df <- df |>
+  mutate(
+    m = {
+      m_vals <- sort(unique(m))
+      factor(
+        m,
+        levels = m_vals,
+        labels = sprintf("$m = %g$", m_vals))
+      },
+    alpha = {
+      alpha_vals <- sort(unique(alpha))
+      factor(
+        alpha,
+        levels = alpha_vals,
+        labels = sprintf("$\\alpha = %g$", alpha_vals)
+      )
+    },
+    method = factor(
+      method,
+      levels = c("partFraction", "powerFun")[2:1],
+      labels = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$", "$f(x^{-1}) = x^{-\\alpha}$")[2:1]
+    )
+  )
+
+
+format_scientific <- function(x, digits = 2) {
+  ifelse(
+    x == 0,
+    "0",
+    {
+      e <- floor(log10(abs(x)))
+      m <- round(x / 10^e, digits)
+      sprintf("%.2f \\times 10^{%d}", m, e)
+    }
+  )
+}
+
+df_lab <- df |>
+  group_by(m, alpha) |>
+  summarise(
+    Linferror = first(Linferror),
+    x_mid = mean(range(x, na.rm = TRUE)),
+    y_mid = exp(mean(log(range(val, na.rm = TRUE)))),  # because of log scale
+    .groups = "drop"
+  )
+
+p_RATnew <- ggplot(df, aes(x, val, color = method, linetype = method)) + 
+  facet_grid(alpha ~ m, scales = "free_x") +
+  geom_line(linewidth = 2) +
+  scale_y_log10(n.breaks = 5) +
+  scale_x_log10(n.breaks = 5) +
+  scale_colour_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "red", "$f(x^{-1}) = x^{-\\alpha}$" = "blue")) + 
+  scale_linetype_manual(name = "Function", values = c("$r_m(x^{-1}) = kx^{-\\lfloor\\alpha\\rfloor}+x^{-\\lfloor\\alpha\\rfloor}\\sum_{i=1}^mr_i(x-p_i)^{-1}$" = "dashed", "$f(x^{-1}) = x^{-\\alpha}$" = "solid")[2:1]) + 
+  theme_bw() +
+  theme(panel.spacing = unit(0.3, "cm"), 
+        text = element_text(family = "Palatino"),
+        plot.title = element_text(hjust = 0.5, size = 12),
+        strip.text.x = element_text(size = 12),  # alpha (top)
+        strip.text.y = element_text(size = 12),   # m (left)
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.x = element_text(size = 12),  # x-axis numbers
+        axis.text.y = element_text(size = 12),   # y-axis numbers
+        legend.title = element_text(size = 12),
+        #plot.margin = margin(0, 0, 0, 0),
+        legend.text = element_text(size = 12)) +
+  labs(x = "$x\\in[1,1/\\delta_m]\\quad(\\log_{10}\\mbox{ scale})$",
+       y = "$(\\log_{10}\\mbox{ scale})$" # $r_m(x^{-1}),\\;f(x^{-1})$"
+       ) + 
+  theme(
+  legend.position = "bottom",
+  legend.direction = "horizontal",
+  legend.key.width  = unit(2, "cm"),
+  legend.key.height = unit(0, "cm")
+) +
+ geom_text(
+    data = df_lab,
+    aes(
+      #label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_{%d}])} = %s$", min_m, format_scientific(Linferror))
+      label = sprintf("$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])} = %s$", format_scientific(Linferror))
+    ),
+    x = 0,
+    y = -2.1,
+    inherit.aes = FALSE,
+    parse = FALSE,
+    size = 3.5,
+    hjust = 0,
+    vjust = 0
+  ) 
+
+myggsave(p_RATnew, width = 9, height = 6)
+
+
+```
+
+# axis shared
 
 ```
 {r}
@@ -851,7 +991,8 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_one_columnnoLOG.pdf"))
 ```
 
 
-```{r}
+```
+{r}
 alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05) + 2
 m_vector <- c(1:14)
 errors <- matrix(NA, nrow = length(m_vector), ncol = length(alpha_vector))
@@ -1031,6 +1172,220 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_eigen.pdf"))
 ```
 
 
+
+# Plot sparse patterns
+
+```
+{r}
+library(Matrix)
+library(ggplot2)
+library(gridExtra)
+library(patchwork)
+k <- 6
+m <- 12
+M <- 24
+n <- 2 + 2*k + 2*m + M
+res <- generate_graph_on_sphere(n, k,m,M)
+
+edges_to_df <- function(edges) {
+  df_list <- lapply(edges, function(e) {
+    rbind(e, c(NA, NA, NA))
+  })
+  df <- do.call(rbind, df_list)
+  colnames(df) <- c("x", "y", "z")
+  return(as.data.frame(df))
+}
+
+df_edges <- edges_to_df(res$edges)
+df_nodes <- as.data.frame(res$nodes) |> rename(x = V1, y = V2, z = V3)
+graph_on_sphere <- plot_ly() |>
+  add_trace(
+    data = df_edges,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "lines",
+    line = list(color = "rgba(0,0,0,0.5)", width = 1),
+    showlegend = FALSE
+  ) |>
+  add_trace(
+    data = df_nodes,
+    x = ~x, y = ~y, z = ~z,
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(size = 4, color = "blue"),
+    showlegend = FALSE
+  ) |>
+  layout(font = list(family = "Palatino"),
+         scene = list(camera = list(eye = list(x = 1.5, y = 1.5, z = 0.5))))
+
+save(graph_on_sphere, file = here::here("data_files/graph_on_sphere.RData"))
+graph <- metric_graph$new(edges = res$edges2d, verbose = 0)
+sphere2dplot <- graph$plot(vertex_size = 1,
+                           vertex_color = "blue",
+                           edge_width = 0.1,
+                           edge_color = "black") +
+    theme_bw() +
+  theme(
+    panel.grid = element_blank(),
+    text = element_text(family = "Palatino"))
+
+ggsave(here::here("data_files/sphere2dplot.png"), plot = sphere2dplot, width = 4, height = 4, dpi = 300)
+
+kappa <- 4
+p_k <- -10
+graph$build_mesh(h = 1.55)
+graph$compute_fem()
+C <- graph$mesh$C
+G <- graph$mesh$G
+L <- kappa^2*C + G
+K <- (1 - p_k) * C + G / kappa^2
+
+sC <- summary(C) |> mutate(mat = "$\\mathbf{C}$")
+sL <- summary(L) |> mutate(mat = "$\\mathbf{L}$")
+sK <- summary(K) |> mutate(mat = "$\\mathbf{K}$")
+s <- rbind(sC, sL, sK) |>
+  mutate(
+    mat = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K}$"),
+      labels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+    ))
+
+dimM <- dim(C)[1]
+nnz_df <- s |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/dimM^2)
+
+annot <- nnz_df %>%
+  mutate(x = dimM*1/5, y = dimM*1/6,
+         label = paste0(sprintf("$nnz = %s", nnz),",\\;\\%", sprintf("nnz = %s", formatC(pnnz, format = "f", digits = 2)),"\\%$"))
+
+sparsematrixplots_sphere_dense <- ggplot() + 
+  geom_point(data = s, aes(i, j), shape = 15, size = 0.05) +
+  #geom_tile(data = s, aes(i, j), width = 4, height = 4) +
+  facet_grid(~ mat, switch = "x") + 
+  scale_y_reverse() +
+  scale_x_continuous(position = "top") +  
+  coord_fixed() +
+  labs(x = "$\\mbox{Column index }i$", y = "$\\mbox{Row index }j$") +
+  theme_bw() +
+  theme(
+    panel.grid = element_blank(),
+    text = element_text(family = "Palatino"),
+    plot.margin = margin(0, 0, 0, 0)
+  ) +
+  geom_text(
+  data = annot,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  hjust = 0, vjust = 0,  angle = -45
+)
+
+myggsave(sparsematrixplots_sphere_dense, width = 8, height = 3)
+
+```
+
+
+```{r, eval = TRUE, out.width="800px", out.height="300px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/sparsematrixplots_sphere_dense.pdf"))
+```
+
+
+:::: {style="display: grid; grid-template-columns: 645px 500px; grid-column-gap: 0px;"}
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+load(here::here("data_files/graph_on_sphere.RData"))
+graph_on_sphere
+```
+
+
+:::
+
+
+::: {}
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+knitr::include_graphics(here::here("data_files/sphere2dplot.png"))
+```
+
+
+:::
+
+
+::::
+
+
+
+
+```
+{r}
+kappa <- 4
+p_k <- -10
+h = 0.00505
+graph <- gets.graph.tadpole(h = h)
+graph$compute_fem()
+
+C <- graph$mesh$C
+G <- graph$mesh$G
+L <- kappa^2*C + G
+K <- (1 - p_k) * C + G / kappa^2
+
+sC <- summary(C) |> mutate(mat = "$\\mathbf{C}$")
+sL <- summary(L) |> mutate(mat = "$\\mathbf{L}$")
+sK <- summary(K) |> mutate(mat = "$\\mathbf{K}$")
+s <- rbind(sC, sL, sK) |>
+  mutate(
+    mat = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K}$"),
+      labels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+    ))
+
+dimM <- dim(C)[1]
+nnz_df <- s |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/dimM^2)
+
+annot <- nnz_df %>%
+  mutate(x = dimM*1/5, y = dimM*1/6,
+         label = paste0(sprintf("$nnz = %s", nnz),",\\;\\%", sprintf("nnz = %s", formatC(pnnz, format = "f", digits = 2)),"\\%$"))
+
+sparsematrixplots_tadpole <- ggplot() + 
+  geom_point(data = s, aes(i, j), shape = 15, size = 0.05) +
+  #geom_tile(data = s, aes(i, j), width = 4, height = 4) +
+  facet_grid(~ mat, switch = "x") + 
+  scale_y_reverse() +
+  scale_x_continuous(position = "top") +  
+  coord_fixed() +
+  labs(x = "$\\mbox{Column index }i$", y = "$\\mbox{Row index }j$") +
+  theme_bw() +
+  theme(
+    panel.grid = element_blank(),
+    text = element_text(family = "Palatino"),
+    plot.margin = margin(0, 0, 0, 0)
+  ) +
+  geom_text(
+  data = annot,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  hjust = 0, vjust = 0,  angle = -45
+)
+
+myggsave(sparsematrixplots_tadpole, width = 8, height = 3)
+```
+
+
+
+```{r, eval = TRUE, out.width="800px", out.height="300px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/sparsematrixplots_tadpole.pdf"))
+```
 
 
 ```
