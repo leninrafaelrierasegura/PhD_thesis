@@ -456,7 +456,7 @@ myheight <- mywidth * aspect_ratio
 
 
 # Save temporarily
-ggsave(here::here("data_files/map.png"), plot = p_spaguetti, width = 6, height = 6, dpi = 300)
+ggsave(here::here("data_files/map_with_square.png"), plot = p_spaguetti, width = 6, height = 6, dpi = 300)
 
 
 # x_range <- c(x_left, -121.8475)
@@ -579,7 +579,7 @@ p_spaguetti3d
 
 
 ```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-knitr::include_graphics(here::here("data_files/map.png"))
+knitr::include_graphics(here::here("data_files/map_with_square.png"))
 ```
 
 
