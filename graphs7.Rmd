@@ -558,6 +558,7 @@ p_to_show_geodesic_dist <- graph$plot(vertex_size = 1,
            linewidth = 2, color = upper_color) 
 
 
+
 ggsave(here::here("data_files/p_to_show_geodesic_dist.png"), plot = p_to_show_geodesic_dist, width = mywidth, height = myheight, dpi = 300)
 ```
 
