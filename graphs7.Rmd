@@ -105,6 +105,141 @@ source(here::here("functionality1.R"))
 ```
 
 
+# small
+
+```{r}
+library(sf)
+library(dplyr)
+library(lwgeom)
+
+
+pems_edges <- pems_repl$edges
+
+pems_edges_proj <- st_transform(pems_edges, 32610)  # UTM zone for this region
+
+# 1. Define your box as an sf polygon
+x_ini <- -121.851 - 0.002
+x_fin <- -121.849 - 0.002
+y_ini <- 37.3388
+y_fin <- 37.340
+
+box_poly <- st_polygon(list(
+  matrix(
+    c(
+      x_ini, y_ini,
+      x_ini, y_fin,
+      x_fin, y_fin,
+      x_fin, y_ini,
+      x_ini, y_ini
+    ),
+    ncol = 2,
+    byrow = TRUE
+  )
+)) %>% st_sfc(crs = st_crs(pems_edges))
+
+# 2. Clip the lines by the box
+pems_clipped <- st_intersection(pems_edges, box_poly)
+# 
+# pems_clipped1 <- pems_clipped[1,]
+# pems_clipped2 <- pems_clipped[2,]
+# pems_clipped3 <- pems_clipped[3,]
+# pems_clipped4 <- pems_clipped[4,]
+# pems_clipped5 <- pems_clipped[5,]
+# 
+# 
+# split_into_segments <- function(line) {
+#   coords <- st_coordinates(line)
+#   
+#   # build segments between consecutive points
+#   segs <- lapply(seq_len(nrow(coords) - 1), function(i) {
+#     st_linestring(rbind(coords[i, 1:2], coords[i + 1, 1:2]))
+#   })
+#   
+#   st_sfc(segs, crs = st_crs(line))
+# }
+# 
+# segments_list1 <- split_into_segments(pems_clipped1)
+# segments_list2 <- split_into_segments(pems_clipped2)
+# segments_list3 <- split_into_segments(pems_clipped3)
+# segments_list4 <- split_into_segments(pems_clipped4)
+# segments_list5 <- split_into_segments(pems_clipped5)
+# 
+# 
+# graph <- metric_graph$new(edges = c(segments_list1,
+#                                     segments_list2,
+#                                     segments_list3, 
+#                                     segments_list4,
+#                                     segments_list5), longlat = TRUE)
+
+segments_sfc <- st_sfc(
+  do.call(c, lapply(seq_len(nrow(pems_clipped)), function(i) {
+    coords <- st_coordinates(pems_clipped[i, ])
+    
+    lapply(seq_len(nrow(coords) - 1), function(j) {
+      st_linestring(rbind(coords[j, 1:2], coords[j + 1, 1:2]))
+    })
+  })),
+  crs = st_crs(pems_clipped)
+)
+
+graph <- metric_graph$new(edges = segments_sfc, longlat = TRUE)
+
+style_vector <- c(c(feature = "road", element = "geometry", visibility = "on"),
+                  c("&style=", feature = "poi", element = "labels", visibility = "off"),
+                  c("&style=", feature = "road", element = "labels", visibility = "off"),
+                  c("&style=", feature = "administrative", element = "labels", visibility = "off"), #name of places
+                  c("&style=", feature = "transit", element = "labels", visibility = "off"),
+                  c("&style=", feature = "landscape", element = "geometry", visibility = "on"),
+                  c("&style=", feature = "water", element = "geometry", visibility = "on")) 
+register_stadiamaps(Sys.getenv("GGMAP_STADIAMAPS_API_KEY"))
+# Obtain the maps
+
+psmall <- ggmap(get_stadiamap(bbox = c(left = x_ini, bottom = y_ini, right = x_fin, top = y_fin),
+                zoom = 18,
+              maptype = "stamen_toner_lite", 
+              scale =2,
+              style = style_vector,
+              color = "color"))  + xlab(NULL) + ylab(NULL)
+
+upper_color <- "darkred" 
+
+
+p_to_show_geodesic_dist <- graph$plot(vertex_size = 2, 
+                    vertex_color = "blue",
+                    edge_color = "black",
+                    p = psmall,
+                    edge_width = 1) +
+    theme_minimal() + 
+  theme(text = element_text(family = "Palatino"), 
+        axis.text = element_text(size = 10)
+        ) +
+  labs(x = "Longitude", y = "Latitude") +
+  annotate("segment", x = x_ini, y = y_ini, xend = x_fin, yend = y_ini, 
+           linewidth = 2, color = upper_color) +  # Bottom line
+  annotate("segment", x = x_ini, y = y_fin, xend = x_fin, yend = y_fin, 
+           linewidth = 2, color = upper_color) +  # Top line
+  annotate("segment", x = x_ini, y = y_ini, xend = x_ini, yend = y_fin, 
+           linewidth = 2, color = upper_color) +  # Left line
+  annotate("segment", x = x_fin, y = y_ini, xend = x_fin, yend = y_fin, 
+           linewidth = 2, color = upper_color) 
+
+dist_x <- x_fin - x_ini
+dist_y <- y_fin - y_ini
+
+ratt <- 3000
+
+ggsave(here::here("data_files/p_to_show_geodesic_dist.png"), plot = p_to_show_geodesic_dist, width = dist_x*ratt, height = dist_y*ratt, dpi = 300)
+```
+
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+knitr::include_graphics(here::here("data_files/p_to_show_geodesic_dist.png"))
+```
+
+
+
+# spaghetti
 
 
 
@@ -155,6 +290,7 @@ graph$prune_vertices()
 
 
 ```
+
 
 
 
@@ -299,7 +435,15 @@ p_spaguetti <- p12 +
     text = element_text(family = "Palatino"),
     plot.margin = margin(0, 0, 0, 0),   # remove outer whitespace
     panel.spacing = unit(0, "lines")
-  ) 
+  ) +
+  annotate("segment", x = x_ini, y = y_ini, xend = x_fin, yend = y_ini, 
+           linewidth = 1, color = upper_color) +  # Bottom line
+  annotate("segment", x = x_ini, y = y_fin, xend = x_fin, yend = y_fin, 
+           linewidth = 1, color = upper_color) +  # Top line
+  annotate("segment", x = x_ini, y = y_ini, xend = x_ini, yend = y_fin, 
+           linewidth = 1, color = upper_color) +  # Left line
+  annotate("segment", x = x_fin, y = y_ini, xend = x_fin, yend = y_fin, 
+           linewidth = 1, color = upper_color) 
   # xlim(x_left, -121.8475) + 
   # ylim(37.335, 37.345)
 

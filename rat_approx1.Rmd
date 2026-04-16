@@ -154,6 +154,10 @@ myggsave(rational_part_plot, width = 6, height = 4)
 knitr::include_graphics(here::here("data_files/tikzpic/rational_part_plot.pdf"))
 ```
 
+
+
+
+
 # Axis free
 
 
@@ -173,15 +177,15 @@ partFraction <- function(x) {
 }
 
 powerFun <- function(x){
-  return(x^(-(alpha-floor(alpha))))
+  return(x^((alpha-floor(alpha))))
 }
 
 delta <- 10^(-(5+m)/2)
 
-x <- seq(1, 1/delta, length.out = 1000)
-pf <- partFraction(x)
+x <- seq(delta,1, length.out = 1000)
+pf <- partFraction(1/x)
 po <- powerFun(x)
-Linferror <- max(abs(partFraction(x) - powerFun(x)))
+Linferror <- max(abs(partFraction(1/x) - powerFun(x)))
 df <- rbind(data.frame(x = x, val = pf, method = "partFraction", alpha = alpha, m = m, Linferror = Linferror),
             data.frame(x = x, val =  po, method = "powerFun", alpha = alpha, m = m, Linferror = Linferror))
 return(df)
@@ -247,7 +251,7 @@ df_lab <- df |>
   )
 
 p_RATnew <- ggplot(df, aes(x, val, color = method, linetype = method)) + 
-  facet_grid(alpha ~ m, scales = "free_x") +
+  facet_grid(alpha ~ m, scales = "free_x") + # both free:= scales = "free"
   geom_line(linewidth = 2) +
   scale_y_log10(n.breaks = 5) +
   scale_x_log10(n.breaks = 5) +
@@ -294,6 +298,15 @@ myggsave(p_RATnew, width = 9, height = 6)
 
 
 ```
+
+
+
+
+```{r, eval = TRUE, out.width="1200px", out.height="600px", fig.cap = captioner("Covariance error for the interval graph.")}
+knitr::include_graphics(here::here("data_files/tikzpic/p_RATnew.pdf"))
+```
+
+
 
 # axis shared
 
@@ -991,8 +1004,7 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_one_columnnoLOG.pdf"))
 ```
 
 
-```
-{r}
+```{r}
 alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05) + 2
 m_vector <- c(1:14)
 errors <- matrix(NA, nrow = length(m_vector), ncol = length(alpha_vector))
