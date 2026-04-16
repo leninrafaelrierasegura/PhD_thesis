@@ -324,8 +324,8 @@ p_spaguetti <- p12 +
   labs(x = "Longitude", y = "Latitude") +
   theme_minimal() + 
   theme(   
-    text = element_text(family = "Palatino"),
-    axis.text = element_text(size = 10),
+    text = element_text(family = "Palatino", size = 14),
+    axis.text = element_text(size = 14),
     #panel.spacing = unit(0, "lines"),
     plot.margin = margin(0, 0, 0, 0)   # remove outer whitespace
   ) +
@@ -392,15 +392,15 @@ p_spaguetti3d <- plot_ly() %>%
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) %>%
   config(mathjax = 'cdn') %>%
-layout(font = list(family = "Palatino", size = 15),
+layout(font = list(family = "Palatino"),
             margin = list(l = 0, r = 0, b = 0, t = 0),
             scene = list(
-              xaxis = list(title = list(text = "Longitude", font = list(color = colaxnn)),  
-                           tickfont = list(color = colaxnn),  range = x_range),
-              yaxis = list(title = list(text = "Latitude", font = list(color = colaxnn)),  
-                           tickfont = list(color = colaxnn), range = y_range),
-              zaxis = list(title = list(text = "", font = list(color = colaxnn)),  
-                           tickfont = list(color = colaxnn), range = c(0,z_range[2])),
+              xaxis = list(title = list(text = "Longitude", font = list(color = colaxnn, size = 22)),  
+                           tickfont = list(color = colaxnn, size = 16),  range = x_range),
+              yaxis = list(title = list(text = "Latitude", font = list(color = colaxnn, size = 22)),  
+                           tickfont = list(color = colaxnn, size = 16), range = y_range),
+              zaxis = list(title = list(text = "", font = list(color = colaxnn, size = 22)),  
+                           tickfont = list(color = colaxnn, size = 16), range = c(0,z_range[2])),
     aspectratio = list(x = xxx, y = yyy, z = 1),
     camera = list(eye = list(y = -37.34*rv, x = 0*rv, z = 70*rv),
                             center = list(x = 0, y = 0, z = 0))
@@ -543,19 +543,19 @@ p_to_show_geodesic_dist <- graph$plot(vertex_size = 1,
       barheight = 6     # tall bar
     )) +
     theme_minimal() + 
-  theme(text = element_text(family = "Palatino"), 
-        axis.text = element_text(size = 10),
+  theme(text = element_text(family = "Palatino", size = 14), 
+        axis.text = element_text(size = 14),
         plot.margin = margin(0, 0, 0, 0)
         ) +
   labs(x = "Longitude", y = "Latitude") +
   annotate("segment", x = x_ini, y = y_ini, xend = x_fin, yend = y_ini, 
-           linewidth = 2, color = upper_color) +  # Bottom line
+           linewidth = 4, color = upper_color) +  # Bottom line
   annotate("segment", x = x_ini, y = y_fin, xend = x_fin, yend = y_fin, 
-           linewidth = 2, color = upper_color) +  # Top line
+           linewidth = 4, color = upper_color) +  # Top line
   annotate("segment", x = x_ini, y = y_ini, xend = x_ini, yend = y_fin, 
-           linewidth = 2, color = upper_color) +  # Left line
+           linewidth = 4, color = upper_color) +  # Left line
   annotate("segment", x = x_fin, y = y_ini, xend = x_fin, yend = y_fin, 
-           linewidth = 2, color = upper_color) 
+           linewidth = 4, color = upper_color) 
 
 
 
