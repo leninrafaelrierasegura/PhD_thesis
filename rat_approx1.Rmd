@@ -80,6 +80,7 @@ captioner <- function(caption) {
 ```
 
 ```{r, eval = TRUE}
+library(Matrix)
 library(MetricGraph)
 library(ggplot2)
 library(reshape2)
@@ -1004,7 +1005,8 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_one_columnnoLOG.pdf"))
 ```
 
 
-```{r}
+```
+{r}
 alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05) + 2
 m_vector <- c(1:14)
 errors <- matrix(NA, nrow = length(m_vector), ncol = length(alpha_vector))
@@ -1280,7 +1282,7 @@ sparsematrixplots_sphere_dense <- ggplot() +
   scale_y_reverse() +
   scale_x_continuous(position = "top") +  
   coord_fixed() +
-  labs(x = "$\\mbox{Column index }i$", y = "$\\mbox{Row index }j$") +
+  labs(x = "$\\mbox{Column index }j$", y = "$\\mbox{Row index }i$") +
   theme_bw() +
   theme(
     panel.grid = element_blank(),
@@ -1335,8 +1337,7 @@ knitr::include_graphics(here::here("data_files/sphere2dplot.png"))
 
 
 
-```
-{r}
+```{r}
 kappa <- 4
 p_k <- -10
 h = 0.00505
@@ -1376,7 +1377,7 @@ sparsematrixplots_tadpole <- ggplot() +
   scale_y_reverse() +
   scale_x_continuous(position = "top") +  
   coord_fixed() +
-  labs(x = "$\\mbox{Column index }i$", y = "$\\mbox{Row index }j$") +
+  labs(x = "$\\mbox{Column index }j$", y = "$\\mbox{Row index }i$") +
   theme_bw() +
   theme(
     panel.grid = element_blank(),
