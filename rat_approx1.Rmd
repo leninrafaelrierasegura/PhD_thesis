@@ -1247,13 +1247,15 @@ ggsave(here::here("data_files/sphere2dplot.png"), plot = sphere2dplot, width = 4
 
 kappa <- 4
 p_k <- -10
-graph$build_mesh(h = 1.55)
+h <- 1.55#1.55
+graph$build_mesh(h = h)
 graph$compute_fem()
 C <- graph$mesh$C
 G <- graph$mesh$G
 L <- kappa^2*C + G
 K <- (1 - p_k) * C + G / kappa^2
 
+returndfs <- function(C, L, K){
 sC <- summary(C) |> mutate(mat = "$\\mathbf{C}$")
 sL <- summary(L) |> mutate(mat = "$\\mathbf{L}$")
 sK <- summary(K) |> mutate(mat = "$\\mathbf{K}$")
@@ -1262,21 +1264,87 @@ s <- rbind(sC, sL, sK) |>
     mat = factor(
       mat,
       levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K}$"),
-      labels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$")
     ))
+return(s)
+}
 
 dimM <- dim(C)[1]
-nnz_df <- s |>
+
+
+s_total <- returndfs(C, L, K)
+totalnnz_df <- s_total |>
   group_by(mat) |>
   summarise(nnz = n(), .groups = "drop") |>
-  mutate(pnnz = 100*nnz/dimM^2)
+  mutate(pnnz = 100*nnz/dimM^2) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*1/12, y = dimM*5/6,
+         label = paste0("$nnz(", mat2, ")", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
 
-annot <- nnz_df %>%
-  mutate(x = dimM*1/5, y = dimM*1/6,
-         label = paste0(sprintf("$nnz = %s", nnz),",\\;\\%", sprintf("nnz = %s", formatC(pnnz, format = "f", digits = 2)),"\\%$"))
+nV <- graph$nV
+Cvv <- C[1:nV, 1:nV]
+Cnn <- C[(nV+1):dimM, (nV+1):dimM]
+Cvn <- C[1:nV, (nV+1):dimM]
+Cnv <- C[(nV+1):dimM, 1:nV]
+
+ubc_blue <- "gray" #rgb(8, 130, 168, maxColorValue = 255, alpha = 1)
+
+Cvv_nnz_df <- returndfs(Cvv, Cvv, Cvv) |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/nV^2) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*1/12, y = dimM*2/12,
+         label = paste0("$nnz(", mat2, "_{\\mathcal{V}|\\mathcal{V}})", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
+
+Cvn_nnz_df <- returndfs(Cvn, Cvn, Cvn) |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/(nV*(dimM-nV))) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*7/12, y = dimM*2/12,
+         label = paste0("$nnz(", mat2, "_{\\mathcal{V}|\\mathcal{N}\\setminus\\mathcal{V}})", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
+
+
+Cnv_nnz_df <- returndfs(Cnv, Cnv, Cnv) |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/(nV*(dimM-nV))) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*1/12, y = dimM*3/12,
+         label = paste0("$nnz(", mat2, "_{\\mathcal{N}\\setminus\\mathcal{V}|\\mathcal{V}})", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
+
+Cnn_nnz_df <- returndfs(Cnn, Cnn, Cnn) |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/(dimM-nV)^2) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*7/12, y = dimM*3/12,
+         label = paste0("$nnz(", mat2, "_{\\mathcal{N}\\setminus\\mathcal{V}|\\mathcal{N}\\setminus\\mathcal{V}})", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
+
 
 sparsematrixplots_sphere_dense <- ggplot() + 
-  geom_point(data = s, aes(i, j), shape = 15, size = 0.05) +
+  geom_point(data = s_total, aes(i, j), shape = 15, size = 0.05) +
   #geom_tile(data = s, aes(i, j), width = 4, height = 4) +
   facet_grid(~ mat, switch = "x") + 
   scale_y_reverse() +
@@ -1290,10 +1358,44 @@ sparsematrixplots_sphere_dense <- ggplot() +
     plot.margin = margin(0, 0, 0, 0)
   ) +
   geom_text(
-  data = annot,
+  data = totalnnz_df,
   aes(x = x, y = y, label = label),
   inherit.aes = FALSE,
-  hjust = 0, vjust = 0,  angle = -45
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cvv_nnz_df,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cvn_nnz_df,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cnv_nnz_df,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cnn_nnz_df,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
 )
 
 myggsave(sparsematrixplots_sphere_dense, width = 8, height = 3)
@@ -1337,7 +1439,8 @@ knitr::include_graphics(here::here("data_files/sphere2dplot.png"))
 
 
 
-```{r}
+```
+{r}
 kappa <- 4
 p_k <- -10
 h = 0.00505
@@ -1349,6 +1452,7 @@ G <- graph$mesh$G
 L <- kappa^2*C + G
 K <- (1 - p_k) * C + G / kappa^2
 
+returndfs <- function(C, L, K){
 sC <- summary(C) |> mutate(mat = "$\\mathbf{C}$")
 sL <- summary(L) |> mutate(mat = "$\\mathbf{L}$")
 sK <- summary(K) |> mutate(mat = "$\\mathbf{K}$")
@@ -1357,21 +1461,87 @@ s <- rbind(sC, sL, sK) |>
     mat = factor(
       mat,
       levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K}$"),
-      labels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$")
     ))
+return(s)
+}
 
 dimM <- dim(C)[1]
-nnz_df <- s |>
+
+
+s_total <- returndfs(C, L, K)
+totalnnz_df <- s_total |>
   group_by(mat) |>
   summarise(nnz = n(), .groups = "drop") |>
-  mutate(pnnz = 100*nnz/dimM^2)
+  mutate(pnnz = 100*nnz/dimM^2) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*1/12, y = dimM*5/6,
+         label = paste0("$nnz(", mat2, ")", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
 
-annot <- nnz_df %>%
-  mutate(x = dimM*1/5, y = dimM*1/6,
-         label = paste0(sprintf("$nnz = %s", nnz),",\\;\\%", sprintf("nnz = %s", formatC(pnnz, format = "f", digits = 2)),"\\%$"))
+nV <- graph$nV
+Cvv <- C[1:nV, 1:nV]
+Cnn <- C[(nV+1):dimM, (nV+1):dimM]
+Cvn <- C[1:nV, (nV+1):dimM]
+Cnv <- C[(nV+1):dimM, 1:nV]
+
+ubc_blue <- "gray" #rgb(8, 130, 168, maxColorValue = 255, alpha = 1)
+
+Cvv_nnz_df <- returndfs(Cvv, Cvv, Cvv) |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/nV^2) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*1/12, y = dimM*2/12,
+         label = paste0("$nnz(", mat2, "_{\\mathcal{V}|\\mathcal{V}})", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
+
+Cvn_nnz_df <- returndfs(Cvn, Cvn, Cvn) |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/(nV*(dimM-nV))) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*7/12, y = dimM*2/12,
+         label = paste0("$nnz(", mat2, "_{\\mathcal{V}|\\mathcal{N}\\setminus\\mathcal{V}})", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
+
+
+Cnv_nnz_df <- returndfs(Cnv, Cnv, Cnv) |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/(nV*(dimM-nV))) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*1/12, y = dimM*3/12,
+         label = paste0("$nnz(", mat2, "_{\\mathcal{N}\\setminus\\mathcal{V}|\\mathcal{V}})", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
+
+Cnn_nnz_df <- returndfs(Cnn, Cnn, Cnn) |>
+  group_by(mat) |>
+  summarise(nnz = n(), .groups = "drop") |>
+  mutate(pnnz = 100*nnz/(dimM-nV)^2) |>
+  mutate(mat2 = factor(
+      mat,
+      levels = c("$\\mathbf{C}$", "$\\mathbf{L}$", "$\\mathbf{K} = \\mathbf{L}/\\kappa^2 - p_i\\mathbf{C}$"),
+      labels = c("\\mathbf{C}", "\\mathbf{L}", "\\mathbf{K}")
+    )) |>
+  mutate(x = dimM*7/12, y = dimM*3/12,
+         label = paste0("$nnz(", mat2, "_{\\mathcal{N}\\setminus\\mathcal{V}|\\mathcal{N}\\setminus\\mathcal{V}})", sprintf(" = %s", nnz),"\\;(", formatC(pnnz, format = "f", digits = 4),"\\%)$"))
+
 
 sparsematrixplots_tadpole <- ggplot() + 
-  geom_point(data = s, aes(i, j), shape = 15, size = 0.05) +
+  geom_point(data = s_total, aes(i, j), shape = 15, size = 0.05) +
   #geom_tile(data = s, aes(i, j), width = 4, height = 4) +
   facet_grid(~ mat, switch = "x") + 
   scale_y_reverse() +
@@ -1385,10 +1555,44 @@ sparsematrixplots_tadpole <- ggplot() +
     plot.margin = margin(0, 0, 0, 0)
   ) +
   geom_text(
-  data = annot,
+  data = totalnnz_df,
   aes(x = x, y = y, label = label),
   inherit.aes = FALSE,
-  hjust = 0, vjust = 0,  angle = -45
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cvv_nnz_df,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cvn_nnz_df,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cnv_nnz_df,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cnn_nnz_df,
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
 )
 
 myggsave(sparsematrixplots_tadpole, width = 8, height = 3)
