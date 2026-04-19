@@ -289,7 +289,9 @@ myggsave <- function(plot, width = 9.22, height = 7.05) {
   dev.off()
   
   # Compile to PDF
-  system(paste0("pdflatex -output-directory=", dir_to_save, " ", tex_name))
+  system(paste0("pdflatex -output-directory=", dir_to_save, " ", tex_name), 
+         ignore.stdout = TRUE,
+         ignore.stderr = TRUE)
   
   # Remove auxiliary files
   aux_ext <- c(".aux", ".log", ".tex")
@@ -306,7 +308,7 @@ myggsave <- function(plot, width = 9.22, height = 7.05) {
   )
   if (length(ras_files) > 0) file.remove(ras_files)
   
-  message("PDF saved at: ", file.path(dir_to_save, paste0(obj_name, ".pdf")))
+  cat("PDF saved at: ", file.path(dir_to_save, paste0(obj_name, ".pdf")))
 }
 ```
 

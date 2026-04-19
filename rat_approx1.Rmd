@@ -1605,8 +1605,7 @@ knitr::include_graphics(here::here("data_files/tikzpic/sparsematrixplots_tadpole
 ```
 
 
-```
-{r}
+```{r}
 compute_lower_bound <- function(h){
 kappa <- 4
 graph <- gets.graph.tadpole(h = h)
@@ -1639,6 +1638,7 @@ p_lower <- ggplot(df_lower, aes(x = h, y = lower_bound)) +
         axis.text = element_text(size = 12)) +
   labs(x = "$h$", 
        y = "$\\kappa^2\\lambda^{-1}_{N_h,h}$")
+
 myggsave(p_lower, width = 8, height = 4)
 
 ```
