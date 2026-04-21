@@ -959,6 +959,27 @@ ggsave(here("data_files/sanjosehighways_and_river_network.png"), width = 10, hei
 
 
 
+```{r, eval  = FALSE}
+library(MetricGraph)
+library(SSN2)
+
+copy_lsn_to_temp()
+path <- file.path(tempdir(), "MiddleFork04.ssn")
+mf04p <- ssn_import(
+  path = path,
+  predpts = c("pred1km", "CapeHorn"),
+  overwrite = TRUE
+)
+# Plot of river network
+metric_graph$new(sf::st_transform(mf04p$edges, 4326))$plot()
+# Plot of San Jose network
+metric_graph$new(pems$edges)$plot()
+
+```
+
+
+
+
 ```{r, eval = TRUE, fig.width = 11.2, fig.height = 5.43, fig.cap = captioner("Highway network of the city of San Jose in California. The left panels are zoomed-in areas of the panel to the right.")}
 knitr::include_graphics(here::here("data_files/sanjosehighways.png"))
 ```
