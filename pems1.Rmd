@@ -760,6 +760,215 @@ save(graph, cov, cov_for_mean_to_plot, data_prd_list_mesh, file = here("data_fil
 ```
 
 
+We plot just the graph
+
+```{r, eval = FALSE}
+# Set the style of the map
+style_vector <- c(c(feature = "road", element = "geometry", visibility = "on"),
+                  c("&style=", feature = "poi", element = "labels", visibility = "off"),
+                  c("&style=", feature = "road", element = "labels", visibility = "off"),
+                  c("&style=", feature = "administrative", element = "labels", visibility = "off"), #name of places
+                  c("&style=", feature = "transit", element = "labels", visibility = "off"),
+                  c("&style=", feature = "landscape", element = "geometry", visibility = "on"),
+                  c("&style=", feature = "water", element = "geometry", visibility = "on")) 
+register_stadiamaps(Sys.getenv("GGMAP_STADIAMAPS_API_KEY"))
+# Obtain the maps
+p12 <- ggmap(get_stadiamap(bbox = c(left = x_left, bottom = y_bottom, right = x_right, top = y_top),
+              zoom = 12,
+              maptype = "alidade_smooth", 
+              scale =2,
+              style = style_vector,
+              color = "color")) + xlab(NULL) + ylab(NULL)
+p13 <- ggmap(get_stadiamap(bbox = c(left = x_left, bottom = y_bottom, right = x_right, top = y_top),
+              zoom = 13,
+              maptype = "alidade_smooth", 
+              scale =2,
+              style = style_vector,
+              color = "color")) + xlab(NULL) + ylab(NULL)
+```
+
+
+
+```{r, eval = FALSE}
+g12 <- graph$plot(#data = "y", 
+                 p = p12,
+                 group = 1, 
+                 vertex_size = 0, 
+                 vertex_color = "blue",
+                 data_size = 1) + 
+  theme_minimal() + 
+  theme(text = element_text(family = "Palatino"), 
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8),
+        plot.margin = unit(-0.4*c(1,0,1,1), "cm")) +
+  labs(color = "", x = "", y = "") +
+  xlim(x_left, x_right) + 
+  ylim(y_bottom, y_top) +
+  annotate("segment", x = coordx_lwr1, y = coordy_lwr1, xend = coordx_upr1, yend = coordy_lwr1, 
+           linewidth = 0.4, color = upper_color) +  # Bottom line
+  annotate("segment", x = coordx_lwr1, y = coordy_upr1, xend = coordx_upr1, yend = coordy_upr1, 
+           linewidth = 0.4, color = upper_color) +  # Top line
+  annotate("segment", x = coordx_lwr1, y = coordy_lwr1, xend = coordx_lwr1, yend = coordy_upr1, 
+           linewidth = 0.4, color = upper_color) +  # Left line
+  annotate("segment", x = coordx_upr1, y = coordy_lwr1, xend = coordx_upr1, yend = coordy_upr1, 
+           linewidth = 0.4, color = upper_color) +  # Right line
+  annotate("segment", x = coordx_lwr2, y = coordy_lwr2, xend = coordx_upr2, yend = coordy_lwr2, 
+           linewidth = 0.4, color = lower_color) +  
+  annotate("segment", x = coordx_lwr2, y = coordy_upr2, xend = coordx_upr2, yend = coordy_upr2, 
+           linewidth = 0.4, color = lower_color) +  
+  annotate("segment", x = coordx_lwr2, y = coordy_lwr2, xend = coordx_lwr2, yend = coordy_upr2, 
+           linewidth = 0.4, color = lower_color) +  
+  annotate("segment", x = coordx_upr2, y = coordy_lwr2, xend = coordx_upr2, yend = coordy_upr2, 
+           linewidth = 0.4, color = lower_color)
+
+g13 <- graph$plot(#data = "y", 
+                 p = p13,
+                 group = 1, 
+                 vertex_size = 0, 
+                 vertex_color = "blue",
+                 data_size = 1) + 
+  theme_minimal() + 
+  theme(text = element_text(family = "Palatino"), 
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8),
+        plot.margin = unit(-0.4*c(1,0,1,1), "cm")) +
+  labs(color = "speed", x = "", y = "") +
+  xlim(x_left, x_right) + 
+  ylim(y_bottom, y_top) +
+  annotate("segment", x = coordx_lwr1, y = coordy_lwr1, xend = coordx_upr1, yend = coordy_lwr1, 
+           linewidth = 0.4, color = upper_color) +  # Bottom line
+  annotate("segment", x = coordx_lwr1, y = coordy_upr1, xend = coordx_upr1, yend = coordy_upr1, 
+           linewidth = 0.4, color = upper_color) +  # Top line
+  annotate("segment", x = coordx_lwr1, y = coordy_lwr1, xend = coordx_lwr1, yend = coordy_upr1, 
+           linewidth = 0.4, color = upper_color) +  # Left line
+  annotate("segment", x = coordx_upr1, y = coordy_lwr1, xend = coordx_upr1, yend = coordy_upr1, 
+           linewidth = 0.4, color = upper_color) +  # Right line
+  annotate("segment", x = coordx_lwr2, y = coordy_lwr2, xend = coordx_upr2, yend = coordy_lwr2, 
+           linewidth = 0.4, color = lower_color) +  
+  annotate("segment", x = coordx_lwr2, y = coordy_upr2, xend = coordx_upr2, yend = coordy_upr2, 
+           linewidth = 0.4, color = lower_color) +  
+  annotate("segment", x = coordx_lwr2, y = coordy_lwr2, xend = coordx_lwr2, yend = coordy_upr2, 
+           linewidth = 0.4, color = lower_color) +  
+  annotate("segment", x = coordx_upr2, y = coordy_lwr2, xend = coordx_upr2, yend = coordy_upr2, 
+           linewidth = 0.4, color = lower_color)
+
+r1 <- g13 + xlim(coordx_lwr1, coordx_upr1) + 
+                    ylim(coordy_lwr1, coordy_upr1) + 
+  theme(legend.position = "none", 
+        plot.margin = unit(-0.2*c(1,1,1,1), "cm"))
+
+r2 <- g13 + xlim(coordx_lwr2, coordx_upr2) + 
+                    ylim(coordy_lwr2, coordy_upr2) + 
+  theme(legend.position = "none", 
+        plot.margin = unit(-0.2*c(1,1,1,1), "cm"))
+
+# Arrange p2 and p3 horizontally
+left_col <- plot_grid(r2, r1, labels = NULL, ncol = 1, nrow = 2, rel_heights = c(1,1))
+
+# Combine the top row with p1 in a grid
+combined_plot <- plot_grid(left_col, g12, labels = NULL, ncol = 2, rel_widths = c(1,2)) 
+final_plot <- annotate_figure(combined_plot, left = textGrob("Latitude", rot = 90, vjust = 6, gp = gpar(cex = 0.8)),
+                              bottom = textGrob("Longitude", vjust = 0, gp = gpar(cex = 0.8)))
+ggsave(here("data_files/sanjosehighways.png"), width = 11.2, height = 5.43, plot = final_plot, dpi = 500)
+ggsave("~/Desktop/leninPresentations/data_files/sanjosehighways.png", width = 11.2, height = 5.43, plot = final_plot, dpi = 500)
+
+
+final_alone_plot <- annotate_figure(g12, left = textGrob("Latitude", rot = 90, vjust = 23, gp = gpar(cex = 0.8)),
+                              bottom = textGrob("Longitude", vjust = 0, gp = gpar(cex = 0.8)))
+
+
+
+
+ggsave(here("data_files/sanjosehighways_alone.png"), width = 11.2, height = 5.43, plot = final_alone_plot, dpi = 500)
+
+```
+
+```{r, eval = FALSE}
+library(MetricGraph)
+library(SSN2)
+
+copy_lsn_to_temp()
+path <- file.path(tempdir(), "MiddleFork04.ssn")
+
+mf04p <- ssn_import(
+  path = path,
+  predpts = c("pred1km", "CapeHorn"),
+  overwrite = TRUE
+)
+
+edges_lonlat <- st_transform(mf04p$edges, 4326)
+GRAPH <- metric_graph$new(edges_lonlat)
+
+bbox_lonlat <- st_bbox(st_transform(mf04p$edges, 4326))
+
+new_left <- as.numeric(bbox_lonlat["xmin"])
+new_bottom <- as.numeric(bbox_lonlat["ymin"])
+new_right <- as.numeric(bbox_lonlat["xmax"])
+new_top <- as.numeric(bbox_lonlat["ymax"])
+
+p_river <- ggmap(get_stadiamap(
+  bbox = c(
+    left   = new_left,
+    bottom = new_bottom,
+    right  = new_right,
+    top    = new_top
+  ),
+  zoom = 13,
+              maptype = "outdoors", 
+              scale =2,
+              style = style_vector,
+              color = "color")) + xlab(NULL) + ylab(NULL)
+
+g_river <- GRAPH$plot(
+                 p = p_river,
+                 vertex_size = 0, 
+                 vertex_color = "blue")  +
+  theme_minimal() +
+  theme(text = element_text(family = "Palatino"),
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8),
+        plot.margin = unit(-0.4*c(1,0,1,1), "cm")) +
+  labs(color = "", x = "Longitude", y = "Latitude")
+
+g12new <- graph$plot(
+                 p = p12,
+                 group = 1,
+                 vertex_size = 0,
+                 vertex_color = "blue",
+                 data_size = 1) +
+  theme_minimal() +
+  theme(text = element_text(family = "Palatino"),
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 8),
+        plot.margin = unit(-0.4*c(1,0,1,1), "cm")) +
+  labs(color = "", x = "Longitude", y = "Latitude")
+
+library(patchwork)
+
+g12new <- g12new +
+  theme(plot.margin = margin(5, 10, 5, 5))
+
+g_river <- g_river +
+  theme(plot.margin = margin(5, 5, 5, 10))
+
+groad_and_river <- g12new + g_river +
+  plot_layout(ncol = 2)
+
+ggsave(here("data_files/sanjosehighways_and_river_network.png"), width = 10, height = 3, plot = groad_and_river, dpi = 500)
+```
+
+
+
+```{r, eval = TRUE, fig.width = 11.2, fig.height = 5.43, fig.cap = captioner("Highway network of the city of San Jose in California. The left panels are zoomed-in areas of the panel to the right.")}
+knitr::include_graphics(here::here("data_files/sanjosehighways.png"))
+```
+
+```{r, eval = TRUE, fig.width = 10, fig.height = 3, fig.cap = captioner("Highway network of the city of San Jose in California and river network.")}
+knitr::include_graphics(here::here("data_files/sanjosehighways_and_river_network.png"))
+```
+
+
+
 # References
 
 
