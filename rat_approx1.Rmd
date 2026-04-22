@@ -1056,7 +1056,7 @@ conv_rate_ratapprox <- error.convergence.plotter(x_axis_vector = m_vector,
                                  fig_title = "",
                                  x_axis_label = "$m\\quad(\\sqrt{\\phantom{x}}\\mbox{ scale})$",
                                  y_axis_label = "$\\|f-r_m\\|_{L_{\\infty}([1,1/\\delta_m])}\\quad(\\log_{\\mathrm{e}}\\mbox{ scale})$",
-                                 color_label = "$\\quad\\;\\;\\{\\alpha\\}\\;|\\;\\;\\mbox{theo}\\;|\\;\\;\\mbox{obs}\\;\\;\\;|\\%\\mbox{re}$",
+                                 color_label = "$\\quad\\;\\;\\{\\alpha\\}\\;|\\;\\mathtt{theo}\\;|\\;\\;\\mathtt{obs}\\;\\;|\\%\\mathtt{re}$",
                                  apply_sqrt = TRUE)
 
 myggsave(conv_rate_ratapprox, width = 8, height = 3.2)
@@ -1605,7 +1605,8 @@ knitr::include_graphics(here::here("data_files/tikzpic/sparsematrixplots_tadpole
 ```
 
 
-```{r}
+```
+{r}
 compute_lower_bound <- function(h){
 kappa <- 4
 graph <- gets.graph.tadpole(h = h)
