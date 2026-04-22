@@ -768,8 +768,8 @@ label_mapping <- c(
   "Nonstatnu0.5" = "1", 
   "Statnu1.5" = "2", 
   "Nonstatnu1.5" = "2", 
-  "Statnuest" = paste(round(mean_and_mode_params_statnuest[5,1]+0.5, 3), "(est)"), 
-  "Nonstatnuest" = paste(round(mean_and_mode_params_nonstatnuest[7,1]+0.5, 3), "(est)")
+  "Statnuest" = paste(round(mean_and_mode_params_statnuest[5,1]+0.5, 3), "$(\\mathtt{est})$"), 
+  "Nonstatnuest" = paste(round(mean_and_mode_params_nonstatnuest[7,1]+0.5, 3), "$(\\mathtt{est})$")
 )
 
 # Define color and linetype mapping
@@ -803,7 +803,7 @@ mse_plot <- ggplot(mse_long, aes(x = distance, y = MSE, color = nu, linetype = n
 # Plot negative log-score
 ls_plot <- ggplot(ls_long, aes(x = distance, y = LogScore, color = nu, linetype = nu)) +
   geom_line(linewidth = 2) +
-  labs(y = "Negative Log-Score", x = "$\\mbox{Geodesic distance } R\\mbox{ }(\\mbox{km})$") +
+  labs(y = "Negative Log-Score", x = "$\\mbox{Geodesic radius } R\\mbox{ }(\\mbox{km})$") +
   scale_color_manual(values = color_mapping, labels = label_mapping, name = "$\\alpha$") +
   scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = "$\\alpha$") +
   theme_minimal() +

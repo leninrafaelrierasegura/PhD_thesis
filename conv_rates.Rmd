@@ -719,7 +719,7 @@ conv_rates_p <- ggplot() +
         axis.text = element_text(size = 12),         # Axis text
         legend.title = element_text(size = 14),      # Legend title
         legend.text = element_text(size = 12)) +
-  labs(x = "$h$", y = "Covariance Error", color = "$\\alpha$") 
+  labs(x = "$h\\quad(\\log_{10}\\mbox{ scale})$", y = "$\\|\\varrho^{\\alpha} - \\varrho_{h,m}^{\\alpha}\\|_{L_2(\\Gamma\\times \\Gamma)}\\quad(\\log_{10}\\mbox{ scale})$", color = "$\\alpha$") 
 
 myggsave(conv_rates_p, width = 12, height = 4)
 ```
