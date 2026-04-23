@@ -794,7 +794,7 @@ linetype_mapping <- c(
 # Plot MSE
 mse_plot <- ggplot(mse_long, aes(x = distance, y = MSE, color = nu, linetype = nu)) +
   geom_line(linewidth = 2) +
-  labs(y = "MSE", x = "$\\mbox{Geodesic distance } R\\mbox{ }(\\mbox{km})$") +
+  labs(y = "MSE", x = "$\\mbox{Geodesic radius } R\\mbox{ }(\\mbox{km})$") +
   scale_color_manual(values = color_mapping, labels = label_mapping, name = "$\\alpha$") +
   scale_linetype_manual(values = linetype_mapping, labels = label_mapping, name = "$\\alpha$") +
   theme_minimal() +
@@ -812,7 +812,9 @@ ls_plot <- ggplot(ls_long, aes(x = distance, y = LogScore, color = nu, linetype 
 # Combine plots with a shared legend at the top in a single line
 combined_plot_pems <- mse_plot + ls_plot + 
   plot_layout(guides = 'collect') & 
-  theme(legend.position = 'right') & 
+  theme(legend.position = 'right',
+        legend.key.width  = unit(0.6, "cm"),
+  legend.key.height = unit(0, "cm")) & 
   guides(color = guide_legend(ncol = 1), linetype = guide_legend(nrow = 1))
 
 # Save combined plot
