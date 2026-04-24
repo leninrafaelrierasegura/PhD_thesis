@@ -98,7 +98,8 @@ py_config()
 
 ```{r}
 capture.output(
-  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+  knitr::purl(here::here("functionality1.Rmd"), 
+              output = here::here("functionality1.R")),
   file = here::here("old/purl_log.txt")
 )
 source(here::here("functionality1.R"))
@@ -1209,10 +1210,10 @@ p3 <- plot_ly(
          showlegend = FALSE,
          font = list(family = "Palatino"))
 save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
-
-# combine_plotly_grid_pdf(list(p1,p2,p3), output_pdf = here::here("data_files/plotlypic/tadpole_graph_basis_functions.pdf"), ncol = 3)
-# combine_plotly_pdf_single(p3, here::here("data_files/plotlypic/p3.pdf"))
 ```
+
+
+
 
 
 
@@ -1361,7 +1362,23 @@ p_int_dir_der_exp_rev
 ::::
 
 
+```{r, eval = FALSE}
+save_plotly_figure_fixed(p1, dpi = 600,  scale = 2, viewer_change = 0.74)
+save_plotly_figure_fixed(p2, dpi = 600,  scale = 2, viewer_change = 0.74)
+save_plotly_figure_fixed(p3, dpi = 600,  scale = 2, viewer_change = 0.74)
 
+save_plotly_figure_fixed(p11, dpi = 600,  scale = 2, viewer_change = 0.8)
+save_plotly_figure_fixed(p22, dpi = 600,  scale = 2, viewer_change = 0.8)
+save_plotly_figure_fixed(p33, dpi = 600,  scale = 2, viewer_change = 1)
+
+save_plotly_figure_fixed(p11new, dpi = 600,  scale = 2, viewer_change = 0.8)
+save_plotly_figure_fixed(p2int, dpi = 600,  scale = 2, viewer_change = 0.8)
+
+save_plotly_figure_fixed(p_int_dir_der, dpi = 600,  scale = 2, viewer_change = 2)
+
+save_plotly_figure_fixed(p_int_dir_der_exp, dpi = 600,  scale = 2, viewer_change = 0.8)
+save_plotly_figure_fixed(p_int_dir_der_exp_rev, dpi = 600,  scale = 2, viewer_change = 0.8)
+```
 
 
 # References

@@ -17,9 +17,9 @@ output:
     code_download: true
     css: visual.css
 always_allow_html: true
-bibliography: 
-  - references.bib
-  - grateful-refs.bib
+# bibliography: 
+#   - references.bib
+#   - grateful-refs.bib
 header-includes:
   - \newcommand{\ar}{\mathbb{R}}
   - \newcommand{\llav}[1]{\left\{#1\right\}}
@@ -92,13 +92,172 @@ use_python(
 
 
 ```{r}
+save_plotly_figure_fixed <- function(fig,
+                                      dpi = 600,
+                                      scale = 2,
+                                      viewer_change = 1) {
+  
+  # folder (always used)
+  folder <- here::here("data_files/plotlypdf")
+  
+  # ensure folder exists
+  if (!dir.exists(folder)) {
+    dir.create(folder, recursive = TRUE)
+  }
+  
+  fig_name <- deparse(substitute(fig))
+  
+  file_name_pdf <- file.path(folder, paste0(fig_name, ".pdf"))
+  file_name_png <- file.path(folder, paste0(fig_name, ".png"))
+  
+  # ---- APPLY VIEWER SCALE TO CAMERA (if exists) ----
+  cam <- fig$x$layoutAttrs[[1]]$scene$camera$eye
+  if (!is.null(cam)) {
+    fig$x$layoutAttrs[[1]]$scene$camera$eye <- list(
+      x = cam$x * viewer_change,
+      y = cam$y * viewer_change,
+      z = cam$z * viewer_change
+    )
+  }
+  
+  # Save PDF
+  plotly::save_image(
+    fig,
+    file_name_pdf,
+    width = NULL,
+    height = NULL,
+    scale = scale
+  )
+  
+  # Convert PDF to PNG
+  cmd <- paste(
+    "convert -density", dpi,
+    "-background white -trim +repage",
+    "-bordercolor white -border 10",
+    shQuote(file_name_pdf),
+    shQuote(file_name_png)
+  )
+  
+  system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
+  
+  # --- Copy PNG to presentation folder ---
+  pres_dir <- path.expand("~/Desktop/leninPresentations/data_files")
+  if (!dir.exists(pres_dir)) dir.create(pres_dir, recursive = TRUE)
+  
+  pres_png <- file.path(pres_dir, basename(file_name_png))
+  file.copy(file_name_png, pres_png, overwrite = TRUE)
+  
+  pres_pdf <- file.path(pres_dir, basename(file_name_pdf))
+  file.copy(file_name_pdf, pres_pdf, overwrite = TRUE)
+  
+  cat(
+    "Files saved:\n",
+    "  PDF:", file_name_pdf, "\n",
+    "  PNG:", file_name_png, "\n",
+    "  PDF copied to:", pres_pdf, "\n",
+    "  PNG copied to:", pres_png, "\n",
+    "  viewer change:", viewer_change, "\n"
+  )
+}
+```
+
+
+```{r, eval = FALSE}
+viwerchange <- 1
+p2 <- plot_ly() %>% 
+  add_trace(x = x, 
+            y = y, 
+            z = x*0, 
+            type = "scatter3d",
+            mode = "lines",  
+            line = list(color = "black", width = gsw),
+            showlegend = FALSE) %>%
+  add_trace(data = df3, x = ~x, y = ~y, z = ~z, mode = "markers", type = "scatter3d", 
+            marker = list(size = gsw, color = "gray", symbol = 104)) %>%
+  add_trace(x = 0, y = 0, z = 0, mode = "markers", type = "scatter3d", 
+            marker = list(size = gsw, color = "black", symbol = 104),
+            showlegend = FALSE) %>%
+  add_trace(x = 1, y = 0, z = 0, mode = "markers", type = "scatter3d", 
+            marker = list(size = gsw, color = "black", symbol = 104),
+            showlegend = FALSE) %>%
+  layout(font = list(family = "Palatino"),
+         scene = list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray")),  tickfont = list(color = "gray"), range = x_range),
+              yaxis = list(title = list(text = "y", font = list(color = "gray")),  tickfont = list(color = "gray"), range = y_range),
+              zaxis = list(title = list(text = "z", font = list(color = "gray")),  tickfont = list(color = "gray"), range = z_range),
+              aspectratio = list(x = 2*(1+2/pi), 
+                                 y = 2*(2/pi), 
+                                 z = 1*(2/pi)),
+           aspectmode = "manual",
+              camera = list(eye = list(x = 5*viwerchange, y = 3*viwerchange, z = 4*viwerchange),
+                            center = list(x = (1+2/pi)/2, y = 0, z = 0)),
+           annotations = list(
+                   list(
+                     x = 0, y = 0, z = 0,
+                     text = TeX("v_1"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 16),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 1, y = 0, z = 0,
+                     text = TeX("v_2"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 16),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[1,1], y = df4[1,2], z = 0,
+                     text = TeX("x_1^{e_2}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 16),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1)
+                )
+         ),
+         #scene = modifyList(tadpole.layout(x_range, y_range, z_range), notes2),
+         margin = list(l = 0, r = 0, b = 0, t = 0),
+         showlegend = FALSE,
+         font = list(family = "Palatino")) %>%
+  config(mathjax = 'cdn') 
+# save(p2, file = here::here("data_files/plotlypdf/tadpole_graph_mesh.Rdata"))
+# save_plotly_figure(p2,
+#                    dpi = 600,
+#                    scale = 2,
+#                    width = 485,
+#                    height = 7 * 96,
+#                    folder = here::here("data_files/plotlypdf"))
+save_plotly_figure_fixed(p2, dpi = 600, scale = 2, viewer_change = 0.5)
+#save_plotly_figure(p2, dpi = 600, scale = 2, folder = here::here("data_files/plotlypdf"))
+```
+
+
+
+:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+
+
+
+::: {}
+
+```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Mesh nodes on the tadpole graph.")}
+load(here::here("data_files/plotlypdf/tadpole_graph_mesh.Rdata"))
+p2
+```
+
+
+:::
+
+
+::::
+
+
+
+```
+{r}
 library(plotly)
 
 # install once if needed:
 # install.packages("kaleido")
 
 x <- seq(0, 2*pi, length.out = 200)
-t_vals <- seq(0, 1, length.out = 40)
+t_vals <- seq(0, 1, length.out = 1)
 
 dir.create("frames", showWarnings = FALSE)
 
@@ -115,7 +274,7 @@ for (i in seq_along(t_vals)) {
     mode = "lines",
     line = list(width = 4),
     showlegend = FALSE
-  ) |>
+  ) %>%
     layout(
       scene = list(
         xaxis = list(range = c(0, 2*pi)),
@@ -123,10 +282,26 @@ for (i in seq_along(t_vals)) {
         zaxis = list(range = c(-1, 1))
       )
     )
-  
-  # Save PNG
-  file_name <- sprintf("frames/frame_%03d.png", i)
-  plotly::save_image(fig, file_name)
+  save_plotly_figure(fig, dpi = 600, scale = 2, folder = here::here("data_files/plotlypdf"))
+#   dpi <- 600
+#   # Save PNG
+#   file_name_pdf <- sprintf("frames/frame_%03d.pdf", i)
+#   file_name_png <- sprintf("frames/frame_%03d.png", i)
+#   plotly::save_image(fig, file_name_pdf, width = NULL, height = NULL, scale = 2)
+#   # cmd <- paste(
+#   #   "convert -density 600 -trim +repage",
+#   #   shQuote(file_name_pdf),
+#   #   shQuote(file_name_png)
+#   # )
+#   cmd <- paste(
+#   "convert -density", dpi,
+#   "-background white -trim +repage",
+#   "-bordercolor white -border 10",
+#   shQuote(file_name_pdf),
+#   shQuote(file_name_png)
+# )
+#   
+#   system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
 }
 ```
 
