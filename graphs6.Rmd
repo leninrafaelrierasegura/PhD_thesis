@@ -1308,9 +1308,9 @@ graphs6p4
 
 
 ```{r}
-save_plotly_figure_fixed(p2fhelix, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(graphs6p2, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(p4tadpole_arclength, dpi = 600,  scale = 2, viewer_change = 1.01)
+save_plotly_figure_fixed(p2fhelix, dpi = 300,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(graphs6p2, dpi = 300,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(p4tadpole_arclength, dpi = 300,  scale = 2, viewer_change = 1.01)
 save_plotly_figure_fixed(graphs6p4, dpi = 600,  scale = 2, viewer_change = 1)
 ```
 
