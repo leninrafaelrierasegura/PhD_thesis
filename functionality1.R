@@ -1,3 +1,4 @@
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # # Create a clipboard button on the rendered HTML page
 # source(here::here("clipboard.R")); clipboard
 # # Set seed for reproducibility
@@ -34,6 +35,8 @@
 # }
 # 
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # library(MetricGraph)
 # library(ggplot2)
 # library(reshape2)
@@ -46,6 +49,8 @@
 # source("keys.R")
 # slackr_setup(token = token) # token comes from keys.R
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # # Color for axis name and axis numbers
 # colaxnn <- "gray"
 # # Global font size
@@ -55,6 +60,8 @@
 # # Global size or widht for objects
 # gsw <- 7
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # gets.graph.interval <- function(n){
 #   edge <- rbind(c(0,0),c(1,0))
 #   edges = list(edge)
@@ -63,6 +70,8 @@
 #   return(graph)
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # gets.graph.circle <- function(n){
 #   r = 1/(pi)
 #   theta <- seq(from=-pi,to=pi,length.out = 100)
@@ -73,6 +82,8 @@
 #   return(graph)
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # # Function to build a tadpole graph and create a mesh
 # gets.graph.tadpole <- function(h){
 #   edge1 <- rbind(c(0,0),c(1,0))
@@ -85,6 +96,8 @@
 #   return(graph)
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # tadpole.eig <- function(k,graph){
 # x1 <- c(0,graph$get_edge_lengths()[1]*graph$mesh$PtE[graph$mesh$PtE[,1]==1,2])
 # x2 <- c(0,graph$get_edge_lengths()[2]*graph$mesh$PtE[graph$mesh$PtE[,1]==2,2])
@@ -113,6 +126,8 @@
 # return(f)
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # # Function to compute the eigenpairs of the tadpole graph
 # gets.eigen.params <- function(N_finite = 4, kappa = 1, alpha = 0.5, graph){
 #   EIGENVAL <- NULL
@@ -149,6 +164,8 @@
 #               INDEX = INDEX))
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # # Function to order the vertices for plotting
 # plotting.order <- function(v, graph){
 #   edge_number <- graph$mesh$VtE[, 1]
@@ -156,6 +173,8 @@
 #   return(c(v[1], v[3:pos], v[2], v[(pos+1):length(v)], v[2]))
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # # Original camera
 # eye <- list(x = 5, y = 3, z = 4)
 # center <- list(x = (1+2/pi)/2, y = 0, z = 0)
@@ -191,6 +210,8 @@
 #                             center = center)))
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # myggsave <- function(plot,
 #                      width = 9.22,
 #                      height = 7.05,
@@ -277,15 +298,15 @@
 #       "PNG copied to:", pres_png, "\n")
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # save_plotly_figure_fixed <- function(fig,
-#                                       dpi = 600,
-#                                       scale = 2,
-#                                       viewer_change = 1) {
+#                                      dpi = 600,
+#                                      scale = 2,
+#                                      viewer_change = 1) {
 # 
-#   # folder (always used)
 #   folder <- here::here("data_files/plotlypdf")
 # 
-#   # ensure folder exists
 #   if (!dir.exists(folder)) {
 #     dir.create(folder, recursive = TRUE)
 #   }
@@ -295,14 +316,41 @@
 #   file_name_pdf <- file.path(folder, paste0(fig_name, ".pdf"))
 #   file_name_png <- file.path(folder, paste0(fig_name, ".png"))
 # 
-#   # ---- APPLY VIEWER SCALE TO CAMERA (if exists) ----
-#   cam <- fig$x$layoutAttrs[[1]]$scene$camera$eye
+#   # ---- CAMERA (correct Plotly location) ----
+#   cam <- fig$x$layoutAttrs[[1]]$scene$camera
+# 
 #   if (!is.null(cam)) {
-#     fig$x$layoutAttrs[[1]]$scene$camera$eye <- list(
-#       x = cam$x * viewer_change,
-#       y = cam$y * viewer_change,
-#       z = cam$z * viewer_change
-#     )
+# 
+#     eye <- cam$eye
+#     center <- cam$center
+# 
+#     if (is.null(eye)) eye <- list(x = 1, y = 1, z = 1)
+#     if (is.null(center)) center <- list(x = 0, y = 0, z = 0)
+# 
+#     # vector center -> eye
+#     vx <- eye$x - center$x
+#     vy <- eye$y - center$y
+#     vz <- eye$z - center$z
+# 
+#     # norm (distance from center)
+#     norm_v <- sqrt(vx^2 + vy^2 + vz^2)
+# 
+#     if (norm_v > 0) {
+# 
+#       # normalize direction
+#       vx <- vx / norm_v
+#       vy <- vy / norm_v
+#       vz <- vz / norm_v
+# 
+#       # apply zoom scaling on radius
+#       norm_v <- norm_v * viewer_change
+# 
+#       fig$x$layoutAttrs[[1]]$scene$camera$eye <- list(
+#         x = center$x + vx * norm_v,
+#         y = center$y + vy * norm_v,
+#         z = center$z + vz * norm_v
+#       )
+#     }
 #   }
 # 
 #   # Save PDF
@@ -325,14 +373,14 @@
 # 
 #   system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
 # 
-#   # --- Copy PNG to presentation folder ---
+#   # Copy to presentation folder
 #   pres_dir <- path.expand("~/Desktop/leninPresentations/data_files")
 #   if (!dir.exists(pres_dir)) dir.create(pres_dir, recursive = TRUE)
 # 
 #   pres_png <- file.path(pres_dir, basename(file_name_png))
-#   file.copy(file_name_png, pres_png, overwrite = TRUE)
-# 
 #   pres_pdf <- file.path(pres_dir, basename(file_name_pdf))
+# 
+#   file.copy(file_name_png, pres_png, overwrite = TRUE)
 #   file.copy(file_name_pdf, pres_pdf, overwrite = TRUE)
 # 
 #   cat(
@@ -344,8 +392,11 @@
 #     "  viewer change:", viewer_change, "\n"
 #   )
 # }
-
 # 
+
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# # loglog
 # loglog_line_equation <- function(x1, y1, slope) {
 #   b <- log10(y1 / (x1 ^ slope))
 # 
@@ -458,6 +509,8 @@
 # }
 # 
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # generate_graph_on_sphere <- function(n,
 #                                      k = 6,   # polar circles
 #                                      m = 12,  # tropics
@@ -528,6 +581,8 @@
 #   ))
 # }
 
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # plot_sparse_pattern <- function(A) {
 #   s <- summary(A)
 # 
@@ -543,3 +598,4 @@
 #     )
 #   return(p)
 # }
+

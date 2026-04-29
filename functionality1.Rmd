@@ -454,7 +454,7 @@ save_plotly_figure_fixed <- function(fig,
 
 
 ```{r}
-
+# loglog
 loglog_line_equation <- function(x1, y1, slope) {
   b <- log10(y1 / (x1 ^ slope))
   
