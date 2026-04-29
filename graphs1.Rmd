@@ -174,35 +174,6 @@ sizeref <- 0.1
 n <- 60#333
 graph <- gets.graph.interval(n = n)
 
-notes_int <- list(annotations = list(
-             list(
-               x = 0, y = 0, z = 0,
-               text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-             list(
-               x = 0, y = 1, z = 0,
-               text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-             list(
-               x = 0, y = 0.5, z = 0,
-               text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))
-
-layout_int <- list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-  camera = list(eye = list(x = 2.3, 
-                                       y = 2.3, 
-                                       z = 2.3),
-                            center = list(x = 0, 
-                                          y = 0, 
-                                          z = 0)))
 
 p11 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
                            vertex_size = gsw,
@@ -228,10 +199,39 @@ p11 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
   cmax = 1
 ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(notes_int, layout_int),
+         scene =  list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = c(-0.5,0.5)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = c(-0.5,0.5)),
+  camera = list(eye = list(x = 2.1, y = 2.1, z = 2.1),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+  aspectratio = list(x = 1, y = 1, z = 1),
+  annotations = list(
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 0.5, z = 0,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
+
 
 p11new <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
                            vertex_size = gsw,
@@ -257,26 +257,34 @@ p11new <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
   cmax = 1
 ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(layout_int,
-                    list(annotations = list(
+         scene =  list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = c(-0.5,0.5)),
+  camera = list(eye = list(x = 2.1, y = 2.1, z = 2.1),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+  annotations = list(
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v_1 = 0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 1, z = 0,
                text = TeX("v_2 = \\ell_{e_1}"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 0.5, z = 0,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))),
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -307,62 +315,38 @@ p2int <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
   cmax = 1
 ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(layout_int,
-                    list(annotations = list(
+         scene =  list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = c(-0.5,0.5)),
+  camera = list(eye = list(x = 2.1, y = 2.1, z = 2.1),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+  annotations = list(
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v_1 = \\ell_{e_1}"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 1, z = 0,
                text = TeX("v_2 = 0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 0.5, z = 0,
                text = TeX("\\hat{e}_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))),
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
 
-
-notes_int_dir <- list(annotations = list(
-             list(
-               x = 0, y = 1, z = 1,
-               text = TeX("\\partial_{e_1}f(v_2) = -f'_{e_1}(\\ell_{e_1})"),
-               textangle = 0, ax = 0, ay = -35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)"),
-             list(
-               x = 0, y = 0, z = 1,
-               text = TeX("\\partial_{e_1}f(v_1) = f'_{e_1}(0)"),
-               textangle = 0, ax = 0, ay = -35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)"),
-             list(
-               x = 0, y = 0, z = 0,
-               text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-             list(
-               x = 0, y = 1, z = 0,
-               text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-             list(
-               x = 0, y = 0.5, z = 0,
-               text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))
 
 
 p_int_dir_der <- graph$plot_function(cos(2*pi*graph$mesh$V[,1]), 
@@ -441,7 +425,47 @@ add_trace(
   cmax = 1
 ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(notes_int_dir, layout_int, list(aspectratio = list(x = 1, y = 1, z = 1))),
+         scene =  list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+  camera = list(eye = list(x = 2.1, y = 2.1, z = 2.1),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+  aspectratio = list(x = 1, y = 1, z = 1),
+  annotations = list(
+             list(
+               x = 0, y = 1, z = 1,
+               text = TeX("\\partial_{e_1}f(v_2) = -f'_{e_1}(\\ell_{e_1})"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 1,
+               text = TeX("\\partial_{e_1}f(v_1) = f'_{e_1}(0)"),
+               textangle = 0, ax = 0, ay = -35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 0.5, z = 0,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -523,38 +547,47 @@ p_int_dir_der_exp <- graph$plot_function(exp(graph$mesh$V[,1]),
   cmax = 1
 ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(layout_int, list(aspectratio = list(x = 1, y = 1, z = 1)),
-                    list(annotations = list(
+         scene =  list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+  camera = list(eye = list(x = 2.1, y = 2.1, z = 2.1),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+  aspectratio = list(x = 1, y = 1, z = 1),
+  annotations = list(
              list(
                x = 0, y = 1, z = exp(1),
                text = TeX("\\partial_{e_1}f(v_2) = -f'_{e_1}(\\ell_{e_1})"),
                textangle = 0, ax = 0, ay = -35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 1,
                text = TeX("\\partial_{e_1}f(v_1) = f'_{e_1}(0)"),
                textangle = 0, ax = 0, ay = -35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v_1=0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 1, z = 0,
                text = TeX("v_2=\\ell_{e_1}"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 0.5, z = 0,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))),
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -635,38 +668,47 @@ p_int_dir_der_exp_rev <- graph$plot_function(exp(graph$mesh$V[,1]),
   cmax = 1
 ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(layout_int, list(aspectratio = list(x = 1, y = 1, z = 1)),
-                    list(annotations = list(
+         scene =  list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+  camera = list(eye = list(x = 2.1, y = 2.1, z = 2.1),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+  aspectratio = list(x = 1, y = 1, z = 1),
+  annotations = list(
              list(
                x = 0, y = 1, z = exp(1),
                text = TeX("\\partial_{\\hat{e}_1}g(v_2) = g'_{\\hat{e}_1}(0)"),
                textangle = 0, ax = 0, ay = -35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 1,
                text = TeX("\\partial_{\\hat{e}_1}g(v_1) = -g'_{e_1}(\\ell_{e_1})"),
                textangle = 0, ax = 0, ay = -35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v_1 = \\ell_{e_1}"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 1, z = 0,
                text = TeX("v_2=0"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 20),
                arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
              list(
                x = 0, y = 0.5, z = 0,
                text = TeX("\\hat{e}_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))),
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -690,20 +732,6 @@ Below we plot the circle graph $\Gamma_C = (\mathcal{V}, \mathcal{E})$ with $\ma
 ```{r}
 n <- 6#666
 graph <- gets.graph.circle(n = n)
-
-notes_cir <- list(annotations = list(
-             list(
-               x = 0, y = 1, z = 0,
-               text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-             list(
-               x = 0, y = 1 + 2/pi, z = 0,
-               text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))
   
   
 p22 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
@@ -730,7 +758,28 @@ p22 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
     cmax = 1
   ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(notes_cir, layout_int),
+         scene =  list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = c(-0.5,0.5)),
+  camera = list(eye = list(x = 2.1, y = 2.1, z = 2.1),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+  annotations = list(
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1 + 2/pi, z = 0,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -745,31 +794,6 @@ Below we plot the tadpole graph $\Gamma_T = (\mathcal{V}, \mathcal{E})$ with $\m
 
 graph <- gets.graph.tadpole(h = 1/4)
 
-notes_tad_1 <- list(annotations = list(
-             list(
-               x = 0, y = 0, z = 0,
-               text = TeX("v_1"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-             list(
-               x = 0, y = 1, z = 0,
-               text = TeX("v_2"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-             list(
-               x = 0, y = 0.5, z = 0,
-               text = TeX("e_1"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)"),
-             list(
-               x = 0, y = 1+2/pi, z = 0,
-               text = TeX("e_2"),
-               textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))
 
 p33 <- graph$plot_function(rep(0,nrow(graph$mesh$V)), 
                            vertex_size = gsw,
@@ -811,7 +835,40 @@ p33 <- graph$plot_function(rep(0,nrow(graph$mesh$V)),
     cmax = 1
   ) |>
   layout(font = list(family = "Palatino"),
-         scene =  c(notes_tad_1, layout_int),
+         scene =  list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = c(-0.5,0.5)),
+  camera = list(eye = list(x = 2.1, y = 2.1, z = 2.1),
+                            center = list(x = 0, 
+                                          y = 0, 
+                                          z = 0)),
+  annotations = list(
+             list(
+               x = 0, y = 0, z = 0,
+               text = TeX("v_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 1, z = 0,
+               text = TeX("v_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+             list(
+               x = 0, y = 0.5, z = 0,
+               text = TeX("e_1"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"),
+             list(
+               x = 0, y = 1+2/pi, z = 0,
+               text = TeX("e_2"),
+               textangle = 0, ax = 0, ay = 35,
+               font = list(color = "black", size = 20),
+               arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -848,50 +905,6 @@ z_range <- c(0,1)
 ```
 
 ```{r}
-notes1 <- list(annotations = list(
-                   list(
-                     x = 0, y = 0, z = 0,
-                     text = TeX("v_1"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 1, y = 0, z = 0,
-                     text = TeX("v_2"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 0.5, y = 0, z = 0,
-                     text = TeX("e_1"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = 1+2/pi, y = 0, z = 0,
-                     text = TeX("e_2"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = 0.25, y = 0, z = 0,
-                     text = TeX("s_1"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 1+1/pi, y = 1/pi, z = 0,
-                     text = TeX("s_2"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 0.25, y = 0, z = 1,
-                     text = TeX("f=\\gamma\\big|_\\Gamma"),
-                     textangle = 0, ax = -40, ay = 0,
-                     font = list(color = "rgb(0,0,200)", size = gfsize),
-                     arrowcolor = "rgba(0,0,0,0)")))
-    
 # to plot the path 
 theta <- seq(from = pi/2, to = pi, length.out = 100)
 SSTHETA <- seq(from = -pi, to = pi/2, length.out = 300)
@@ -949,7 +962,59 @@ p1 <- plot_ly() |>
             line = list(color = "lightgray", width = 0.5),
             showlegend = FALSE) |>
   layout(font = list(family = "Palatino"),
-         scene = c(tadpole.layout(x_range, y_range, z_range),notes1),
+         scene = list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = x_range),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = y_range),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = z_range),
+              aspectratio = list(x = 2*(1+2/pi), 
+                                 y = 2*(2/pi), 
+                                 z = 1*(2/pi)),
+              camera = list(eye = list(x = 5, y = 3, z = 4),
+                            center = list(x = (1+2/pi)/2, y = 0, z = 0)),
+           annotations = list(
+                   list(
+                     x = 0, y = 0, z = 0,
+                     text = TeX("v_1"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 1, y = 0, z = 0,
+                     text = TeX("v_2"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 0.5, y = 0, z = 0,
+                     text = TeX("e_1"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "rgba(0,0,0,0)"),
+                   list(
+                     x = 1+2/pi, y = 0, z = 0,
+                     text = TeX("e_2"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "rgba(0,0,0,0)"),
+                   list(
+                     x = 0.25, y = 0, z = 0,
+                     text = TeX("s_1"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 1+1/pi, y = 1/pi, z = 0,
+                     text = TeX("s_2"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 0.25, y = 0, z = 1,
+                     text = TeX("f=\\gamma\\big|_\\Gamma"),
+                     textangle = 0, ax = -40, ay = 0,
+                     font = list(color = "rgb(0,0,200)", size = 20),
+                     arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -966,81 +1031,6 @@ df3 <- data.frame(x = graph$mesh$V[, 1],
                   y = graph$mesh$V[, 2], 
                   z = rep(0, length(graph$mesh$V[, 1])))
 df4 <- df3[6:nrow(df3), ]
-
-
-notes2 <- list(annotations = list(
-                   list(
-                     x = 0, y = 0, z = 0,
-                     text = TeX("v_1"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 1, y = 0, z = 0,
-                     text = TeX("v_2"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[1,1], y = df4[1,2], z = 0,
-                     text = TeX("x_1^{e_2}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[2,1], y = df4[2,2], z = 0,
-                     text = TeX("x_2^{e_2}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[3,1], y = df4[3,2], z = 0,
-                     text = TeX("x_3^{e_2}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[4,1], y = df4[4,2], z = 0,
-                     text = TeX("x_4^{e_2}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[5,1], y = df4[5,2], z = 0,
-                     text = TeX("x_5^{e_2}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[6,1], y = df4[6,2], z = 0,
-                     text = TeX("x_6^{e_2}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[7,1], y = df4[7,2], z = 0,
-                     text = TeX("x_7^{e_2}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 0.25, y = 0, z = 0,
-                     text = TeX("x_1^{e_1}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 0.5, y = 0, z = 0,
-                     text = TeX("x_2^{e_1}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 0.75, y = 0, z = 0,
-                     text = TeX("x_3^{e_1}"),
-                     textangle = 0, ax = 0, ay = -35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1)))
 
 p2 <- plot_ly() |> 
   config(mathjax = 'cdn') |>
@@ -1060,7 +1050,89 @@ p2 <- plot_ly() |>
             marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   layout(font = list(family = "Palatino"),
-         scene = c(tadpole.layout(x_range, y_range, z_range), notes2),
+         scene = list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = x_range),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = y_range),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = z_range),
+              aspectratio = list(x = 2*(1+2/pi), 
+                                 y = 2*(2/pi), 
+                                 z = 1*(2/pi)),
+              camera = list(eye = list(x = 5, y = 3, z = 4),
+                            center = list(x = (1+2/pi)/2, y = 0, z = 0)),
+           annotations = list(
+                   list(
+                     x = 0, y = 0, z = 0,
+                     text = TeX("v_1"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 1, y = 0, z = 0,
+                     text = TeX("v_2"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[1,1], y = df4[1,2], z = 0,
+                     text = TeX("x_1^{e_2}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[2,1], y = df4[2,2], z = 0,
+                     text = TeX("x_2^{e_2}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[3,1], y = df4[3,2], z = 0,
+                     text = TeX("x_3^{e_2}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[4,1], y = df4[4,2], z = 0,
+                     text = TeX("x_4^{e_2}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[5,1], y = df4[5,2], z = 0,
+                     text = TeX("x_5^{e_2}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[6,1], y = df4[6,2], z = 0,
+                     text = TeX("x_6^{e_2}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[7,1], y = df4[7,2], z = 0,
+                     text = TeX("x_7^{e_2}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 0.25, y = 0, z = 0,
+                     text = TeX("x_1^{e_1}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 0.5, y = 0, z = 0,
+                     text = TeX("x_2^{e_1}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 0.75, y = 0, z = 0,
+                     text = TeX("x_3^{e_1}"),
+                     textangle = 0, ax = 0, ay = -35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
          showlegend = FALSE,
          font = list(family = "Palatino"))
@@ -1096,56 +1168,6 @@ where $x_v^e$ is either $x_0^e$ or $x_{n_e}^e$ depending on the edge direction a
 
 
 ```{r}
-notes3 <- list(annotations = list(
-                   list(
-                     x = 0, y = 0, z = 1,
-                     text = TeX("\\phi_{v_1}"),
-                     textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "red", size = gfsize),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = 0, y = 0, z = 0,
-                     text = TeX("\\mathcal{N}_{v_1}"),
-                     textangle = 0, ax = 25, ay = 5,
-                     font = list(color = "green", size = gfsize),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = 1, y = 0, z = 1,
-                     text = TeX("\\phi_{v_2}"),
-                     textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "red", size = gfsize),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = 0, y = 0, z = 0,
-                     text = TeX("v_1"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 1, y = 0, z = 0,
-                     text = TeX("v_2"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 1, y = 0, z = 0,
-                     text = TeX("\\mathcal{N}_{v_2}"),
-                     textangle = 0, ax = 40, ay = -10,
-                     font = list(color = "green", size = gfsize),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = df4[5,1], y = df4[5,2], z = 0,
-                     text = TeX("x_5^{e_2}"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = gfsize),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[5,1], y = df4[5,2], z = 1,
-                     text = TeX("\\varphi_5^{e_2}"),
-                     textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "rgb(0,0,200)", size = gfsize),
-                     arrowcolor = "rgba(0,0,0,0)")))
-
 p3 <- plot_ly(
   #width = 1500, height = 2000
          ) |> 
@@ -1203,7 +1225,65 @@ p3 <- plot_ly(
             marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
   layout(font = list(family = "Palatino"),
-         scene = c(tadpole.layout(x_range, y_range, z_range), notes3),
+         scene = list(
+           xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = x_range),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = y_range),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15), range = z_range),
+              aspectratio = list(x = 2*(1+2/pi), 
+                                 y = 2*(2/pi), 
+                                 z = 1*(2/pi)),
+              camera = list(eye = list(x = 5, y = 3, z = 4),
+                            center = list(x = (1+2/pi)/2, y = 0, z = 0)),
+           annotations = list(
+                   list(
+                     x = 0, y = 0, z = 1,
+                     text = TeX("\\phi_{v_1}"),
+                     textangle = 0, ax = 0, ay = -15,
+                     font = list(color = "red", size = 20),
+                     arrowcolor = "rgba(0,0,0,0)"),
+                   list(
+                     x = 0, y = 0, z = 0,
+                     text = TeX("\\mathcal{N}_{v_1}"),
+                     textangle = 0, ax = 25, ay = 5,
+                     font = list(color = "green", size = 20),
+                     arrowcolor = "rgba(0,0,0,0)"),
+                   list(
+                     x = 1, y = 0, z = 1,
+                     text = TeX("\\phi_{v_2}"),
+                     textangle = 0, ax = 0, ay = -15,
+                     font = list(color = "red", size = 20),
+                     arrowcolor = "rgba(0,0,0,0)"),
+                   list(
+                     x = 0, y = 0, z = 0,
+                     text = TeX("v_1"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 1, y = 0, z = 0,
+                     text = TeX("v_2"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = 1, y = 0, z = 0,
+                     text = TeX("\\mathcal{N}_{v_2}"),
+                     textangle = 0, ax = 40, ay = -10,
+                     font = list(color = "green", size = 20),
+                     arrowcolor = "rgba(0,0,0,0)"),
+                   list(
+                     x = df4[5,1], y = df4[5,2], z = 0,
+                     text = TeX("x_5^{e_2}"),
+                     textangle = 0, ax = 0, ay = 35,
+                     font = list(color = "black", size = 20),
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   list(
+                     x = df4[5,1], y = df4[5,2], z = 1,
+                     text = TeX("\\varphi_5^{e_2}"),
+                     textangle = 0, ax = 0, ay = -15,
+                     font = list(color = "rgb(0,0,200)", size = 20),
+                     arrowcolor = "rgba(0,0,0,0)"))
+         ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
   paper_bgcolor = "white",  # the overall canvas background
   plot_bgcolor  = "white",   # the area inside axes
@@ -1214,7 +1294,48 @@ save(p3, file = here::here("data_files/tadpole_graph_basis_functions.Rdata"))
 
 
 
+```{r, eval = FALSE}
+save_plotly_figure_fixed(p11, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(p22, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(p33, dpi = 600,  scale = 2, viewer_change = 1)
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p11.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p22.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p33.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p11_p22_p33.png"
+combine_pngs_with_gap(png_files, output_file, gap = 200)
 
+
+save_plotly_figure_fixed(p1, dpi = 600,  scale = 2, viewer_change = 1)
+
+
+
+save_plotly_figure_fixed(p2, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(p3, dpi = 600,  scale = 2, viewer_change = 1)
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p2.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p3.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p2_p3.png"
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+
+save_plotly_figure_fixed(p11new, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(p2int, dpi = 600,  scale = 2, viewer_change = 1)
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p11new.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p2int.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p11new_p2int.png"
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+
+
+save_plotly_figure_fixed(p_int_dir_der, dpi = 600,  scale = 2, viewer_change = 2)
+
+
+save_plotly_figure_fixed(p_int_dir_der_exp, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(p_int_dir_der_exp_rev, dpi = 600,  scale = 2, viewer_change = 1)
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p_int_dir_der_exp.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p_int_dir_der_exp_rev.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p_int_dir_der_exp_p_int_dir_der_exp_rev.png"
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
 
 
 # Plots part 1
@@ -1362,23 +1483,6 @@ p_int_dir_der_exp_rev
 ::::
 
 
-```{r, eval = FALSE}
-save_plotly_figure_fixed(p1, dpi = 600,  scale = 2, viewer_change = 0.74)
-save_plotly_figure_fixed(p2, dpi = 600,  scale = 2, viewer_change = 0.74)
-save_plotly_figure_fixed(p3, dpi = 600,  scale = 2, viewer_change = 0.74)
-
-save_plotly_figure_fixed(p11, dpi = 600,  scale = 2, viewer_change = 0.8)
-save_plotly_figure_fixed(p22, dpi = 600,  scale = 2, viewer_change = 0.8)
-save_plotly_figure_fixed(p33, dpi = 600,  scale = 2, viewer_change = 1)
-
-save_plotly_figure_fixed(p11new, dpi = 600,  scale = 2, viewer_change = 0.8)
-save_plotly_figure_fixed(p2int, dpi = 600,  scale = 2, viewer_change = 0.8)
-
-save_plotly_figure_fixed(p_int_dir_der, dpi = 600,  scale = 2, viewer_change = 2)
-
-save_plotly_figure_fixed(p_int_dir_der_exp, dpi = 600,  scale = 2, viewer_change = 0.8)
-save_plotly_figure_fixed(p_int_dir_der_exp_rev, dpi = 600,  scale = 2, viewer_change = 0.8)
-```
 
 
 # References

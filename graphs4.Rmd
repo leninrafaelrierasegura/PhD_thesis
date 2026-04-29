@@ -207,9 +207,9 @@ for(i in seq_len(n_edges)) {
 star_graph <- star_graph |> plotly::layout(
   font = list(family = "Palatino"),
   scene = list(
-    xaxis = list(title = list(text = "x", font = list(color = colaxnn)), tickfont = list(color = colaxnn)),
-    yaxis = list(title = list(text = "y", font = list(color = colaxnn)), tickfont = list(color = colaxnn)),
-    zaxis = list(title = list(text = "z", font = list(color = colaxnn)), tickfont = list(color = colaxnn)),
+    xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)), tickfont = list(color = "gray", size = 15)),
+    yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)), tickfont = list(color = "gray", size = 15)),
+    zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)), tickfont = list(color = "gray", size = 15)),
     aspectratio = list(x = 2, y = 2, z = 2),
     camera = list(eye = list(x = x_eye, y = y_eye, z = z_eye), center = list(x = 0, y = 0, z = 0)),
     annotations = annotations_list
@@ -229,7 +229,7 @@ star3graph <- gets.starplotly(n = n,
                 y_eye = y_eye,
                 z_eye = z_eye,
                 gsw = gsw,
-                gfsize = gfsize,
+                gfsize = 30,
                 colaxnn = colaxnn)
 
 n <- 7
@@ -240,7 +240,7 @@ star7graph <- gets.starplotly(n = n,
                 y_eye = y_eye,
                 z_eye = z_eye,
                 gsw = gsw,
-                gfsize = gfsize,
+                gfsize = 30,
                 colaxnn = colaxnn)
 
 
@@ -324,9 +324,9 @@ star2graph <- graph$plot(vertex_size = gsw, edge_width = gsw, type = "plotly") |
   cmax = 1
 ) |>
   plotly::layout(font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -342,37 +342,51 @@ star2graph <- graph$plot(vertex_size = gsw, edge_width = gsw, type = "plotly") |
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
 save(star2graph, file = here::here("data_files/star2graph.Rdata"))
 ```
 
+
+
+```{r}
+save_plotly_figure_fixed(star2graph, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3graph, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star7graph, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star2graph.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3graph.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star7graph.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star2graph_star3graph_star7graph.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
 
 
 :::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}

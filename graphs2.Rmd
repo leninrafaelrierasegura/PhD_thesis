@@ -316,7 +316,7 @@ z_eye <- 2#3
 ```{r, eval = FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
 graph_disc$plot_function(X = df, vertex_size = gsw, edge_width = gsw, line_width = gsw, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   config(mathjax = 'cdn') |>
-  plotly::layout(title = TeX("f'"), 
+  plotly::layout(#title = TeX("f'"), 
                  font = list(family = "Palatino"),
                  scene = list(
                    aspectratio = list(x = 2, 
@@ -385,11 +385,11 @@ star3f <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_w
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("f"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("f"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -405,43 +405,43 @@ star3f <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_w
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -510,11 +510,11 @@ star3df <- graph$plot_function(X = f*0, vertex_size = gsw, line_color = "black",
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("f'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("f'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -530,43 +530,43 @@ star3df <- graph$plot_function(X = f*0, vertex_size = gsw, line_color = "black",
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -620,11 +620,11 @@ star3ddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, li
   cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("f''"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("f''"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -640,43 +640,43 @@ star3ddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, li
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -730,11 +730,11 @@ star3dddf <- graph_disc$plot_function(X = dddf, vertex_size = gsw, edge_width = 
   cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("f'''"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("f'''"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -750,43 +750,43 @@ star3dddf <- graph_disc$plot_function(X = dddf, vertex_size = gsw, edge_width = 
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -956,11 +956,11 @@ star3g <- graph$plot_function(X = g, vertex_size = gsw, edge_width = gsw, line_w
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("g"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("g"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -976,43 +976,43 @@ star3g <- graph$plot_function(X = g, vertex_size = gsw, edge_width = gsw, line_w
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1066,11 +1066,11 @@ star3dg <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw, line
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("g'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1086,43 +1086,43 @@ star3dg <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw, line
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1176,11 +1176,11 @@ star3ddg <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = gsw, li
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("g''"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("g''"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1196,43 +1196,43 @@ star3ddg <- graph$plot_function(X = ddg, vertex_size = gsw, edge_width = gsw, li
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1286,11 +1286,11 @@ star3dddg <- graph$plot_function(X = dddg, vertex_size = gsw, edge_width = gsw, 
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("g'''"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("g'''"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1306,43 +1306,43 @@ star3dddg <- graph$plot_function(X = dddg, vertex_size = gsw, edge_width = gsw, 
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1440,11 +1440,11 @@ star3dg_path1 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_3e_1}})'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("(g|_{p_{\\hat{e}_3e_1}})'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1460,43 +1460,43 @@ star3dg_path1 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("\\hat{e}_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1578,11 +1578,11 @@ star3dg_path2 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_3e_2}})'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("(g|_{p_{\\hat{e}_3e_2}})'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1598,43 +1598,43 @@ star3dg_path2 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("\\hat{e}_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1716,11 +1716,11 @@ star3dg_path3 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g|_{p_{\\hat{e}_2e_1}})'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("(g|_{p_{\\hat{e}_2e_1}})'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1736,43 +1736,43 @@ star3dg_path3 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1844,11 +1844,11 @@ star3dg_path_ok <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = g
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("g'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1864,43 +1864,43 @@ star3dg_path_ok <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = g
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("\\hat{e}_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -2030,11 +2030,11 @@ star3ddg_path1 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color =
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g'|_{p_{\\hat{e}_3e_1}})'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("(g'|_{p_{\\hat{e}_3e_1}})'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -2050,43 +2050,43 @@ star3ddg_path1 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color =
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("\\hat{e}_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -2205,11 +2205,11 @@ star3ddg_path2 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color =
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g'|_{p_{\\hat{e}_3e_2}})'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("(g'|_{p_{\\hat{e}_3e_2}})'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -2225,43 +2225,43 @@ star3ddg_path2 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color =
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("\\hat{e}_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -2379,11 +2379,11 @@ star3ddg_path3 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color =
     line = list(color = "green", width = 7),
     showlegend = FALSE
   ) |>
-  plotly::layout(title = list(text = TeX("(g'|_{p_{\\hat{e}_2e_1}})'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("(g'|_{p_{\\hat{e}_2e_1}})'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -2399,43 +2399,43 @@ star3ddg_path3 <- graph$plot_function(X = ddg*0, vertex_size = gsw, line_color =
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e3_fin_y, y = e3_fin_x, z = e3_fin_z,
                text = TeX("v_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym3, y = xm3, z = zm3,
                text = TeX("e_3"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -2613,11 +2613,11 @@ star2f <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_w
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("h"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("h"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -2633,31 +2633,31 @@ star2f <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_w
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -2710,11 +2710,11 @@ star2df <- graph$plot_function(X = f*0, vertex_size = gsw, line_color = "black",
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("h'"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("h'"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -2730,31 +2730,31 @@ star2df <- graph$plot_function(X = f*0, vertex_size = gsw, line_color = "black",
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -2792,11 +2792,11 @@ star2ddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, li
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("h''"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("h''"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -2812,31 +2812,31 @@ star2ddf <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, li
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -2874,11 +2874,11 @@ star2dddf <- graph_disc$plot_function(X = dddf, vertex_size = gsw, edge_width = 
   cmax = 1
 ) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("h'''"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("h'''"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -2894,31 +2894,31 @@ star2dddf <- graph_disc$plot_function(X = dddf, vertex_size = gsw, edge_width = 
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_fin_y, y = e1_fin_x, z = e1_fin_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e4_fin_y, y = e4_fin_x, z = e4_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym4, y = xm4, z = zm4,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -2927,6 +2927,36 @@ save(star2f, file = here::here("data_files/star2f.Rdata"))
 save(star2df, file = here::here("data_files/star2df.Rdata"))
 save(star2ddf, file = here::here("data_files/star2ddf.Rdata"))
 save(star2dddf, file = here::here("data_files/star2dddf.Rdata"))
+```
+
+
+
+```{r}
+save_plotly_figure_fixed(star3f, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3df, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3ddf, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3f.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3df.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddf.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3f_star3df_star3ddf.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+
+
+save_plotly_figure_fixed(star3g, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3dg, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3ddg, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3g.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3dg.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddg.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3g_star3dg_star3ddg.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+
 ```
 
 

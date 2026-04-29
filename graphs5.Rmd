@@ -295,11 +295,11 @@ phkok <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_wi
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("f"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("f"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -315,31 +315,31 @@ phkok <- graph$plot_function(X = f, vertex_size = gsw, edge_width = gsw, line_wi
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -377,11 +377,11 @@ pdhkok <- graph$plot_function(X = df, vertex_size = gsw, edge_width = gsw, line_
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("f'"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("f'"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -397,31 +397,31 @@ pdhkok <- graph$plot_function(X = df, vertex_size = gsw, edge_width = gsw, line_
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 pddhkok <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
@@ -458,11 +458,11 @@ pddhkok <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, lin
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("f''"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("f''"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -478,31 +478,31 @@ pddhkok <- graph$plot_function(X = ddf, vertex_size = gsw, edge_width = gsw, lin
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 pdddhkok <- graph$plot_function(X = dddf, vertex_size = gsw, edge_width = gsw, line_width = gsw, type = "plotly") |> 
@@ -539,11 +539,11 @@ pdddhkok <- graph$plot_function(X = dddf, vertex_size = gsw, edge_width = gsw, l
   cmin = 0,
   cmax = 1
 ) |>
-  plotly::layout(title = list(text = TeX("f'''"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("f'''"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -559,31 +559,31 @@ pdddhkok <- graph$plot_function(X = dddf, vertex_size = gsw, edge_width = gsw, l
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_fin_y, y = e2_fin_x, z = e2_fin_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("e_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -779,11 +779,11 @@ pfkirok <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("g"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("g"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -799,31 +799,31 @@ pfkirok <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -878,11 +878,11 @@ pdfkirok <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("g'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("g'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -898,31 +898,31 @@ pdfkirok <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -976,11 +976,11 @@ pddfkirok <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("g''"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("g''"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -996,31 +996,31 @@ pddfkirok <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1074,11 +1074,11 @@ pdddfkirok <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("g'''"), y = 0.8), 
+  plotly::layout(#title = list(text = TeX("g'''"), y = 0.8), 
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1094,31 +1094,31 @@ pdddfkirok <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1235,11 +1235,11 @@ pf_aux <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("\\hat{f}"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("\\hat{f}"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1255,31 +1255,31 @@ pf_aux <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 DF <- df_aux$DF
@@ -1332,11 +1332,11 @@ pdf_aux <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("\\hat{f}'"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("\\hat{f}'"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1352,31 +1352,31 @@ pdf_aux <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1430,11 +1430,11 @@ pddf_aux <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("\\hat{f}''"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("\\hat{f}''"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1450,31 +1450,31 @@ pddf_aux <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1528,11 +1528,11 @@ pdddf_aux <- p_base |>
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) |>
   config(mathjax = 'cdn') |>
-  plotly::layout(title = list(text = TeX("\\hat{f}'''"), y = 0.8),
+  plotly::layout(#title = list(text = TeX("\\hat{f}'''"), y = 0.8),
                  font = list(family = "Palatino"),
-                 scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+                 scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
                    aspectratio = list(x = 2, 
                                  y = 2, 
                                  z = 2),
@@ -1548,31 +1548,31 @@ pdddf_aux <- p_base |>
                x = e1_ini_y, y = e1_ini_x, z = e1_ini_z,
                text = TeX("v_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 0, y = 0, z = 0,
                text = TeX("v"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = e2_ini_y, y = e2_ini_x, z = e2_ini_z,
                text = TeX("v_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym1, y = xm1, z = zm1,
                text = TeX("e_1"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = ym2, y = xm2, z = zm2,
                text = TeX("\\hat{e}_2"),
                textangle = 0, ax = 0, ay = 35,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 30),
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
@@ -1584,6 +1584,32 @@ save(pddf_aux, file = here::here("data_files/pddf_aux2.Rdata"))
 save(pdddf_aux, file = here::here("data_files/pdddf_aux2.Rdata"))
 ```
 
+
+```{r}
+save_plotly_figure_fixed(phkok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdhkok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pddhkok, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/phkok.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdhkok.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddhkok.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/phkok_pdhkok_pddhkok.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+
+
+save_plotly_figure_fixed(pfkirok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdfkirok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pddfkirok, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pfkirok.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdfkirok.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddfkirok.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pfkirok_pdfkirok_pddfkirok.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
 
 
 :::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}

@@ -1655,6 +1655,49 @@ save(pdddf_aux, file = here::here("data_files/pdddf_aux.Rdata"))
 ```
 
 
+
+```{r}
+save_plotly_figure_fixed(pf, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdf, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pddf, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdddf, dpi = 600,  scale = 2, viewer_change = 1)
+
+save_plotly_figure_fixed(pf3, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdf3, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pddf3, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdddf3, dpi = 600,  scale = 2, viewer_change = 1)
+
+save_plotly_figure_fixed(pf_aux, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdf_aux, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pddf_aux, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdddf_aux, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf_aux.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf3.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf_pf_aux_pf3.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdf.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddf.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf_pdf_pddf.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf3.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdf3.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddf3.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf3_pdf3_pddf3.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+```
+
+
 :::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
 
 

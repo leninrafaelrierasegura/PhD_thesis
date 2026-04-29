@@ -661,6 +661,49 @@ plot_sparse_pattern <- function(A) {
 ```
 
 
+
+```{r}
+# function to combine
+combine_pngs_with_gap <- function(png_files, output_file, gap = 20) {
+  
+  pres_dir <- path.expand("~/Desktop/leninPresentations/data_files")
+  
+  if (!dir.exists(pres_dir)) {
+    dir.create(pres_dir, recursive = TRUE)
+  }
+  
+  # build sequence: img spacer img spacer img
+  parts <- c()
+  
+  for (i in seq_along(png_files)) {
+    parts <- c(parts, shQuote(png_files[i]))
+    
+    if (i < length(png_files)) {
+      parts <- c(parts, sprintf("\\( -size %dx1 xc:white \\)", gap))
+    }
+  }
+  
+  cmd <- paste(
+    "convert",
+    paste(parts, collapse = " "),
+    "+append",
+    shQuote(output_file)
+  )
+  
+  system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
+  
+  # copy to presentation folder
+  copied_file <- file.path(pres_dir, basename(output_file))
+  file.copy(output_file, copied_file, overwrite = TRUE)
+  
+  cat(
+    "Image created at:\n  ", output_file,
+    "\nCopied to:\n  ", copied_file, "\n"
+  )
+}
+```
+
+
 # References
 
 ```{r, purl = FALSE}
