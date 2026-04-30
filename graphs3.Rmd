@@ -596,14 +596,13 @@ save(pdddf, file = here::here("data_files/pdddf.Rdata"))
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
-load(here::here("data_files/pf.Rdata"))
-pf
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pf.png"))
 ```
 
 :::
@@ -611,9 +610,8 @@ pf
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{e_2}(t) = 4(t+\\ell_1)^3$.")}
-load(here::here("data_files/pdf.Rdata"))
-pdf
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{e_2}(t) = 4(t+\\ell_1)^3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdf.png"))
 ```
 
 :::
@@ -621,9 +619,8 @@ pdf
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{e_2}(t) = 12(t+\\ell_1)^2$.")}
-load(here::here("data_files/pddf.Rdata"))
-pddf
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{e_2}(t) = 12(t+\\ell_1)^2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pddf.png"))
 ```
 
 :::
@@ -631,9 +628,8 @@ pddf
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{e_2}(t) = 24(t+\\ell_1)$.")}
-load(here::here("data_files/pdddf.Rdata"))
-pdddf
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{e_2}(t) = 24(t+\\ell_1)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdddf.png"))
 ```
 
 
@@ -1191,14 +1187,13 @@ save(pdddf3, file = here::here("data_files/pdddf3.Rdata"))
 
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
-load(here::here("data_files/pf3.Rdata"))
-pf3
+```{r, eval= TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pf3.png"))
 ```
 
 :::
@@ -1206,9 +1201,8 @@ pf3
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_1}(\\tau) = 4\\tau^3$ and $g'_{\\hat{e}_2}(\\tau) = 4(\\tau-(\\ell_1+\\ell_2))^3$.")}
-load(here::here("data_files/pdf3.Rdata"))
-pdf3
+```{r, eval= TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_1}(\\tau) = 4\\tau^3$ and $g'_{\\hat{e}_2}(\\tau) = 4(\\tau-(\\ell_1+\\ell_2))^3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdf3.png"))
 ```
 
 :::
@@ -1216,9 +1210,8 @@ pdf3
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_1}(\\tau) = 12\\tau^2$ and $g''_{\\hat{e}_2}(\\tau) = 12(\\tau-(\\ell_1+\\ell_2))^2$.")}
-load(here::here("data_files/pddf3.Rdata"))
-pddf3
+```{r, eval= TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_1}(\\tau) = 12\\tau^2$ and $g''_{\\hat{e}_2}(\\tau) = 12(\\tau-(\\ell_1+\\ell_2))^2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pddf3.png"))
 ```
 
 :::
@@ -1226,9 +1219,8 @@ pddf3
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_1}(\\tau) = 24\\tau$ and $g'''_{\\hat{e}_2}(\\tau) = 24(\\tau-(\\ell_1+\\ell_2))$.")}
-load(here::here("data_files/pdddf3.Rdata"))
-pdddf3
+```{r, eval= TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_1}(\\tau) = 24\\tau$ and $g'''_{\\hat{e}_2}(\\tau) = 24(\\tau-(\\ell_1+\\ell_2))$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdddf3.png"))
 ```
 
 
@@ -1698,32 +1690,29 @@ combine_pngs_with_gap(png_files, output_file, gap = 200)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
-load(here::here("data_files/pf.Rdata"))
-pf
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pf.png"))
 ```
 
 :::
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
-load(here::here("data_files/pf_aux.Rdata"))
-pf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pf_aux.png"))
 ```
 
 :::
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
-load(here::here("data_files/pf3.Rdata"))
-pf3
+```{r, eval= TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pf3.png"))
 ```
 
 :::
@@ -1733,14 +1722,13 @@ pf3
 
 # For $\hat{f}$
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
-load(here::here("data_files/pf_aux.Rdata"))
-pf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pf_aux.png"))
 ```
 
 :::
@@ -1748,9 +1736,8 @@ pf_aux
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{\\hat{e}_2}(t) = 4(t+\\ell_1)^3$.")}
-load(here::here("data_files/pdf_aux.Rdata"))
-pdf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f}' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{\\hat{e}_2}(t) = 4(t+\\ell_1)^3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdf_aux.png"))
 ```
 
 :::
@@ -1758,9 +1745,8 @@ pdf_aux
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{\\hat{e}_2}(t) = 12(t+\\ell_1)^2$.")}
-load(here::here("data_files/pddf_aux.Rdata"))
-pddf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f}'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{\\hat{e}_2}(t) = 12(t+\\ell_1)^2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pddf_aux.png"))
 ```
 
 :::
@@ -1768,9 +1754,8 @@ pddf_aux
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{\\hat{e}_2}(t) = 24(t+\\ell_1)$.")}
-load(here::here("data_files/pdddf_aux.Rdata"))
-pdddf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f}''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{\\hat{e}_2}(t) = 24(t+\\ell_1)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdddf_aux.png"))
 ```
 
 

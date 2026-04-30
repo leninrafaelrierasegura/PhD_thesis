@@ -595,18 +595,33 @@ save(pdddhkok, file = here::here("dddh_kirchhoff.RData"))
 ```
 
 
+```{r}
+save_plotly_figure_fixed(phkok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdhkok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pddhkok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdddhkok, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/phkok.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdhkok.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddhkok.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/phkok_pdhkok_pddhkok.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+
+```
+
+
 For illustration purposes, Figure 11 and 12 shows $h''$ and $h'''$.
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
-load(here::here("h_kirchhoff.RData"))
-phkok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/phkok.png"))
 ```
 
 
@@ -615,9 +630,8 @@ phkok
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("dh_kirchhoff.RData"))
-pdhkok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdhkok.png"))
 ```
 
 
@@ -626,9 +640,8 @@ pdhkok
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("ddh_kirchhoff.RData"))
-pddhkok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pddhkok.png"))
 ```
 
 
@@ -638,9 +651,8 @@ pddhkok
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("dddh_kirchhoff.RData"))
-pdddhkok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdddhkok.png"))
 ```
 
 
@@ -1130,15 +1142,31 @@ save(pdddfkirok, file = here::here("data_files/pdddfkirok.Rdata"))
 
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+```{r}
+save_plotly_figure_fixed(pfkirok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdfkirok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pddfkirok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdddfkirok, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pfkirok.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdfkirok.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddfkirok.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pfkirok_pdfkirok_pddfkirok.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
+
+
+
+
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/pfkirok.Rdata"))
-pfkirok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pfkirok.png"))
 ```
 
 
@@ -1147,9 +1175,8 @@ pfkirok
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/pdfkirok.Rdata"))
-pdfkirok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdfkirok.png"))
 ```
 
 
@@ -1158,9 +1185,8 @@ pdfkirok
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/pddfkirok.Rdata"))
-pddfkirok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pddfkirok.png"))
 ```
 
 
@@ -1170,9 +1196,8 @@ pddfkirok
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/pdddfkirok.Rdata"))
-pdddfkirok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdddfkirok.png"))
 ```
 
 
@@ -1186,7 +1211,7 @@ pdddfkirok
 
 ```{r}
 DF <- f_aux$DF
-pf_aux <- p_base |>
+pf_aux2 <- p_base |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -1283,7 +1308,7 @@ pf_aux <- p_base |>
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 DF <- df_aux$DF
-pdf_aux <- p_base |>
+pdf_aux2 <- p_base |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -1381,7 +1406,7 @@ pdf_aux <- p_base |>
                  ))
 
 DF <- ddf_aux$DF
-pddf_aux <- p_base |>
+pddf_aux2 <- p_base |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -1479,7 +1504,7 @@ pddf_aux <- p_base |>
                  ))
 
 DF <- dddf_aux$DF
-pdddf_aux <- p_base |>
+pdddf_aux2 <- p_base |>
   add_trace(
   type = "cone",
   x = ym1,
@@ -1578,66 +1603,51 @@ pdddf_aux <- p_base |>
 
 
 
-save(pf_aux, file = here::here("data_files/pf_aux2.Rdata"))
-save(pdf_aux, file = here::here("data_files/pdf_aux2.Rdata"))
-save(pddf_aux, file = here::here("data_files/pddf_aux2.Rdata"))
-save(pdddf_aux, file = here::here("data_files/pdddf_aux2.Rdata"))
+save(pf_aux2, file = here::here("data_files/pf_aux2.Rdata"))
+save(pdf_aux2, file = here::here("data_files/pdf_aux2.Rdata"))
+save(pddf_aux2, file = here::here("data_files/pddf_aux2.Rdata"))
+save(pdddf_aux2, file = here::here("data_files/pdddf_aux2.Rdata"))
 ```
 
 
 ```{r}
-save_plotly_figure_fixed(phkok, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(pdhkok, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(pddhkok, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pf_aux2, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdf_aux2, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pddf_aux2, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(pdddf_aux2, dpi = 600,  scale = 2, viewer_change = 1)
 
-png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/phkok.png",
-               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdhkok.png",
-               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddhkok.png")
-output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/phkok_pdhkok_pddhkok.png"
-
-combine_pngs_with_gap(png_files, output_file, gap = 200)
-
-
-
-save_plotly_figure_fixed(pfkirok, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(pdfkirok, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(pddfkirok, dpi = 600,  scale = 2, viewer_change = 1)
-
-png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pfkirok.png",
-               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdfkirok.png",
-               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddfkirok.png")
-output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pfkirok_pdfkirok_pddfkirok.png"
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf_aux2.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pdf_aux2.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pddf_aux2.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/pf_aux2_pdf_aux2_pddf_aux2.png"
 
 combine_pngs_with_gap(png_files, output_file, gap = 200)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
-load(here::here("h_kirchhoff.RData"))
-phkok
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{e_2}(t) = (t+\\ell_1)^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/phkok.png"))
 ```
 
 :::
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
-load(here::here("data_files/pf_aux2.Rdata"))
-pf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pf_aux2.png"))
 ```
 
 :::
 
 ::: {}
 
-```{r, eval= TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
-load(here::here("data_files/pfkirok.Rdata"))
-pfkirok
+```{r, eval= TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_1}(\\tau) = \\tau^4$ and $g_{\\hat{e}_2}(\\tau) = (\\tau-(\\ell_1+\\ell_2))^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pfkirok.png"))
 ```
 
 :::
@@ -1647,14 +1657,13 @@ pfkirok
 
 # For $\hat{f}$
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
-load(here::here("data_files/pf_aux2.Rdata"))
-pf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f} = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_1}(t) = t^4$ and $f_{\\hat{e}_2}(t) = (t+\\ell_1)^4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pf_aux2.png"))
 ```
 
 :::
@@ -1662,9 +1671,8 @@ pf_aux
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{\\hat{e}_2}(t) = 4(t+\\ell_1)^3$.")}
-load(here::here("data_files/pdf_aux2.Rdata"))
-pdf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f}' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_1}(t) = 4t^3$ and $f'_{\\hat{e}_2}(t) = 4(t+\\ell_1)^3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdf_aux2.png"))
 ```
 
 :::
@@ -1672,9 +1680,8 @@ pdf_aux
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{\\hat{e}_2}(t) = 12(t+\\ell_1)^2$.")}
-load(here::here("data_files/pddf_aux2.Rdata"))
-pddf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f}'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_1}(t) = 12t^2$ and $f''_{\\hat{e}_2}(t) = 12(t+\\ell_1)^2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pddf_aux2.png"))
 ```
 
 :::
@@ -1682,9 +1689,8 @@ pddf_aux
 
 ::: {}
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $\\hat{f}''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{\\hat{e}_2}(t) = 24(t+\\ell_1)$.")}
-load(here::here("data_files/pdddf_aux2.Rdata"))
-pdddf_aux
+```{r, eval = TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $\\hat{f}''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_1}(t) = 24t$ and $f'''_{\\hat{e}_2}(t) = 24(t+\\ell_1)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/pdddf_aux2.png"))
 ```
 
 

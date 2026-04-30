@@ -1276,43 +1276,40 @@ save(graphs6p4, file = here::here("data_files/graphs6p4.Rdata"))
 ```
 
 
-
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/graphs6p2fhelix.Rdata"))
-p2fhelix
-```
-
-
-
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/graphs6p2.Rdata"))
-graphs6p2
-```
-
-
-
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/graphs6p4tadpole_arclength.Rdata"))
-p4tadpole_arclength
-```
-
-
-
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/graphs6p4.Rdata"))
-graphs6p4
-```
-
-
 ```{r}
 save_plotly_figure_fixed(p2fhelix, dpi = 300,  scale = 2, viewer_change = 1)
 save_plotly_figure_fixed(graphs6p2, dpi = 300,  scale = 2, viewer_change = 1)
 save_plotly_figure_fixed(p4tadpole_arclength, dpi = 300,  scale = 2, viewer_change = 1.01)
 save_plotly_figure_fixed(graphs6p4, dpi = 600,  scale = 2, viewer_change = 1)
 ```
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/p2fhelix.png"))
+```
+
+
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/graphs6p2.png"))
+```
+
+
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/p4tadpole_arclength.png"))
+```
+
+
+
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/graphs6p4.png"))
+```
+
+
+
 
 
 # References

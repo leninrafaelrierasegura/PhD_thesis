@@ -389,14 +389,13 @@ combine_pngs_with_gap(png_files, output_file, gap = 200)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Star graph with $n=2$ edges.")}
-load(here::here("data_files/star2graph.Rdata"))
-star2graph
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Star graph with $n=2$ edges.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star2graph.png"))
 ```
 
 
@@ -407,9 +406,8 @@ star2graph
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Star graph with $n=3$ edges.")}
-load(here::here("data_files/star3graph.Rdata"))
-star3graph
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Star graph with $n=3$ edges.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3graph.png"))
 ```
 
 
@@ -418,9 +416,8 @@ star3graph
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Star graph with $n=7$ edges.")}
-load(here::here("data_files/star7graph.Rdata"))
-star7graph
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Star graph with $n=7$ edges.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star7graph.png"))
 ```
 
 

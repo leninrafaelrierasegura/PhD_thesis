@@ -313,7 +313,7 @@ y_eye <- -1#-2
 z_eye <- 2#3
 ```
 
-```{r, eval = FALSE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
+```{r, eval = FALSE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}'(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
 graph_disc$plot_function(X = df, vertex_size = gsw, edge_width = gsw, line_width = gsw, continuous = FALSE, interpolate_plot = TRUE, type = "plotly") |> 
   config(mathjax = 'cdn') |>
   plotly::layout(#title = TeX("f'"), 
@@ -798,17 +798,31 @@ save(star3dddf, file = here::here("data_files/star3dddf.Rdata"))
 ```
 
 
+```{r}
+save_plotly_figure_fixed(star3f, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3df, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3ddf, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3dddf, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3f.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3df.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddf.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3f_star3df_star3ddf.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
+
+
 
 For illustration purposes, Figure 3 and 4 shows $f''$ and $f'''$.
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
-load(here::here("data_files/star3f.Rdata"))
-star3f
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f = \\{f_e\\}_{e\\in\\mathcal{E}}$ given by $f_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2,3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3f.png"))
 ```
 
 
@@ -819,9 +833,8 @@ star3f
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
-load(here::here("data_files/star3df.Rdata"))
-star3df
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f' = \\{f'_e\\}_{e\\in\\mathcal{E}}$ given by $f'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2,3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3df.png"))
 ```
 
 
@@ -830,9 +843,8 @@ star3df
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_i}(s) = -\\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2,3$.")}
-load(here::here("data_files/star3ddf.Rdata"))
-star3ddf
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f'' = \\{f''_e\\}_{e\\in\\mathcal{E}}$ given by $f''_{e_i}(s) = -\\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2,3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3ddf.png"))
 ```
 
 
@@ -840,9 +852,8 @@ star3ddf
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_i}(s) = -\\dfrac{2 b_i}{\\ell^2}$ for $i=1,2,3$.")}
-load(here::here("data_files/star3dddf.Rdata"))
-star3dddf
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $f''' = \\{f'''_e\\}_{e\\in\\mathcal{E}}$ given by $f'''_{e_i}(s) = -\\dfrac{2 b_i}{\\ell^2}$ for $i=1,2,3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3dddf.png"))
 ```
 
 
@@ -1359,6 +1370,21 @@ save(star3dddg, file = here::here("data_files/star3dddg.Rdata"))
 
 
 ```{r}
+save_plotly_figure_fixed(star3g, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3dg, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3ddg, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3dddg, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3g.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3dg.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddg.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3g_star3dg_star3ddg.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
+
+
+```{r}
 
 
 
@@ -1779,13 +1805,6 @@ star3dg_path3 <- graph$plot_function(X = dg, vertex_size = gsw, edge_width = gsw
 
 
 
-
-
-
-
-
-
-
 dg1 <- function(s) -pi/L*sin(pi*s/L)
 dg2 <- function(s) -pi/L*sin(pi*s/L)
 dg3 <- function(s) -pi/L*sin(pi*s/L)*(-1)
@@ -1912,6 +1931,21 @@ save(star3dg_path3, file = here::here("data_files/star3dg_path3.Rdata"))
 save(star3dg_path_ok, file = here::here("data_files/star3dg_path_ok.Rdata"))
 
 
+```
+
+
+```{r}
+save_plotly_figure_fixed(star3dg_path1, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3dg_path2, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3dg_path3, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3dg_path_ok, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3dg_path1.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3dg_path2.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3dg_path3.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3dg_path1_star3dg_path2_star3dg_path3.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
 ```
 
 
@@ -2447,16 +2481,31 @@ save(star3ddg_path3, file = here::here("data_files/star3ddg_path3.Rdata"))
 ```
 
 
+
+```{r}
+save_plotly_figure_fixed(star3ddg_path1, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3ddg_path2, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star3ddg_path3, dpi = 600,  scale = 2, viewer_change = 1)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddg_path1.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddg_path2.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddg_path3.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddg_path1_star3ddg_path2_star3ddg_path3.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
+
+
+
 For illustration purposes, Figure 7 and 8 shows $g''$ and $g'''$.
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-load(here::here("data_files/star3g.Rdata"))
-star3g
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g = \\{g_e\\}_{e\\in\\mathcal{E}}$ given by $g_{e_i}(s) = \\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3g.png"))
 ```
 
 :::
@@ -2464,9 +2513,8 @@ star3g
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_i}(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-load(here::here("data_files/star3dg.Rdata"))
-star3dg
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g' = \\{g'_e\\}_{e\\in\\mathcal{E}}$ given by $g'_{e_i}(s) = -\\dfrac{\\pi}{\\ell}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3dg.png"))
 ```
 
 
@@ -2474,9 +2522,8 @@ star3dg
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_i}(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-load(here::here("data_files/star3ddg.Rdata"))
-star3ddg
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g'' = \\{g''_e\\}_{e\\in\\mathcal{E}}$ given by $g''_{e_i}(s) = -\\dfrac{\\pi^2}{\\ell^2}\\cos(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3ddg.png"))
 ```
 
 
@@ -2484,9 +2531,8 @@ star3ddg
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_i}(s) = \\dfrac{\\pi^3}{\\ell^3}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
-load(here::here("data_files/star3dddg.Rdata"))
-star3dddg
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $g''' = \\{g'''_e\\}_{e\\in\\mathcal{E}}$ given by $g'''_{e_i}(s) = \\dfrac{\\pi^3}{\\ell^3}\\sin(\\dfrac{\\pi s}{\\ell})$ for $i=1,2,3$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3dddg.png"))
 ```
 
 
@@ -2932,46 +2978,33 @@ save(star2dddf, file = here::here("data_files/star2dddf.Rdata"))
 
 
 ```{r}
-save_plotly_figure_fixed(star3f, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(star3df, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(star3ddf, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star2f, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star2df, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star2ddf, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(star2dddf, dpi = 600,  scale = 2, viewer_change = 1)
 
-png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3f.png",
-               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3df.png",
-               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddf.png")
-output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3f_star3df_star3ddf.png"
-
-combine_pngs_with_gap(png_files, output_file, gap = 200)
-
-
-
-save_plotly_figure_fixed(star3g, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(star3dg, dpi = 600,  scale = 2, viewer_change = 1)
-save_plotly_figure_fixed(star3ddg, dpi = 600,  scale = 2, viewer_change = 1)
-
-png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3g.png",
-               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3dg.png",
-               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3ddg.png")
-output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star3g_star3dg_star3ddg.png"
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star2f.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star2df.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star2ddf.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/star2f_star2df_star2ddf.png"
 
 combine_pngs_with_gap(png_files, output_file, gap = 200)
-
-
 ```
+
+
 
 
 For illustration purposes, Figure 11 and 12 shows $h''$ and $h'''$.
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star2f.Rdata"))
-star2f
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star2f.png"))
 ```
 
 
@@ -2980,9 +3013,8 @@ star2f
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star2df.Rdata"))
-star2df
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star2df.png"))
 ```
 
 
@@ -2991,9 +3023,8 @@ star2df
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star2ddf.Rdata"))
-star2ddf
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star2ddf.png"))
 ```
 
 
@@ -3003,9 +3034,8 @@ star2ddf
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star2dddf.Rdata"))
-star2dddf
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h''' = \\{h'''_e\\}_{e\\in\\mathcal{E}}$ given by $h'''_{e_i}(s) =  - \\dfrac{2 b_i}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star2dddf.png"))
 ```
 
 
@@ -3018,15 +3048,14 @@ star2dddf
 # Path derivatives
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star3dg_path1.Rdata"))
-star3dg_path1
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3dg_path1.png"))
 ```
 
 
@@ -3035,9 +3064,8 @@ star3dg_path1
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star3dg_path2.Rdata"))
-star3dg_path2
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3dg_path2.png"))
 ```
 
 
@@ -3046,9 +3074,8 @@ star3dg_path2
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star3dg_path3.Rdata"))
-star3dg_path3
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3dg_path3.png"))
 ```
 
 
@@ -3059,9 +3086,8 @@ star3dg_path3
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star3dg_path_ok.Rdata"))
-star3dg_path_ok
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3dg_path_ok.png"))
 ```
 
 
@@ -3075,15 +3101,14 @@ star3dg_path_ok
 # Path derivatives 2
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star3ddg_path1.Rdata"))
-star3ddg_path1
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h = \\{h_e\\}_{e\\in\\mathcal{E}}$ given by $h_{e_i}(s) = a + b_i s - \\dfrac{b_i s^3}{3\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3ddg_path1.png"))
 ```
 
 
@@ -3092,9 +3117,8 @@ star3ddg_path1
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star3ddg_path2.Rdata"))
-star3ddg_path2
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h' = \\{h'_e\\}_{e\\in\\mathcal{E}}$ given by $h'_{e_i}(s) = b_i - \\dfrac{b_i s^2}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3ddg_path2.png"))
 ```
 
 
@@ -3103,9 +3127,8 @@ star3ddg_path2
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
-load(here::here("data_files/star3ddg_path3.Rdata"))
-star3ddg_path3
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Function $h'' = \\{h''_e\\}_{e\\in\\mathcal{E}}$ given by $h''_{e_i}(s) =  - \\dfrac{2 b_i s}{\\ell^2}$ for $i=1,2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/star3ddg_path3.png"))
 ```
 
 

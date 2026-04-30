@@ -1340,14 +1340,13 @@ combine_pngs_with_gap(png_files, output_file, gap = 200)
 
 # Plots part 1
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 492px 628px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
-load(here::here("data_files/interval_graph.Rdata"))
-p11
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p11.png"))
 ```
 
 :::
@@ -1355,9 +1354,8 @@ p11
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Circle graph $\\Gamma_C = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
-load(here::here("data_files/circle_graph.Rdata"))
-p22
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Circle graph $\\Gamma_C = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p22.png"))
 ```
 
 
@@ -1368,9 +1366,8 @@ p22
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Tadpole graph $\\Gamma_T = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1,e_2\\}$.")}
-load(here::here("data_files/tadpole_graph.Rdata"))
-p33
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Tadpole graph $\\Gamma_T = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1,e_2\\}$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p33.png"))
 ```
 
 
@@ -1382,14 +1379,13 @@ p33
 
 # Plots part 2
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("A function $f=\\gamma\\big|_\\Gamma$ on the tadpole graph, where $\\gamma(x,y) = e^{-x^2-y^2}$, together with a path that illustrates the geodesic distance between points $s_1$ and $s_2$.")}
-load(here::here("data_files/tadpole_graph_function.Rdata"))
-p1
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("A function $f=\\gamma\\big|_\\Gamma$ on the tadpole graph, where $\\gamma(x,y) = e^{-x^2-y^2}$, together with a path that illustrates the geodesic distance between points $s_1$ and $s_2$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p1.png"))
 ```
 
 :::
@@ -1397,9 +1393,8 @@ p1
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Mesh nodes on the tadpole graph.")}
-load(here::here("data_files/tadpole_graph_mesh.Rdata"))
-p2
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Mesh nodes on the tadpole graph.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p2.png"))
 ```
 
 
@@ -1410,9 +1405,8 @@ p2
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Basis functions on the tadpole graph.")}
-load(here::here("data_files/tadpole_graph_basis_functions.Rdata"))
-p3
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Basis functions on the tadpole graph.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p3.png"))
 ```
 
 
@@ -1424,14 +1418,13 @@ p3
 
 # Plots part 3
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
-load(here::here("data_files/interval_graph_with_coordinates.Rdata"))
-p11new
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p11new.png"))
 ```
 
 :::
@@ -1439,9 +1432,8 @@ p11new
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
-load(here::here("data_files/interval_graph_flip_edge.Rdata"))
-p2int
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p2int.png"))
 ```
 
 
@@ -1451,9 +1443,8 @@ p2int
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
-load(here::here("data_files/interval_graph_derivative.Rdata"))
-p_int_dir_der
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p_int_dir_der.png"))
 ```
 
 
@@ -1462,9 +1453,8 @@ p_int_dir_der
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
-load(here::here("data_files/interval_graph_derivative_exp.Rdata"))
-p_int_dir_der_exp
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p_int_dir_der_exp.png"))
 ```
 
 
@@ -1472,9 +1462,8 @@ p_int_dir_der_exp
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
-load(here::here("data_files/interval_graph_derivative_exp_rev.Rdata"))
-p_int_dir_der_exp_rev
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Interval graph $\\Gamma_I = (\\mathcal{V}, \\mathcal{E})$ with $\\mathcal{V} = \\{v_1, v_2\\}$ and $\\mathcal{E} = \\{e_1\\}$, where $e_1$ is flipped.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/p_int_dir_der_exp_rev.png"))
 ```
 
 
