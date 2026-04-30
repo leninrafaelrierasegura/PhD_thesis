@@ -427,6 +427,18 @@ save_plotly_figure_fixed <- function(fig,
     shQuote(file_name_png)
   )
   
+  # use below in case
+  # label Loading[MathJax]/extensions/MathMenu.js appears
+  # cmd <- paste(
+  # "convert -density", dpi,
+  # "-background white -trim +repage",
+  # "-gravity southwest -chop 0x200", #200 it is the heigth of the cropped area
+  # "-trim +repage",
+  # "-bordercolor white -border 10",
+  # shQuote(file_name_pdf),
+  # shQuote(file_name_png)
+  # )
+  
   system(cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
   
   # Copy to presentation folder

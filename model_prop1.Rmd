@@ -264,7 +264,7 @@ m2 <- which.min((xypoints[,1]-point2[1])^2 + (xypoints[,2]-point2[2])^2)
 m3 <- which.min((xypoints[,1]-point3[1])^2 + (xypoints[,2]-point3[2])^2)
 # Create a plot of the model for tau
 TAU <- logo_graph$plot_function(X = model_for_tau, vertex_size = 0, edge_width = 2) +
-  ggtitle("$\\tau(s) = e^{0.05\\cdot(x(s)-y(s))}$") +
+  ggtitle("$\\tau(s) = \\mathtt{e}^{0.05\\cdot(x(s)-y(s))}$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
         plot.title = element_text(hjust = 0.5, size = 12),
@@ -272,7 +272,7 @@ TAU <- logo_graph$plot_function(X = model_for_tau, vertex_size = 0, edge_width =
         legend.key.height = unit(1, "cm")) 
 # Create a plot of the model for kappa
 KAPPA <- logo_graph$plot_function(X = model_for_kappa, vertex_size = 0, edge_width = 2) +
-  ggtitle("$\\kappa(s) = e^{0.1\\cdot(x(s)-y(s))}$") +
+  ggtitle("$\\kappa(s) = \\mathtt{e}^{0.1\\cdot(x(s)-y(s))}$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
         plot.title = element_text(hjust = 0.5, size = 12),
@@ -403,109 +403,109 @@ p_A <- p3 %>%
   config(mathjax = 'cdn') %>%
   layout(font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 13)),  tickfont = list(color = "gray", size = 11)),
-              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 13)),  tickfont = list(color = "gray", size = 11)),
-              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 13)),  tickfont = list(color = "gray", size = 11)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 17)),  tickfont = list(color = "gray", size = 14)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 17)),  tickfont = list(color = "gray", size = 14)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 17)),  tickfont = list(color = "gray", size = 14)),
            aspectratio = list(x = 1.8, y = 1.8, z = 1.8),
            camera = list(
       eye = list(x = 3*eyer, y = 2*eyer, z = 1*eyer),  # Adjust the viewpoint
       center = list(x = 0, y = 0, z = 0)),     # Focus point
            annotations = list(
              list(
-               x = 3, y = 4, z = 1.4,
+               x = 3, y = 3.5, z = 1.4,
                text = TeX("\\rho(s_i)"),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "black", size = 11),
+               font = list(color = "black", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = 3, y = 4, z = 1.23,
+               x = 3, y = 3.5, z = 1.23,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_range[m1]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "#0000C8", size = 11),
+               font = list(color = "#0000C8", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = 3, y = 4, z = 1.11,
+               x = 3, y = 3.5, z = 1.11,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_range[m2]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "red", size = 11),
+               font = list(color = "red", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = 3, y = 4, z = 0.99,
+               x = 3, y = 3.5, z = 0.99,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_range[m3]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "darkgreen", size = 11),
+               font = list(color = "darkgreen", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 6, z = 1.4,
                text = TeX("\\sigma(s_i)"),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "black", size = 11),
+               font = list(color = "black", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 6, z = 1.23,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_sigma[m1]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "#0000C8", size = 11),
+               font = list(color = "#0000C8", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 6, z = 1.11,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_sigma[m2]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "red", size = 11),
+               font = list(color = "red", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 6, z = 0.99,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_sigma[m3]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "darkgreen", size = 11),
+               font = list(color = "darkgreen", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = 3, y = 8, z = 1.4,
+               x = 3, y = 8.5, z = 1.4,
                text = TeX("\\alpha"),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "black", size = 11),
+               font = list(color = "black", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
-               x = 3, y = 8, z = 1.23,
+               x = 3, y = 8.5, z = 1.23,
                text = TeX(paste0("\\bullet\\mbox{ ", alpha, "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "black", size = 11),
+               font = list(color = "black", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m1, 2], y = xypoints[m1, 1], z = 0,
                text = TeX("s_1"),
                textangle = 0, ax = 0, ay = -25,
-               font = list(color = "black", size = 11),
+               font = list(color = "black", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m2, 2], y = xypoints[m2, 1], z = 0,
                text = TeX("s_2"),
                textangle = 0, ax = 0, ay = -25,
-               font = list(color = "black", size = 11),
+               font = list(color = "black", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m3, 2], y = xypoints[m3, 1], z = 0,
                text = TeX("s_3"),
                textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = 11),
+               font = list(color = "black", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m1, 2], y = xypoints[m1, 1], z = max(est_cov_matrix[m1, ]) + 0.3,
                text = TeX("\\varrho^{\\alpha}_{h,m}(s_1,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
-               font = list(color = "#0000C8", size = 11),
+               font = list(color = "#0000C8", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m2, 2], y = xypoints[m2, 1], z = max(est_cov_matrix[m2, ]) + 0.3,
                text = TeX("\\varrho^{\\alpha}_{h,m}(s_2,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
-               font = list(color = "red", size = 11),
+               font = list(color = "red", size = 14),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m3, 2], y = xypoints[m3, 1], z = max(est_cov_matrix[m3, ]) + 0.3,
                text = TeX("\\varrho^{\\alpha}_{h,m}(s_3,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
-               font = list(color = "darkgreen", size = 11),
+               font = list(color = "darkgreen", size = 14),
                arrowcolor = "rgba(0,0,0,0)")))) 
 # Save the 3D plot
 save(p_A, file = here("data_files/3d_cov_plots_diff_loc.RData"))

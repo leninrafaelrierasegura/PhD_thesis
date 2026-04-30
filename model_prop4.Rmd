@@ -208,39 +208,41 @@ a = 2
 ```{r}
 cov_f <- aux_graph$plot_function(aux_f, vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = gsw, continuous = FALSE, interpolate_plot = FALSE, edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
-  layout(title = list(text = TeX("f(s) = \\mathrm{edge.number}(s)/4"), y = 0.85),
+  layout(title = list(text = TeX("f(s) = \\mathrm{edge.number}(s)/4"), y = 0.78, size = 20),
 font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 cov_g <- graph$plot_function(g, vertex_size = 1, type = "plotly", line_color = "red", line_width = gsw, edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
-  layout(title = list(text = TeX("g(s) = 0.5 \\cdot (x^2(s) - y^2(s)) + 0.5"), y = 0.85),
+  layout(title = list(text = TeX("g(s) = 0.5 \\cdot (x^2(s) - y^2(s)) + 0.5"), y = 0.78, size = 20),
 font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 save(cov_f, file = here::here("data_files/cov_f.Rdata"))
 save(cov_g, file = here::here("data_files/cov_g.Rdata"))
+
+save_plotly_figure_fixed(cov_f, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(cov_g, dpi = 600,  scale = 2, viewer_change = 1)
 ```
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px; grid-column-gap: 0px;"}
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Discontinuous covariate $f(s) = \\mathrm{edge.number}(s)/4$.")}
-load(here::here("data_files/cov_f.Rdata"))
-cov_f
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Discontinuous covariate $f(s) = \\mathrm{edge.number}(s)/4$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/cov_f.png"))
 ```
 
 
@@ -248,9 +250,8 @@ cov_f
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Continuous covariate $g(s) = 0.5 \\cdot (x^2(s) - y^2(s)) + 0.5$.")}
-load(here::here("data_files/cov_g.Rdata"))
-cov_g
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Continuous covariate $g(s) = 0.5 \\cdot (x^2(s) - y^2(s)) + 0.5$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/cov_g.png"))
 ```
 
 
@@ -298,36 +299,36 @@ model_for_kappa <- exp(B.kappa[,-1]%*%theta)
 ```{r}
 kkk1 <- graph$plot_function(model_for_tau, vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = gsw, edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
-  layout(title = list(text = TeX("\\tau(s) = \\exp(g(s))"), y = 0.85),
+  layout(title = list(text = TeX("\\tau(s) = \\exp(g(s))"), y = 0.78, size = 20),
 font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 kkk2 <- graph$plot_function(model_for_kappa, vertex_size = 1, type = "plotly", line_color = "red", line_width = gsw, edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
-  layout(title = list(text = TeX("\\kappa(s) = \\exp(g(s))"), y = 0.85),
+  layout(title = list(text = TeX("\\kappa(s) = \\exp(g(s))"), y = 0.78, size = 20),
 font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 kkk3 <- graph$plot_function(X = u, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = gsw, edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
-  layout(title = list(text = TeX("u(s)"), y = 0.85),
+  layout(title = list(text = TeX("u(s)"), y = 0.78, size = 20),
 font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
@@ -336,25 +337,27 @@ camera = list(
 save(kkk1, file = here::here("data_files/kkk1.Rdata"))
 save(kkk2, file = here::here("data_files/kkk2.Rdata"))
 save(kkk3, file = here::here("data_files/kkk3.Rdata"))
+
+save_plotly_figure_fixed(kkk1, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(kkk2, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(kkk3, dpi = 600,  scale = 2, viewer_change = 1)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px; grid-column-gap: 0px;"}
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Model for $\\tau(s)$.")}
-load(here::here("data_files/kkk1.Rdata"))
-kkk1
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Model for $\\tau(s)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk1.png"))
 ```
 
 :::
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Model for $\\kappa(s)$.")}
-load(here::here("data_files/kkk2.Rdata"))
-kkk2
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Model for $\\kappa(s)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk2.png"))
 ```
 
 
@@ -363,9 +366,8 @@ kkk2
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Simulated field $u(s)$.")}
-load(here::here("data_files/kkk3.Rdata"))
-kkk3
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Simulated field $u(s)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk3.png"))
 ```
 
 :::
@@ -443,36 +445,36 @@ prod <- aux_graph$process_data(data = merged_df, normalized = TRUE)
 ```{r}
 kkk4 <- aux_graph$plot_function(model_for_tau, vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = gsw, edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
-  layout(title = list(text = TeX("\\tau(s) = \\exp(f(s))"), y = 0.85),
+  layout(title = list(text = TeX("\\tau(s) = \\exp(f(s))"), y = 0.78, size = 20),
 font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 kkk5 <- aux_graph$plot_function(model_for_kappa, vertex_size = 1, type = "plotly", line_color = "red", line_width = gsw, edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
-  layout(title = list(text = TeX("\\kappa(s) = \\exp(f(s))"), y = 0.85),
+  layout(title = list(text = TeX("\\kappa(s) = \\exp(f(s))"), y = 0.78, size = 20),
 font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 kkk6 <- aux_graph$plot_function(data = "f", newdata= prod, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = gsw, continuous = FALSE, edge_width = gsw) %>%  
   config(mathjax = 'cdn') %>% 
-  layout(title = list(text = TeX("u(s)"), y = 0.85),
+  layout(title = list(text = TeX("u(s)"), y = 0.78, size = 20),
 font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
@@ -481,25 +483,27 @@ camera = list(
 save(kkk4, file = here::here("data_files/kkk4.Rdata"))
 save(kkk5, file = here::here("data_files/kkk5.Rdata"))
 save(kkk6, file = here::here("data_files/kkk6.Rdata"))
+
+save_plotly_figure_fixed(kkk4, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(kkk5, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(kkk6, dpi = 600,  scale = 2, viewer_change = 1)
 ```
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px; grid-column-gap: 0px;"}
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Model for $\\tau(s)$.")}
-load(here::here("data_files/kkk4.Rdata"))
-kkk4
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Model for $\\tau(s)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk4.png"))
 ```
 
 :::
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Model for $\\kappa(s)$.")}
-load(here::here("data_files/kkk5.Rdata"))
-kkk5
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Model for $\\kappa(s)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk5.png"))
 ```
 
 
@@ -508,9 +512,8 @@ kkk5
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Simulated field $u(s)$.")}
-load(here::here("data_files/kkk6.Rdata"))
-kkk6
+```{r, eval =TRUE, fig.height = 7, out.width = "70%", fig.cap = captioner("Simulated field $u(s)$.")}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk6.png"))
 ```
 
 :::
@@ -585,33 +588,36 @@ prod <- aux_graph$process_data(data = merged_df, normalized = TRUE)
 ```{r}
 kkk7 <- aux_graph$plot_function(model_for_tau, vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = gsw, edge_color = "black", edge_width = gsw) %>%
   config(mathjax = 'cdn') %>%
-  layout(font = list(family = "Palatino"),
+  layout(title = list(text = TeX("\\tau(s) = \\exp(f(s))"), y = 0.78, size = 20),
+         font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 kkk8 <- graph$plot_function(model_for_kappa, vertex_size = 1, type = "plotly", line_color = "red", line_width = gsw, edge_color = "black", edge_width = gsw) %>%
   config(mathjax = 'cdn') %>%
-  layout(font = list(family = "Palatino"),
+  layout(title = list(text = TeX("\\kappa(s) = \\exp(g(s))"), y = 0.78, size = 20),
+         font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 kkk9 <- aux_graph$plot_function(data = "f", newdata= prod, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = gsw, continuous = FALSE, interpolate_plot = FALSE, edge_color = "black", edge_width = gsw) %>%
   config(mathjax = 'cdn') %>%
-  layout(font = list(family = "Palatino"),
+  layout(title = list(text = TeX("u(s)"), y = 0.78, size = 20),
+         font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
@@ -619,8 +625,21 @@ camera = list(
 save(kkk7, file = here::here("data_files/kkk7.Rdata"))
 save(kkk8, file = here::here("data_files/kkk8.Rdata"))
 save(kkk9, file = here::here("data_files/kkk9.Rdata"))
+
+save_plotly_figure_fixed(kkk7, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(kkk8, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(kkk9, dpi = 600,  scale = 2, viewer_change = 1)
 ```
 
+
+
+```{r}
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk7.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk8.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk9.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk7_kkk8_kkk9.png"
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
 
 
 # The covariate for $\tau$ is continuous and the covariate for $\kappa$ is discontinuous
@@ -654,33 +673,36 @@ model_for_kappa <- exp(aux_B.kappa[,-1]%*%theta)
 ```{r}
 kkk10 <- graph$plot_function(model_for_tau, vertex_size = 1, type = "plotly", line_color = "#0000C8", line_width = gsw, edge_color = "black", edge_width = gsw) %>%
   config(mathjax = 'cdn') %>%
-  layout(font = list(family = "Palatino"),
+  layout(title = list(text = TeX("\\tau(s) = \\exp(g(s))"), y = 0.78, size = 20),
+         font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 kkk11 <- aux_graph$plot_function(model_for_kappa, vertex_size = 1, type = "plotly", line_color = "red", line_width = gsw, edge_color = "black", edge_width = gsw) %>%
   config(mathjax = 'cdn') %>%
-  layout(font = list(family = "Palatino"),
+  layout(title = list(text = TeX("\\kappa(s) = \\exp(f(s))"), y = 0.78, size = 20),
+         font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
 
 kkk12 <- graph$plot_function(X = u, vertex_size = 1, type = "plotly", line_color = "darkgreen", line_width = gsw, edge_color = "black", edge_width = gsw) %>%
   config(mathjax = 'cdn') %>%
-  layout(font = list(family = "Palatino"),
+  layout(title = list(text = TeX("u(s)"), y = 0.78, size = 20),
+         font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
            aspectratio = list(x = 1/2, y = 1, z = 1),
 camera = list(
       eye = list(x = -1*a, y = 0.5*a, z = 0.7*a))))
@@ -688,26 +710,46 @@ camera = list(
 save(kkk10, file = here::here("data_files/kkk10.Rdata"))
 save(kkk11, file = here::here("data_files/kkk11.Rdata"))
 save(kkk12, file = here::here("data_files/kkk12.Rdata"))
+
+
+save_plotly_figure_fixed(kkk10, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(kkk11, dpi = 600,  scale = 2, viewer_change = 1)
+save_plotly_figure_fixed(kkk12, dpi = 600,  scale = 2, viewer_change = 1)
 ```
 
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+```{r}
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk10.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk11.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk12.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk10_kkk11_kkk12.png"
+combine_pngs_with_gap(png_files, output_file, gap = 200)
+```
+
+
+```{r}
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk10_kkk11_kkk12.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk7_kkk8_kkk9.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/kkk10_kkk11_kkk12_kkk7_kkk8_kkk9.png"
+combine_pngs_with_gap_vertical(png_files, output_file, gap = 200)
+```
+
+
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px; grid-column-gap: 0px;"}
 
 ::: {}
 
-```{r, echo = FALSE, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/kkk10.Rdata"))
-kkk10
+```{r, echo = FALSE, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk10.png"))
 ```
 
 :::
 
 ::: {}
 
-```{r, echo = FALSE, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/kkk11.Rdata"))
-kkk11
+```{r, echo = FALSE, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk11.png"))
 ```
 
 
@@ -716,9 +758,8 @@ kkk11
 ::: {}
 
 
-```{r, echo = FALSE, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/kkk12.Rdata"))
-kkk12
+```{r, echo = FALSE, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk12.png"))
 ```
 
 :::
@@ -727,22 +768,20 @@ kkk12
 
 
 
-:::: {style="display: grid; grid-template-columns: 485px 485px 485px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px; grid-column-gap: 0px;"}
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/kkk7.Rdata"))
-kkk7
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk7.png"))
 ```
 
 :::
 
 ::: {}
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/kkk8.Rdata"))
-kkk8
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk8.png"))
 ```
 
 
@@ -751,9 +790,8 @@ kkk8
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
-load(here::here("data_files/kkk9.Rdata"))
-kkk9
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+knitr::include_graphics(here::here("data_files/plotlypdf/kkk9.png"))
 ```
 
 :::
