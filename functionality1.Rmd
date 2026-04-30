@@ -371,7 +371,7 @@ save_plotly_figure_fixed <- function(fig,
   file_name_pdf <- file.path(folder, paste0(fig_name, ".pdf"))
   file_name_png <- file.path(folder, paste0(fig_name, ".png"))
   
-  # ---- CAMERA (correct Plotly location) ----
+  ## ---- CAMERA (correct Plotly location) ----
   cam <- fig$x$layoutAttrs[[1]]$scene$camera
   
   if (!is.null(cam)) {
@@ -408,13 +408,14 @@ save_plotly_figure_fixed <- function(fig,
     }
   }
   
+  
   # Save PDF
   plotly::save_image(
     fig,
     file_name_pdf,
     width = NULL,
     height = NULL,
-    scale = scale
+    scale = scale#,engine = "kaleido"
   )
   
   # Convert PDF to PNG

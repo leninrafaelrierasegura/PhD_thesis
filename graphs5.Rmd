@@ -587,10 +587,10 @@ pdddhkok <- graph$plot_function(X = dddf, vertex_size = gsw, edge_width = gsw, l
                arrowcolor = "rgba(0,0,0,0)"))
                  ))
 
-save(phkok, file = here::here("h_kirchhoff.RData"))
-save(pdhkok, file = here::here("dh_kirchhoff.RData"))
-save(pddhkok, file = here::here("ddh_kirchhoff.RData"))
-save(pdddhkok, file = here::here("dddh_kirchhoff.RData"))
+save(phkok, file = here::here("data_files/h_kirchhoff.RData"))
+save(pdhkok, file = here::here("data_files/dh_kirchhoff.RData"))
+save(pddhkok, file = here::here("data_files/ddh_kirchhoff.RData"))
+save(pdddhkok, file = here::here("data_files/dddh_kirchhoff.RData"))
 
 ```
 

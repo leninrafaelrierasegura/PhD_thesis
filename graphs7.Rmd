@@ -106,6 +106,15 @@ source(here::here("functionality1.R"))
 
 
 
+```{r}
+reticulate::use_python(
+  "/home/rierasl/miniconda3/envs/phdenv/bin/python",
+  required = TRUE
+)
+
+reticulate::py_config()
+```
+
 
 
 
@@ -324,7 +333,7 @@ p_spaguetti <- p12 +
   labs(x = "Longitude", y = "Latitude") +
   theme_minimal() + 
   theme(   
-    text = element_text(family = "Palatino", size = 14),
+    text = element_text(family = "Palatino Linotype", size = 14, color = "black"),
     axis.text = element_text(size = 14),
     #panel.spacing = unit(0, "lines"),
     plot.margin = margin(0, 0, 0, 0)   # remove outer whitespace
@@ -349,7 +358,7 @@ myheight <- mywidth * aspect_ratio
 
 
 # Save temporarily
-ggsave(here::here("data_files/map_with_square.png"), plot = p_spaguetti, width = mywidth, height = myheight, dpi = 300)
+ggsave(here::here("data_files/map_with_square.png"), plot = p_spaguetti, width = mywidth, height = myheight, dpi = 195)
 
 
 # x_range <- c(x_left, -121.8475)
@@ -392,15 +401,15 @@ p_spaguetti3d <- plot_ly() %>%
             line = list(color = "gray", width = 0.5),
             showlegend = FALSE) %>%
   config(mathjax = 'cdn') %>%
-layout(font = list(family = "Palatino"),
+layout(font = list(family = "Palatino Linotype"),
             margin = list(l = 0, r = 0, b = 0, t = 0),
             scene = list(
-              xaxis = list(title = list(text = "Longitude", font = list(color = "gray", size = 22)),  
-                           tickfont = list(color = "gray", size = 16),  range = x_range),
-              yaxis = list(title = list(text = "Latitude", font = list(color = "gray", size = 22)),  
-                           tickfont = list(color = "gray", size = 16), range = y_range),
-              zaxis = list(title = list(text = "", font = list(color = "gray", size = 22)),  
-                           tickfont = list(color = "gray", size = 16), range = c(0,z_range[2])),
+              xaxis = list(title = list(text = "Longitude", font = list(color = "black", size = 16)),  
+                           tickfont = list(color = "gray", size = 13.5),  range = x_range),
+              yaxis = list(title = list(text = "Latitude", font = list(color = "black", size = 16)),  
+                           tickfont = list(color = "gray", size = 13.5), range = y_range),
+              zaxis = list(title = list(text = "", font = list(color = "black", size = 16)),  
+                           tickfont = list(color = "gray", size = 13.5), range = c(0,z_range[1])),
     aspectratio = list(x = xxx, y = yyy, z = 1),
     camera = list(eye = list(y = -37.34*rv, x = 0*rv, z = 70*rv),
                             center = list(x = 0, y =-2.5, z = 0))
@@ -445,7 +454,7 @@ layout(font = list(family = "Palatino"),
 # 
 # save(p_spaguetti2d, file = here::here("data_files/spaguetti2d.Rdata"))
 save(p_spaguetti3d, file = here::here("data_files/spaguetti3d.Rdata"))
-save_plotly_figure_fixed(p_spaguetti3d, dpi = 600,  scale = 2, viewer_change = 1.4)
+save_plotly_figure_fixed(p_spaguetti3d, dpi = 65,  scale = 4, viewer_change = 1.4)
 ```
 
 
@@ -543,7 +552,7 @@ p_to_show_geodesic_dist <- graph$plot(vertex_size = 1,
       barheight = 6     # tall bar
     )) +
     theme_minimal() + 
-  theme(text = element_text(family = "Palatino", size = 14), 
+  theme(text = element_text(family = "Palatino Linotype", size = 14, color = "black"), 
         axis.text = element_text(size = 14),
         plot.margin = margin(0, 0, 0, 0)
         ) +
@@ -559,7 +568,7 @@ p_to_show_geodesic_dist <- graph$plot(vertex_size = 1,
 
 
 
-ggsave(here::here("data_files/p_to_show_geodesic_dist.png"), plot = p_to_show_geodesic_dist, width = mywidth, height = myheight, dpi = 300)
+ggsave(here::here("data_files/p_to_show_geodesic_dist.png"), plot = p_to_show_geodesic_dist, width = mywidth, height = myheight, dpi = 195)
 ```
 
 
@@ -568,20 +577,20 @@ png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p_spaguett
                "/home/rierasl/Desktop/PhD_thesis/data_files/map_with_square.png",
                "/home/rierasl/Desktop/PhD_thesis/data_files/p_to_show_geodesic_dist.png")
 output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/p_spaguetti3d_map_with_square_p_to_show_geodesic_dist.png"
-combine_pngs_with_gap(png_files, output_file, gap = 200)
+combine_pngs_with_gap(png_files, output_file, gap = 0)
 
 ```
 
 
 
 
-:::: {style="display: grid; grid-template-columns: 645px 550px 550px; grid-column-gap: 0px;"}
+:::: {style="display: grid; grid-template-columns: 600px 600px 600px; grid-column-gap: 0px;"}
 
 
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
 knitr::include_graphics(here::here("data_files/plotlypdf/p_spaguetti3d.png"))
 ```
 
@@ -592,7 +601,7 @@ knitr::include_graphics(here::here("data_files/plotlypdf/p_spaguetti3d.png"))
 ::: {}
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
 knitr::include_graphics(here::here("data_files/map_with_square.png"))
 ```
 
@@ -603,7 +612,7 @@ knitr::include_graphics(here::here("data_files/map_with_square.png"))
 
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "100%"}
+```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
 knitr::include_graphics(here::here("data_files/p_to_show_geodesic_dist.png"))
 ```
 
@@ -612,13 +621,6 @@ knitr::include_graphics(here::here("data_files/p_to_show_geodesic_dist.png"))
 
 
 ::::
-
-
-
-```{r}
-
-```
-
 
 
 

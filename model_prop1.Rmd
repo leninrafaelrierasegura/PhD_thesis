@@ -131,6 +131,14 @@ source(here::here("functionality1.R"))
 ```
 
 
+
+```{r}
+library(reticulate)
+py_config()
+```
+
+
+
 Below we define function `compute_pcr()`, which computes the practical correlation. It receives the output of the [`rSPDE::spde.matern.operators()`](https://davidbolin.github.io/rSPDE/reference/spde.matern.operators.html) function (when evaluated on compatible parameters) and a threshold `cor_threshold`. Using the correlation matrix and the geodesic distance matrix, for each point in the mesh, it computes the practical correlation range as the minimum geodesic distance such that the correlation is below a given threshold `cor_threshold` (usually defined as 0.1). The function returns a vector with the practical correlation range for each point in the mesh.
 
 <div style="color: #2c3e50; text-align: right;">
@@ -309,7 +317,7 @@ save(four_plots, file = here::here("data_files/four_plots.Rdata"))
 
 
 ```{r, eval = TRUE, out.width="922px", out.height="705px", fig.cap = captioner("Top row: Non-stationary models for $\\tau(\\cdot)$ and $\\kappa(\\cdot)$. Bottom row: Non-stationary standard deviation $\\sigma(\\cdot)$ and practical correlation range $\\rho(\\cdot)$ on the `MetricGraph` package's logo.")}
-knitr::include_graphics(here::here("data_files/tikzpic/four_plots.pdf"))
+knitr::include_graphics(here::here("data_files/tikzpic/four_plots_with_mathpazo.pdf"))
 ```
 
 
@@ -328,7 +336,7 @@ Below we plot the covariance functions $\varrho^\alpha(s_i,\cdot)=\text{Cov}(u(s
 ```{r}
 # Create a plot for the covariance between point1 and all other points
 c1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 0, edge_width = 2) +
-  ggtitle("$\\varrho^\\alpha(s_1,\\cdot)$") +
+  ggtitle("$\\varrho^{\\alpha}_{h,m}(s_1,\\cdot)$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
         plot.title = element_text(hjust = 0.5, size = 12),
@@ -338,7 +346,7 @@ c1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 0, edge_w
   annotate("text", x = xypoints[m1,1] + 0.1, y = xypoints[m1,2] - 0.4, label = "$s_1$", size = 4, hjust = 0, color = "black")
 # Create a plot for the covariance between point2 and all other points
 c2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 0, edge_width = 2) +
-  ggtitle("$\\varrho^\\alpha(s_2,\\cdot)$") +
+  ggtitle("$\\varrho^{\\alpha}_{h,m}(s_2,\\cdot)$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
         plot.title = element_text(hjust = 0.5, size = 12),
@@ -348,7 +356,7 @@ c2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 0, edge_w
   annotate("text", x = xypoints[m2,1] + 0.4, y = xypoints[m2,2], label = "$s_2$", size = 4, hjust = 0, color = "black")
 # Create a plot for the covariance between point3 and all other points
 c3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 0, edge_width = 2) +
-  ggtitle("$\\varrho^\\alpha(s_3,\\cdot)$") +
+  ggtitle("$\\varrho^{\\alpha}_{h,m}(s_3,\\cdot)$") +
   theme_minimal() +
   theme(text = element_text(family = "Palatino"),
         plot.title = element_text(hjust = 0.5, size = 12),
@@ -364,8 +372,9 @@ myggsave(cs, width = 13.83, height = 4.5)
 save(cs, file = here::here("data_files/cs.Rdata"))
 ```
 
-```{r, eval = TRUE, out.width="1383px", out.height="450px", fig.cap = captioner("Example of covariance functions $\\varrho^\\alpha(s_i,\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
-knitr::include_graphics(here::here("data_files/tikzpic/cs.pdf"))
+
+```{r, eval = TRUE, out.width="1383px", out.height="450px", fig.cap = captioner("Example of covariance functions $\\varrho^{\\alpha}(s_i,\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
+knitr::include_graphics(here::here("data_files/tikzpic/cs_with_mathpazo.pdf"))
 ```
 
 Below we show 3D plots of the covariance functions $\varrho^\alpha(s_i,\cdot)$, $i=1,2,3$, for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo. The practical correlation range $\rho(s_i)$ and the standard deviation $\sigma(s_i)$ are also shown for each location $s_i$.
@@ -378,125 +387,129 @@ Below we show 3D plots of the covariance functions $\varrho^\alpha(s_i,\cdot)$, 
 </div>
 
 ```{r}
-p1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 7, line_color = "#0000C8", line_width = 7)
-p2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 7, line_color = "red", line_width = 7, p = p1)
-p3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 1, plotly = TRUE, edge_color = "black", edge_width = 7, line_color = "darkgreen", line_width = 7, p = p2)
+p1 <- logo_graph$plot_function(X = est_cov_matrix[m1, ], vertex_size = 1, type = "plotly", edge_color = "black", edge_width = 4, line_color = "#0000C8", line_width = 4)
+p2 <- logo_graph$plot_function(X = est_cov_matrix[m2, ], vertex_size = 1, type = "plotly", edge_color = "black", edge_width = 4, line_color = "red", line_width = 4, p = p1)
+p3 <- logo_graph$plot_function(X = est_cov_matrix[m3, ], vertex_size = 1, type = "plotly", edge_color = "black", edge_width = 4, line_color = "darkgreen", line_width = 4, p = p2)
+
+eyer <- 1.1
+
 p_A <- p3 %>%
+  add_trace(x = xypoints[m1, 2], y = xypoints[m1, 1], z = 0, mode = "markers", type = "scatter3d",
+            marker = list(size = 3, color = "#0000C8", symbol = 104)) %>%
+  add_trace(x = xypoints[m2, 2], y = xypoints[m2, 1], z = 0, mode = "markers", type = "scatter3d",
+            marker = list(size = 3, color = "red", symbol = 104)) %>%
+  add_trace(x = xypoints[m3, 2], y = xypoints[m3, 1], z = 0, mode = "markers", type = "scatter3d",
+            marker = list(size = 3, color = "darkgreen", symbol = 104))  %>%
   config(mathjax = 'cdn') %>%
   layout(font = list(family = "Palatino"),
          showlegend = FALSE,
-         scene = list(xaxis = list(title = list(text = "x", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              yaxis = list(title = list(text = "y", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
-              zaxis = list(title = list(text = "z", font = list(color = colaxnn)),  tickfont = list(color = colaxnn)),
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 13)),  tickfont = list(color = "gray", size = 11)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 13)),  tickfont = list(color = "gray", size = 11)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 13)),  tickfont = list(color = "gray", size = 11)),
            aspectratio = list(x = 1.8, y = 1.8, z = 1.8),
            camera = list(
-      eye = list(x = 3, y = 2, z = 1),  # Adjust the viewpoint
+      eye = list(x = 3*eyer, y = 2*eyer, z = 1*eyer),  # Adjust the viewpoint
       center = list(x = 0, y = 0, z = 0)),     # Focus point
            annotations = list(
              list(
                x = 3, y = 4, z = 1.4,
                text = TeX("\\rho(s_i)"),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 4, z = 1.23,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_range[m1]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "#0000C8", size = gfsize),
+               font = list(color = "#0000C8", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 4, z = 1.11,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_range[m2]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "red", size = gfsize),
+               font = list(color = "red", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 4, z = 0.99,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_range[m3]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "darkgreen", size = gfsize),
+               font = list(color = "darkgreen", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 6, z = 1.4,
                text = TeX("\\sigma(s_i)"),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 6, z = 1.23,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_sigma[m1]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "#0000C8", size = gfsize),
+               font = list(color = "#0000C8", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 6, z = 1.11,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_sigma[m2]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "red", size = gfsize),
+               font = list(color = "red", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 6, z = 0.99,
                text = TeX(paste0("\\bullet\\mbox{ ", truncate_to_two(est_sigma[m3]), "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "darkgreen", size = gfsize),
+               font = list(color = "darkgreen", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 8, z = 1.4,
                text = TeX("\\alpha"),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = 3, y = 8, z = 1.23,
                text = TeX(paste0("\\bullet\\mbox{ ", alpha, "}")),
                textangle = 0, ax = 60, ay = 0,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m1, 2], y = xypoints[m1, 1], z = 0,
                text = TeX("s_1"),
                textangle = 0, ax = 0, ay = -25,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m2, 2], y = xypoints[m2, 1], z = 0,
                text = TeX("s_2"),
                textangle = 0, ax = 0, ay = -25,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m3, 2], y = xypoints[m3, 1], z = 0,
                text = TeX("s_3"),
                textangle = 0, ax = 0, ay = 25,
-               font = list(color = "black", size = gfsize),
+               font = list(color = "black", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m1, 2], y = xypoints[m1, 1], z = max(est_cov_matrix[m1, ]) + 0.3,
-               text = TeX("\\varrho^\\alpha(s_1,\\cdot)"),
+               text = TeX("\\varrho^{\\alpha}_{h,m}(s_1,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
-               font = list(color = "#0000C8", size = gfsize),
+               font = list(color = "#0000C8", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m2, 2], y = xypoints[m2, 1], z = max(est_cov_matrix[m2, ]) + 0.3,
-               text = TeX("\\varrho^\\alpha(s_2,\\cdot)"),
+               text = TeX("\\varrho^{\\alpha}_{h,m}(s_2,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
-               font = list(color = "red", size = gfsize),
+               font = list(color = "red", size = 11),
                arrowcolor = "rgba(0,0,0,0)"),
              list(
                x = xypoints[m3, 2], y = xypoints[m3, 1], z = max(est_cov_matrix[m3, ]) + 0.3,
-               text = TeX("\\varrho^\\alpha(s_3,\\cdot)"),
+               text = TeX("\\varrho^{\\alpha}_{h,m}(s_3,\\cdot)"),
                textangle = 0, ax = 0, ay = 15,
-               font = list(color = "darkgreen", size = gfsize),
-               arrowcolor = "rgba(0,0,0,0)")))) %>%
-  add_trace(x = xypoints[m1, 2], y = xypoints[m1, 1], z = 0, mode = "markers", type = "scatter3d",
-            marker = list(size = gsw, color = "#0000C8", symbol = 104)) %>%
-  add_trace(x = xypoints[m2, 2], y = xypoints[m2, 1], z = 0, mode = "markers", type = "scatter3d",
-            marker = list(size = gsw, color = "red", symbol = 104)) %>%
-  add_trace(x = xypoints[m3, 2], y = xypoints[m3, 1], z = 0, mode = "markers", type = "scatter3d",
-            marker = list(size = gsw, color = "darkgreen", symbol = 104))
+               font = list(color = "darkgreen", size = 11),
+               arrowcolor = "rgba(0,0,0,0)")))) 
 # Save the 3D plot
 save(p_A, file = here("data_files/3d_cov_plots_diff_loc.RData"))
+save_plotly_figure_fixed(p_A, dpi = 600,  scale = 2, viewer_change = 1)
 ```
 
 
@@ -506,9 +519,9 @@ save(p_A, file = here("data_files/3d_cov_plots_diff_loc.RData"))
 ::: {}
 
 
-```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Example of covariance functions $\\varrho^\\alpha(s_i,\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
-load(here::here("data_files/3d_cov_plots_diff_loc.RData"))
-p_A
+```{r, eval = TRUE, fig.height = 7, out.width = "100%", fig.cap = captioner("Example of covariance functions $\\varrho^{\\alpha}(s_i,\\cdot)$, $i=1,2,3$ for three locations with different standard deviations and practical correlation ranges on the `MetricGraph` package's logo.")}
+#load(here::here("data_files/3d_cov_plots_diff_loc.RData"))
+knitr::include_graphics(here::here("data_files/plotlypdf/p_A.png"))
 ```
 
 
@@ -555,7 +568,7 @@ save(graph_plus_sim, file = here("data_files/graph_plus_sim.RData"))
 
 
 ```{r, eval = TRUE, out.width="922px", out.height="401px", fig.cap = captioner("`MetricGraph` package's logo and a simulated non-stationary process on it.")}
-knitr::include_graphics(here::here("data_files/tikzpic/graph_plus_sim.pdf"))
+knitr::include_graphics(here::here("data_files/tikzpic/graph_plus_sim_with_mathpazo.pdf"))
 ```
 
 
