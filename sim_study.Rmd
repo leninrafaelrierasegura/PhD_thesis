@@ -363,7 +363,7 @@ data <- list_models_before_cv$data
 point_of_interest <- 1 # Any number between 1 and nrow(data)
 small_neighborhood <- GROUPS[[10]][[point_of_interest]]
 large_neighborhood <- GROUPS[[5]][[point_of_interest]]
-p <- graph$plot(vertex_size = 0) +
+p_neig_2 <- graph$plot(vertex_size = 0) +
   geom_point(data = data,
              aes(x = .coord_x, y = .coord_y, color = "All points"),
              size = 3) +
@@ -390,14 +390,14 @@ p <- graph$plot(vertex_size = 0) +
   theme(text = element_text(family = "Palatino"),
         plot.title = element_text(hjust = 0.5)) +
   coord_fixed()
-p <- plotly::ggplotly(p)
-save(p, file = here::here("data_files/cv_groups_plot.RData"))
+p_neig_2_plotly <- plotly::ggplotly(p_neig_2)
+save(p_neig_2_plotly, file = here::here("data_files/cv_groups_plot.RData"))
+myggsave(p_neig_2, width = 9.2, height = 4.01)
 ```
 
 
 ```{r, eval = TRUE, out.width = "100%", fig.height = 8, fig.cap = captioner("Illustrations of groups for cross-validation based on the distance matrix.")}
-load(here::here("data_files/cv_groups_plot.RData"))
-p
+knitr::include_graphics(here::here("data_files/tikzpic/p_neig_2_with_mathpazo.png"))
 ```
 
 
@@ -524,7 +524,7 @@ myggsave(combined_plot, width = 9.22, height = 4.01)
 ```
 
 ```{r, eval = TRUE, out.width="922px", out.height="401px", fig.cap = captioner("MSE and negative Log-Score as functions of distance.")}
-knitr::include_graphics(here::here("data_files/tikzpic/combined_plot.pdf"))
+knitr::include_graphics(here::here("data_files/tikzpic/combined_plot_with_mathpazo.pdf"))
 ```
 
 # References

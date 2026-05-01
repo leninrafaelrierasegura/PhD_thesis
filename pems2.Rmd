@@ -212,7 +212,7 @@ Below we plot to check that the groups are correctly defined.
 point_of_interest <- 3 # Any number between 1 and nrow(data)
 small_neighborhood <- GROUPS[[20]][[point_of_interest]]
 large_neighborhood <- GROUPS[[50]][[point_of_interest]]
-p <- graph$plot(vertex_size = 0) +
+p_neig <- graph$plot(vertex_size = 0) +
   geom_point(data = data,
              aes(x = .coord_x, y = .coord_y, color = "All points"),
              size = 2) +
@@ -240,14 +240,14 @@ p <- graph$plot(vertex_size = 0) +
         plot.title = element_text(hjust = 0.5)) +
   coord_fixed()
 
-p <- plotly::ggplotly(p)
-save(p, file = here("data_files/plotly_groups_for_cv.RData"))
+p_neig_plotly <- plotly::ggplotly(p_neig)
+save(p_neig_plotly, file = here("data_files/plotly_groups_for_cv.RData"))
+myggsave(p_neig, width = 6.5, height = 4.01)
 ```
 
 
 ```{r, eval = TRUE, out.width = "100%", fig.height = 8, fig.cap = captioner("Illustrations of groups for cross-validation based on the distance matrix.")}
-load(here("data_files/plotly_groups_for_cv.RData"))
-p
+knitr::include_graphics(here::here("data_files/tikzpic/p_neig_with_mathpazo.png"))
 ```
 
 Below we define the non-stationary parameters.
@@ -825,7 +825,7 @@ myggsave(combined_plot_pems, width = 9.22, height = 4.01)
 
 
 ```{r, eval = TRUE, out.width="922px", out.height="401px", fig.cap = captioner("MSE and negative Log-Score as functions of distance (in km) for the stationary (dotdash line, $\\boldsymbol{\\cdot-\\cdot}$) and non-stationary (solid line, $\\boldsymbol{-\\!\\!\\!-\\!\\!\\!-}$)  cases with $\\nu = 0.5$, $\\nu = 1.5$, and $\\nu$ estimated (est).")}
-knitr::include_graphics(here("data_files/tikzpic/combined_plot_pems.pdf"))
+knitr::include_graphics(here("data_files/tikzpic/combined_plot_pems_with_mathpazo.pdf"))
 ```
 
 

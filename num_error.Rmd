@@ -417,7 +417,7 @@ myggsave(p_err_int, width = 12, height = 6)
 
 
 ```{r, eval = TRUE, out.width="1200px", out.height="600px", fig.cap = captioner("Covariance error for the interval graph.")}
-knitr::include_graphics(here::here("data_files/tikzpic/p_err_int.pdf"))
+knitr::include_graphics(here::here("data_files/tikzpic/p_err_int_with_mathpazo.pdf"))
 ```
 
 
@@ -719,7 +719,7 @@ myggsave(p_err_cir, width = 12, height = 6)
 
 
 ```{r, eval = TRUE, out.width="1200px", out.height="600px", fig.cap = captioner("Covariance error for the circle graph.")}
-knitr::include_graphics(here::here("data_files/tikzpic/p_err_cir.pdf"))
+knitr::include_graphics(here::here("data_files/tikzpic/p_err_cir_with_mathpazo.pdf"))
 ```
 
 
@@ -1487,7 +1487,7 @@ myggsave(p_err_tad, width = 12, height = 6)
 
 
 ```{r, eval = TRUE, out.width="1200px", out.height="600px", fig.cap = captioner("Covariance error for the tadpole graph.")}
-knitr::include_graphics(here::here("data_files/tikzpic/p_err_tad.pdf"))
+knitr::include_graphics(here::here("data_files/tikzpic/p_err_tad_with_mathpazo.pdf"))
 ```
 
 

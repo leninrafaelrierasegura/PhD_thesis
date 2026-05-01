@@ -725,7 +725,7 @@ myggsave(conv_rates_p, width = 12, height = 4)
 ```
 
 ```{r, eval = TRUE, out.width="1200px", out.height="400px", fig.cap = captioner("Observed covariance error for different values of $\\alpha$ as functions of the mesh size $h$.")}
-knitr::include_graphics(here::here("data_files/tikzpic/conv_rates_p.pdf"))
+knitr::include_graphics(here::here("data_files/tikzpic/conv_rates_p_with_mathpazo.pdf"))
 ```
 
 
