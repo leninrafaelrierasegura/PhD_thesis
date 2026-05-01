@@ -1,9 +1,23 @@
 ---
-title: "PhD_thesis"
+title: "PhD thesis"
 ---
 
-Hello, Website!
+Visit [https://github.com/leninrafaelrierasegura/PhD_thesis](https://github.com/leninrafaelrierasegura/PhD_thesis) for all the necessary files to reproduce the results presented in this website.
 
-For more information about simple R Markdown websites, please read the documentation at https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html.
 
-Please also note that simple R Markdown sites are _not_ based on **blogdown**. They are probably good for websites with only a few Rmd documents. For larger-scale and more sophisticated websites (such as blogs), you may want to use **blogdown** instead: https://github.com/rstudio/blogdown.
+
+The following repositories contain the results of the individual projects carried out as part of my PhD thesis.
+
+ - **For Project 1**: [https://github.com/leninrafaelrierasegura/GWMFMG](https://github.com/leninrafaelrierasegura/GWMFMG)
+ 
+    - You may check the associated website directly at [https://leninrafaelrierasegura.github.io/GWMFMG/index.html](https://leninrafaelrierasegura.github.io/GWMFMG/index.html).
+ 
+ - **For Projects 2 and 3**: [https://github.com/leninrafaelrierasegura/NAFDEMG](https://github.com/leninrafaelrierasegura/NAFDEMG)
+ 
+    - You may check the associated website directly at [https://leninrafaelrierasegura.github.io/NAFDEMG/index.html](https://leninrafaelrierasegura.github.io/NAFDEMG/index.html).
+ 
+ - **For Project 4**: [https://github.com/leninrafaelrierasegura/ratAPPROX](https://github.com/leninrafaelrierasegura/ratAPPROX)
+
+    - You may check the associated website directly at [https://leninrafaelrierasegura.github.io/ratAPPROX/index.html](https://leninrafaelrierasegura.github.io/ratAPPROX/index.html).
+    
+In addition, the **PhD proposal presentation** is available at [https://github.com/leninrafaelrierasegura/leninPresentations](https://github.com/leninrafaelrierasegura/leninPresentations) and can be directly visualized at [https://leninrafaelrierasegura.github.io/leninPresentations/proposalPresentation.html#1](https://leninrafaelrierasegura.github.io/leninPresentations/proposalPresentation.html#1). 
