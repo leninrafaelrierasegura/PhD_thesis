@@ -1284,27 +1284,27 @@ save_plotly_figure_fixed(graphs6p4, dpi = 600,  scale = 2, viewer_change = 1)
 ```
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+```{r, eval =TRUE, fig.height = 7, out.width = "40%"}
 knitr::include_graphics(here::here("data_files/plotlypdf/p2fhelix.png"))
 ```
 
 
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+```{r, eval =TRUE, fig.height = 7, out.width = "40%"}
 knitr::include_graphics(here::here("data_files/plotlypdf/graphs6p2.png"))
 ```
 
 
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+```{r, eval =TRUE, fig.height = 7, out.width = "40%"}
 knitr::include_graphics(here::here("data_files/plotlypdf/p4tadpole_arclength.png"))
 ```
 
 
 
-```{r, eval =TRUE, fig.height = 7, out.width = "70%"}
+```{r, eval =TRUE, fig.height = 7, out.width = "40%"}
 knitr::include_graphics(here::here("data_files/plotlypdf/graphs6p4.png"))
 ```
 
