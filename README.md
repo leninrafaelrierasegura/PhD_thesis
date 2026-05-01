@@ -1,4 +1,4 @@
-# PhD_thesis
+# PhD thesis
 
 For a detailed description of this repository, follow this [https://leninrafaelrierasegura.github.io/PhD_thesis/index.html](https://leninrafaelrierasegura.github.io/PhD_thesis/index.html).
 
