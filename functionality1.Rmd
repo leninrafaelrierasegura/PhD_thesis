@@ -751,6 +751,7 @@ combine_pngs_with_gap_vertical <- function(png_files, output_file, gap = 20) {
     "\nCopied to:\n  ", copied_file, "\n"
   )
 }
+# sometimes
 ```
 
 

@@ -98,11 +98,33 @@ slackr_setup(token = token) # token comes from keys.R
 
 
 ```{r}
-capture.output(
-  knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
-  file = here::here("old/purl_log.txt")
-)
-source(here::here("functionality1.R"))
+# capture.output(
+#   knitr::purl(here::here("functionality1.Rmd"), output = here::here("functionality1.R")),
+#   file = here::here("old/purl_log.txt")
+# )
+# source(here::here("functionality1.R"))
+
+rmd_file <- here::here("functionality1.Rmd")
+hash_file <- here::here("functionality1.hash")
+r_file <- here::here("functionality1.R")
+purl_file <- here::here("old/purl_log.txt")
+
+new_hash <- digest::digest(file = rmd_file, algo = "md5")
+
+old_hash <- if (file.exists(hash_file)) {readLines(hash_file, warn = FALSE)} else {""}
+
+if (!identical(new_hash, old_hash)) {
+  capture.output(knitr::purl(rmd_file, output = r_file), file = purl_file)
+  writeLines(new_hash, hash_file)
+}
+source(r_file)
+```
+
+
+
+```{r}
+library(reticulate)
+py_config()
 ```
 
 
@@ -1230,9 +1252,15 @@ graph_on_sphere <- plot_ly() |>
     showlegend = FALSE
   ) |>
   layout(font = list(family = "Palatino"),
-         scene = list(camera = list(eye = list(x = 1.5, y = 1.5, z = 0.5))))
+         scene = list(xaxis = list(title = list(text = "x", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              yaxis = list(title = list(text = "y", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              zaxis = list(title = list(text = "z", font = list(color = "gray", size = 20)),  tickfont = list(color = "gray", size = 15)),
+              camera = list(eye = list(x = 1.5, y = 1.5, z = 0.5))))
 
 save(graph_on_sphere, file = here::here("data_files/graph_on_sphere.RData"))
+save_plotly_figure_fixed(graph_on_sphere, dpi = 120,  scale = 2, viewer_change = 1)
+
+
 graph <- metric_graph$new(edges = res$edges2d, verbose = 0)
 sphere2dplot <- graph$plot(vertex_size = 1,
                            vertex_color = "blue",
@@ -1241,9 +1269,21 @@ sphere2dplot <- graph$plot(vertex_size = 1,
     theme_bw() +
   theme(
     panel.grid = element_blank(),
+    plot.margin = margin(0, 0, 0, 0),
+    axis.title.x = element_text(size = 9),
+  axis.title.y = element_text(size = 9),
+  axis.text.x  = element_text(size = 8),
+  axis.text.y  = element_text(size = 8),
     text = element_text(family = "Palatino"))
 
-ggsave(here::here("data_files/sphere2dplot.png"), plot = sphere2dplot, width = 4, height = 4, dpi = 300)
+ggsave(here::here("data_files/sphere2dplot.png"), plot = sphere2dplot, width = 4, height = 4, dpi = 100)
+myggsave(sphere2dplot, width = 2.22, height = 2.18)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/graph_on_sphere.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/tikzpic/sphere2dplot_with_mathpazo.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/graph_on_sphere_sphere2dplot_with_mathpazo.png"
+combine_pngs_with_gap(png_files, output_file, gap = 20)
+
 
 kappa <- 4
 p_k <- -10
