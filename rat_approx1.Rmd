@@ -1438,8 +1438,68 @@ sparsematrixplots_sphere_dense <- ggplot() +
   hjust = 0, vjust = 0,  angle = 0
 )
 
-myggsave(sparsematrixplots_sphere_dense, width = 8, height = 3)
+s_total_onlyC <- s_total |>
+  mutate(mat = as.character(mat)) |>
+  filter(mat == "$\\mathbf{C}$") |>
+  mutate(mat = factor("$\\mathbf{C}$"))
 
+sparsematrixplots_sphere_dense_justC <- ggplot() + 
+  geom_point(data = s_total_onlyC, aes(i, j), shape = 15, size = 0.05) +
+  #geom_tile(data = s, aes(i, j), width = 4, height = 4) +
+  facet_grid(~ mat, switch = "x") + 
+  scale_y_reverse() +
+  scale_x_continuous(position = "top") +  
+  coord_fixed() +
+  labs(x = "$\\mbox{Column index }j$", y = "$\\mbox{Row index }i$") +
+  theme_bw() +
+  theme(
+    panel.grid = element_blank(),
+    text = element_text(family = "Palatino"),
+    plot.margin = margin(0, 0, 0, 0)
+  ) +
+  geom_text(
+  data = totalnnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cvv_nnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cvn_nnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cnv_nnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cnn_nnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+)
+
+myggsave(sparsematrixplots_sphere_dense, width = 8, height = 3)
+myggsave(sparsematrixplots_sphere_dense_justC, width = 8/3, height = 3)
 ```
 
 
@@ -1635,7 +1695,76 @@ sparsematrixplots_tadpole <- ggplot() +
   hjust = 0, vjust = 0,  angle = 0
 )
 
+
+
+s_total_onlyC <- s_total |>
+  mutate(mat = as.character(mat)) |>
+  filter(mat == "$\\mathbf{C}$") |>
+  mutate(mat = factor("$\\mathbf{C}$"))
+
+sparsematrixplots_tadpole_justC <- ggplot() + 
+  geom_point(data = s_total_onlyC, aes(i, j), shape = 15, size = 0.05) +
+  #geom_tile(data = s, aes(i, j), width = 4, height = 4) +
+  facet_grid(~ mat, switch = "x") + 
+  scale_y_reverse() +
+  scale_x_continuous(position = "top") +  
+  coord_fixed() +
+  labs(x = "$\\mbox{Column index }j$", y = "$\\mbox{Row index }i$") +
+  theme_bw() +
+  theme(
+    panel.grid = element_blank(),
+    text = element_text(family = "Palatino"),
+    plot.margin = margin(0, 0, 0, 0)
+  ) +
+  geom_text(
+  data = totalnnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cvv_nnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cvn_nnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cnv_nnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+) +
+  geom_text(
+  data = Cnn_nnz_df |> filter(mat == "$\\mathbf{C}$"),
+  aes(x = x, y = y, label = label),
+  inherit.aes = FALSE,
+  size = 1.5,
+  color = ubc_blue,
+  hjust = 0, vjust = 0,  angle = 0
+)
+
 myggsave(sparsematrixplots_tadpole, width = 8, height = 3)
+myggsave(sparsematrixplots_tadpole_justC, width = 8/3, height = 3)
+
+png_files <- c("/home/rierasl/Desktop/PhD_thesis/data_files/tikzpic/sparsematrixplots_tadpole_justC_with_mathpazo.png",
+               "/home/rierasl/Desktop/PhD_thesis/data_files/tikzpic/sparsematrixplots_sphere_dense_justC_with_mathpazo.png")
+output_file <- "/home/rierasl/Desktop/PhD_thesis/data_files/plotlypdf/sparsematrixplots_tadpole_justC_with_mathpazo_sparsematrixplots_sphere_dense_justC_with_mathpazo.png"
+
+combine_pngs_with_gap(png_files, output_file, gap = 20)
 ```
 
 
