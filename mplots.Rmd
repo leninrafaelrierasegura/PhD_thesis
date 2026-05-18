@@ -326,7 +326,7 @@ p2 <- ggplot(intervals_all, aes(color = fun, linetype = fun)) +
 library(patchwork)
 mplots_all <- p1 + p2 + plot_layout(ncol = 2)
 # ggplot2::ggsave(here::here("data_files/mplots.png"), width = 16, height = 5, plot = mplots_all, dpi = 300)
-myggsave(mplots_all, width = 16, height = 5)
+myggsave(mplots_all, width = 16, height = 5, use_mathpazo = FALSE)
 ```
 
 
