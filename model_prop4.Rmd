@@ -48,7 +48,7 @@ Below we set some global options for all code chunks in this document.
 # Create a clipboard button on the rendered HTML page
 source(here::here("clipboard.R")); clipboard
 # Set seed for reproducibility
-set.seed(593) 
+set.seed(1984) 
 # Set global options for all code chunks
 knitr::opts_chunk$set(
   # Disable messages printed by R code chunks
@@ -117,6 +117,16 @@ capture.output(
   file = here::here("old/purl_log.txt")
 )
 source(here::here("functionality1.R"))
+```
+
+
+```{r}
+reticulate::use_python(
+  "/home/rierasl/miniconda3/envs/phdenv/bin/python",
+  required = TRUE
+)
+
+reticulate::py_config()
 ```
 
 
@@ -277,7 +287,7 @@ B.kappa = cbind(0, 0, 1, 0, g)
 # Log-regression coefficients
 theta <- c(0, 0, 1, 1) 
 # Choose alpha
-nu = 2.5
+nu = 1.5
 alpha = nu + 1/2
 # Compute the operator
 op <- rSPDE::spde.matern.operators(graph = graph,
