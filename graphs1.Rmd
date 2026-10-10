@@ -1215,9 +1215,9 @@ p3 <- plot_ly(
             mode = "lines",
             line = list(color = "green", width = gsw), 
             showlegend = FALSE) |>
-  add_trace(x = df4[5,1], y = df4[5,2], z = 0, mode = "markers", type = "scatter3d", 
-            marker = list(size = gsw, color = "rgb(0,0,200)", symbol = 104),
-            showlegend = FALSE) |>
+  # add_trace(x = df4[5,1], y = df4[5,2], z = 0, mode = "markers", type = "scatter3d", 
+  #           marker = list(size = gsw, color = "rgb(0,0,200)", symbol = 104),
+  #           showlegend = FALSE) |>
   add_trace(x = 0, y = 0, z = 0, mode = "markers", type = "scatter3d", 
             marker = list(size = gsw, color = "black", symbol = 104),
             showlegend = FALSE) |>
@@ -1235,24 +1235,24 @@ p3 <- plot_ly(
               camera = list(eye = list(x = 5, y = 3, z = 4),
                             center = list(x = (1+2/pi)/2, y = 0, z = 0)),
            annotations = list(
-                   list(
-                     x = 0, y = 0, z = 1,
-                     text = TeX("\\phi_{v_1}"),
-                     textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "red", size = 20),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = 0, y = 0, z = 0,
-                     text = TeX("\\mathcal{N}_{v_1}"),
-                     textangle = 0, ax = 25, ay = 5,
-                     font = list(color = "green", size = 20),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = 1, y = 0, z = 1,
-                     text = TeX("\\phi_{v_2}"),
-                     textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "red", size = 20),
-                     arrowcolor = "rgba(0,0,0,0)"),
+                   # list(
+                   #   x = 0, y = 0, z = 1,
+                   #   text = TeX("\\phi_{v_1}"),
+                   #   textangle = 0, ax = 0, ay = -15,
+                   #   font = list(color = "red", size = 20),
+                   #   arrowcolor = "rgba(0,0,0,0)"),
+                   # list(
+                   #   x = 0, y = 0, z = 0,
+                   #   text = TeX("\\mathcal{N}_{v_1}"),
+                   #   textangle = 0, ax = 25, ay = 5,
+                   #   font = list(color = "green", size = 20),
+                   #   arrowcolor = "rgba(0,0,0,0)"),
+                   # list(
+                   #   x = 1, y = 0, z = 1,
+                   #   text = TeX("\\phi_{v_2}"),
+                   #   textangle = 0, ax = 0, ay = -15,
+                   #   font = list(color = "red", size = 20),
+                   #   arrowcolor = "rgba(0,0,0,0)"),
                    list(
                      x = 0, y = 0, z = 0,
                      text = TeX("v_1"),
@@ -1264,25 +1264,26 @@ p3 <- plot_ly(
                      text = TeX("v_2"),
                      textangle = 0, ax = 0, ay = 35,
                      font = list(color = "black", size = 20),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = 1, y = 0, z = 0,
-                     text = TeX("\\mathcal{N}_{v_2}"),
-                     textangle = 0, ax = 40, ay = -10,
-                     font = list(color = "green", size = 20),
-                     arrowcolor = "rgba(0,0,0,0)"),
-                   list(
-                     x = df4[5,1], y = df4[5,2], z = 0,
-                     text = TeX("x_5^{e_2}"),
-                     textangle = 0, ax = 0, ay = 35,
-                     font = list(color = "black", size = 20),
-                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
-                   list(
-                     x = df4[5,1], y = df4[5,2], z = 1,
-                     text = TeX("\\varphi_5^{e_2}"),
-                     textangle = 0, ax = 0, ay = -15,
-                     font = list(color = "rgb(0,0,200)", size = 20),
-                     arrowcolor = "rgba(0,0,0,0)"))
+                     arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1)
+                   # list(
+                   #   x = 1, y = 0, z = 0,
+                   #   text = TeX("\\mathcal{N}_{v_2}"),
+                   #   textangle = 0, ax = 40, ay = -10,
+                   #   font = list(color = "green", size = 20),
+                   #   arrowcolor = "rgba(0,0,0,0)"),
+                   # list(
+                   #   x = df4[5,1], y = df4[5,2], z = 0,
+                   #   text = TeX("x_5^{e_2}"),
+                   #   textangle = 0, ax = 0, ay = 35,
+                   #   font = list(color = "black", size = 20),
+                   #   arrowcolor = "gray", arrowsize = 1, arrowwidth = 0.5, arrowhead = 1),
+                   # list(
+                   #   x = df4[5,1], y = df4[5,2], z = 1,
+                   #   text = TeX("\\varphi_5^{e_2}"),
+                   #   textangle = 0, ax = 0, ay = -15,
+                   #   font = list(color = "rgb(0,0,200)", size = 20),
+                   #   arrowcolor = "rgba(0,0,0,0)")
+                   )
          ),
          margin = list(l = 0, r = 0, b = 0, t = 0),
   paper_bgcolor = "white",  # the overall canvas background
