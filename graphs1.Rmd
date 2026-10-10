@@ -1177,7 +1177,7 @@ p3 <- plot_ly(
             z = as.vector(A[, 1:graph$nV]), 
             type = "scatter3d", 
             mode = "lines",
-            line = list(color = "red", width = gsw), 
+            line = list(color = "rgb(0,0,200)", width = gsw), 
             showlegend = FALSE) |>
   add_trace(x = rep(x, times = ncol(A) - graph$nV), 
             y = rep(y, times = ncol(A) - graph$nV), 
@@ -1193,13 +1193,13 @@ p3 <- plot_ly(
             mode = "lines",
             line = list(color = "lightgray", width = 0.5),
             showlegend = FALSE) |>
-  add_trace(x = x, 
-            y = y, 
-            z = as.vector(A[, 10]), 
-            type = "scatter3d",
-            mode = "lines",  
-            line = list(color = "rgb(0,0,200)", width = gsw),
-            showlegend = FALSE) |>
+  # add_trace(x = x, 
+  #           y = y, 
+  #           z = as.vector(A[, 10]), 
+  #           type = "scatter3d",
+  #           mode = "lines",  
+  #           line = list(color = "rgb(0,0,200)", width = gsw),
+  #           showlegend = FALSE) |>
   add_trace(x = x, 
             y = y, 
             z = x*0, 
@@ -1207,14 +1207,14 @@ p3 <- plot_ly(
             mode = "lines",  
             line = list(color = "black", width = gsw),
             showlegend = FALSE) |>
-  add_trace(x = rep(x, times = graph$nV), 
-            y = rep(y, times = graph$nV), 
-            z = c(replace(rep(NA, nrow(A)), 1:11, 0), 
-                  replace(rep(NA, nrow(A)), c(31:51, 111:121), 0)), 
-            type = "scatter3d", 
-            mode = "lines",
-            line = list(color = "green", width = gsw), 
-            showlegend = FALSE) |>
+  # add_trace(x = rep(x, times = graph$nV), 
+  #           y = rep(y, times = graph$nV), 
+  #           z = c(replace(rep(NA, nrow(A)), 1:11, 0), 
+  #                 replace(rep(NA, nrow(A)), c(31:51, 111:121), 0)), 
+  #           type = "scatter3d", 
+  #           mode = "lines",
+  #           line = list(color = "green", width = gsw), 
+  #           showlegend = FALSE) |>
   # add_trace(x = df4[5,1], y = df4[5,2], z = 0, mode = "markers", type = "scatter3d", 
   #           marker = list(size = gsw, color = "rgb(0,0,200)", symbol = 104),
   #           showlegend = FALSE) |>
