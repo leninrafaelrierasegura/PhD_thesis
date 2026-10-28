@@ -1027,6 +1027,8 @@ knitr::include_graphics(here::here("data_files/tikzpic/p_one_columnnoLOG.pdf"))
 ```
 
 
+# Plot convergence rate
+
 ```
 {r}
 alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05) + 2
@@ -1085,6 +1087,93 @@ myggsave(conv_rate_ratapprox, width = 8, height = 3.2)
 
 ```
 
+```
+{r}
+alpha_vector <- 0.4 + seq(0.1, 0.5, by = 0.05) + 2
+m_vector <- 1:14
+
+errors <- matrix(
+  NA_real_,
+  nrow = length(m_vector),
+  ncol = length(alpha_vector)
+)
+
+for (alpha in alpha_vector) {
+  for (m in m_vector) {
+
+    res <- rSPDE:::interp_rational_coefficients(
+      order = m,
+      type_rational_approx = "brasil",
+      type_interp = "spline",
+      alpha = alpha
+    )
+
+    # Rational approximation r_m(1/x)
+    partFraction <- function(x) {
+      term_matrix <- outer(1 / x, res$p, "-")
+      term_values <- sweep(1 / term_matrix, 2, res$r, "*")
+      return(rowSums(term_values) + res$k)
+    }
+
+    # Exact function x^beta
+    powerFun <- function(x) {
+      return(x^(alpha - floor(alpha)))
+    }
+
+    # Interval [delta_m, 1]
+    delta <- 10^(-(5 + m) / 2)
+
+    # Logarithmically spaced evaluation points
+    # x <- exp(seq(log(delta), 0, length.out = 10))
+    x <- seq(delta, 1, length.out = 10)
+
+    # Evaluate rational approximation and exact function
+    pf <- partFraction(x)
+    po <- powerFun(x)
+
+    # Approximate L-infinity error
+    Linferror <- max(abs(pf - po))
+
+    # Store error
+    m_index <- which(m_vector == m)
+    alpha_index <- which(alpha_vector == alpha)
+
+    errors[m_index, alpha_index] <- Linferror
+  }
+}
+
+# Observed convergence rates
+observed_rates <- rep(NA_real_, length(alpha_vector))
+
+for (u in seq_along(alpha_vector)) {
+  observed_rates[u] <- coef(
+    lm(log(errors[, u]) ~ sqrt(m_vector))
+  )[2]
+}
+
+# Theoretical convergence rates
+theoretical_rates <- -2 * pi * sqrt(
+  alpha_vector - floor(alpha_vector)
+)
+
+# Plot convergence
+conv_rate_ratapprox_inv <- error.convergence.plotter(
+  x_axis_vector = m_vector,
+  alpha_vector = alpha_vector - floor(alpha_vector),
+  errors,
+  theoretical_rates,
+  observed_rates,
+  line_equation_fun = exp_line_equation,
+  fig_title = "",
+  x_axis_label = "$m\\quad(\\sqrt{\\phantom{x}}\\mbox{ scale})$",
+  y_axis_label = "$\\|f-r_m\\|_{L_{\\infty}([\\delta_m,1])}\\quad(\\log_{\\mathrm{e}}\\mbox{ scale})$",
+  color_label = "$\\quad\\;\\;\\{\\alpha\\}\\;|\\;\\mathtt{theo}\\;|\\;\\;\\mathtt{obs}\\;\\;|\\%\\mathtt{re}$",
+  apply_sqrt = TRUE
+)
+
+myggsave(conv_rate_ratapprox_inv, width = 8, height = 3.2)
+
+```
 
 
 
